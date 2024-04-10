@@ -26,7 +26,7 @@ val javaFXModules = listOf(
     "graphics"
 )
 
-val supportedPlatforms = listOf("linux", "mac", "win") // All required for OOP
+val supportedPlatforms = listOf("linux", "mac", "win")
 
 dependencies {
 

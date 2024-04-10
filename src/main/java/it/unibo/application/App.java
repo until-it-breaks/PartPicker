@@ -8,8 +8,8 @@ import javafx.application.Application;
 
 /** Main application entry-point's class. */
 
-public final class PartPicker {
-    private PartPicker() { }
+public final class App {
+    private App() { }
 
     /**
      * Main application entry-point.
@@ -20,6 +20,6 @@ public final class PartPicker {
         // The following line raises: Error: class it.unibo.samplejavafx.App is not a subclass of javafx.application.Application
         // JavaFXApp.launch(args);
         // While the following would do just fine:
-        //JavaFXApp.run(args);
+        // JavaFXApp.run(args)
     }
 }
