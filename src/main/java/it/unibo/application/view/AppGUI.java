@@ -2,6 +2,7 @@ package it.unibo.application.view;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
 import java.awt.Dimension;
 
 public class AppGUI {
