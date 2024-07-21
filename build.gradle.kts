@@ -14,37 +14,14 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-repositories {
+repositories { // Where to search for dependencies
     mavenCentral()
 }
 
-val javaFXModules = listOf(
-    "base",
-    "controls",
-    "fxml",
-    "swing",
-    "graphics"
-)
-
-val supportedPlatforms = listOf("linux", "mac", "win")
-
 dependencies {
-
-    // Example library: Guava. Add what you need (and remove Guava if you don't use it)
-    // implementation("com.google.guava:guava:28.1-jre")
-
-    // JavaFX: comment out if you do not need them
-    val javaFxVersion = 15
-    for (platform in supportedPlatforms) {
-        for (module in javaFXModules) {
-            implementation("org.openjfx:javafx-$module:$javaFxVersion:$platform")
-        }
-    }
 }
 
-val main: String by project
-
 application {
-    // Define the main class for the application
-    mainClass.set(main)
+    // Define the main class for the application.
+    //mainClass.set("it.unibo.sampleapp.RateAMovie")
 }
