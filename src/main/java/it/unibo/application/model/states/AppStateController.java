@@ -1,9 +1,9 @@
 package it.unibo.application.model.states;
 
-public class AppStatus {
+public class AppStateController {
     private State currentState;
 
-    public AppStatus() {
+    public AppStateController() {
         this.currentState = State.WELCOME;
     }
 
