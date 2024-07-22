@@ -6,6 +6,10 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.JOptionPane;
+
+import it.unibo.application.model.states.State;
+
 import javax.swing.BoxLayout;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -68,8 +72,7 @@ public class WelcomePanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                JOptionPane.showMessageDialog(null, "You have succesfully registered");
             }
         });
 
@@ -77,8 +80,7 @@ public class WelcomePanel extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                appGUI.setState(State.OVERVIEW);
             }
         });
     }

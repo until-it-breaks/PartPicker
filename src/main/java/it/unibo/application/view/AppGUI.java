@@ -37,6 +37,8 @@ public class AppGUI {
             case State.WELCOME:
                 this.frame.add(new WelcomePanel(this));
                 break;
+            case State.OVERVIEW:
+                this.frame.add(new OverviewPanel(this));
             default:
                 break;
         }
