@@ -21,9 +21,9 @@ import java.awt.Insets;
 import java.awt.GridBagConstraints;
 import java.awt.Component;
 
-public class WelcomePanel extends JPanel {
+public class WelcomePage extends JPanel {
 
-    public WelcomePanel(AppGUI appGUI) {
+    public WelcomePage(AppGUI appGUI) {
         this.setLayout(new BorderLayout());
         final JPanel upperPanel = new JPanel();
         final JPanel centerPanel = new JPanel();

@@ -1,5 +1,6 @@
-package it.unibo.application.controller;
+package it.unibo.application;
 
+import it.unibo.application.controller.Controller;
 import it.unibo.application.view.AppGUI;
 
 public class LaunchApp {

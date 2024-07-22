@@ -21,7 +21,7 @@ public class AppGUI {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(SIZE);
-        frame.add(new WelcomePanel(this));
+        frame.add(new WelcomePage(this));
         frame.setVisible(true);
     }
 
@@ -35,14 +35,17 @@ public class AppGUI {
 
         switch (this.controller.getAppState()) {
             case State.WELCOME:
-                this.frame.add(new WelcomePanel(this));
+                this.frame.add(new WelcomePage(this));
                 break;
             case State.OVERVIEW:
-                this.frame.add(new OverviewPanel(this));
+                this.frame.add(new OverviewPage(this));
+                break;
+            case State.BUILDING:
+                this.frame.add(new BuilderPage());
+                break;
             default:
                 break;
         }
-
 
         this.frame.revalidate();
         frame.repaint();

@@ -4,8 +4,10 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
-
 import javax.swing.SwingConstants;
+
+import it.unibo.application.model.states.State;
+
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
@@ -18,21 +20,22 @@ import javax.swing.Box;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 
-public class OverviewPanel extends JPanel {
+public class OverviewPage extends JPanel {
 
-    public OverviewPanel(final AppGUI appGUI) {
+    public OverviewPage(final AppGUI appGUI) {
 
         this.setLayout(new BorderLayout());
         final JPanel topBar = new JPanel();
         topBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         topBar.setBackground(Color.LIGHT_GRAY);
         final JLabel userInfoLabel = new JLabel("Logged in as: User");
+        final JButton quitButton = new JButton("Quit");
         topBar.add(userInfoLabel);
+        topBar.add(quitButton);
 
         final JPanel middleSection = new JPanel();
         middleSection.setLayout(new BoxLayout(middleSection, BoxLayout.Y_AXIS));
@@ -188,8 +191,7 @@ public class OverviewPanel extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                appGUI.setState(State.BUILDING);
             }
         });
     }
