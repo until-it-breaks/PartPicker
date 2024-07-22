@@ -18,15 +18,11 @@ public class AppGUI {
         this.controller = controller;
 
         frame.setTitle(APP_NAME);
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(SIZE);
-    
         frame.add(new WelcomePanel(this));
         frame.setVisible(true);
-    }
-
-    public JFrame getFrame() {
-        return this.frame;
     }
 
     public void setState(State newState) {
