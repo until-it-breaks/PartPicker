@@ -3,6 +3,7 @@ package it.unibo.application.view;
 import javax.swing.JPanel;
 
 import it.unibo.application.model.Part;
+import it.unibo.application.model.states.State;
 
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
@@ -17,13 +18,21 @@ import java.awt.FlowLayout;
 import javax.swing.JLabel;
 
 public class BuilderPage extends JPanel {
-    public BuilderPage() {
+    public BuilderPage(AppGUI appGUI) {
         this.setLayout(new BorderLayout());
 
         JPanel topBar = new JPanel();
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
 
         JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                appGUI.setState(State.OVERVIEW);
+            }
+            
+        });
         topBar.add(backButton);
 
         JPanel buildNamePanel = new JPanel();

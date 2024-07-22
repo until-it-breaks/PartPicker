@@ -3,6 +3,7 @@ package it.unibo.application.view;
 import javax.swing.JFrame;
 
 import it.unibo.application.controller.Controller;
+import it.unibo.application.model.Part;
 import it.unibo.application.model.states.State;
 
 import java.awt.Dimension;
@@ -41,8 +42,10 @@ public class AppGUI {
                 this.frame.add(new OverviewPage(this));
                 break;
             case State.BUILDING:
-                this.frame.add(new BuilderPage());
+                this.frame.add(new BuilderPage(this));
                 break;
+            case State.VIEWING_PART:
+                this.frame.add(new ProductsPage(this, Part.CPU));
             default:
                 break;
         }

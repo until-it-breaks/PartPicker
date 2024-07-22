@@ -110,8 +110,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                appGUI.setState(State.VIEWING_PART);
             }
             
         });
@@ -119,8 +118,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                appGUI.setState(State.VIEWING_PART);
             }
             
         });
@@ -128,8 +126,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                appGUI.setState(State.VIEWING_PART);
             }
             
         });
@@ -137,8 +134,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                appGUI.setState(State.VIEWING_PART);
             }
             
         });
@@ -146,8 +142,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                appGUI.setState(State.VIEWING_PART);
             }
             
         });
@@ -155,8 +150,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                appGUI.setState(State.VIEWING_PART);
             }
             
         });
@@ -164,8 +158,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                appGUI.setState(State.VIEWING_PART);
             }
             
         });
@@ -173,8 +166,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                appGUI.setState(State.VIEWING_PART);
             }
             
         });
@@ -182,8 +174,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                // TODO Auto-generated method stub
-                throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+                appGUI.setState(State.VIEWING_PART);
             }
             
         });
