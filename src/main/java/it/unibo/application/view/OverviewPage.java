@@ -25,9 +25,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 
 public class OverviewPage extends JPanel {
+    AppGUI appGUI;
 
     public OverviewPage(final AppGUI appGUI) {
-
+        this.appGUI = appGUI;
         this.setLayout(new BorderLayout());
         final JPanel topBar = new JPanel();
         topBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -204,6 +205,14 @@ public class OverviewPage extends JPanel {
         description.setEditable(false);
         description.setFocusable(false);
         buildFrame.add(description, BorderLayout.CENTER);
+
+        buildFrame.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                System.out.println("Ciaone");
+                appGUI.setState(State.VIEWING_BUILD);
+            }
+        });
 
         return buildFrame;
     }

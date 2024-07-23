@@ -46,6 +46,10 @@ public class AppGUI {
                 break;
             case State.VIEWING_PART:
                 this.frame.add(new ProductsPage(this, Part.CPU));
+                break;
+            case State.VIEWING_BUILD:
+                this.frame.add(new BuildPage(this));
+                break;
             default:
                 break;
         }
