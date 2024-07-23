@@ -1,6 +1,6 @@
 package it.unibo.application.model.components;
 
-public class PSU extends Component {
+public class PSU extends ComponentImpl {
     private final String formFactor;
     private final Integer maxOutput;
     private final String efficiency;

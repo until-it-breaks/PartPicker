@@ -1,6 +1,6 @@
 package it.unibo.application.model.components;
 
-public class CPU extends Component {
+public class CPU extends ComponentImpl {
     private final String series;
     private final String family;
     private final Integer numberOfCores;

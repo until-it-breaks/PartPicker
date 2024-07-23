@@ -2,6 +2,7 @@ package it.unibo.application.view;
 
 import javax.swing.JPanel;
 
+import it.unibo.application.controller.Controller;
 import it.unibo.application.model.Part;
 import it.unibo.application.model.states.State;
 
@@ -18,7 +19,7 @@ import java.awt.FlowLayout;
 import javax.swing.JLabel;
 
 public class BuilderPage extends JPanel {
-    public BuilderPage(AppGUI appGUI) {
+    public BuilderPage(Controller controller) {
         this.setLayout(new BorderLayout());
 
         JPanel topBar = new JPanel();
@@ -29,7 +30,7 @@ public class BuilderPage extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                appGUI.setState(State.OVERVIEW);
+                controller.setAppState(State.OVERVIEW);
             }
             
         });

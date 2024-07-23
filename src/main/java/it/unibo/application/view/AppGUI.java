@@ -22,33 +22,28 @@ public class AppGUI {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(SIZE);
-        frame.add(new WelcomePage(this));
+        frame.add(new WelcomePage(controller));
         frame.setVisible(true);
     }
 
-    public void setState(State newState) {
-        this.controller.setAppState(newState);
-        this.switchPanel();
-    }
-
-    private void switchPanel() {
+    public void switchPanel(State newState) {
         this.frame.getContentPane().removeAll();
 
         switch (this.controller.getAppState()) {
             case State.WELCOME:
-                this.frame.add(new WelcomePage(this));
+                this.frame.add(new WelcomePage(controller));
                 break;
             case State.OVERVIEW:
-                this.frame.add(new OverviewPage(this));
+                this.frame.add(new OverviewPage(controller));
                 break;
             case State.BUILDING:
-                this.frame.add(new BuilderPage(this));
+                this.frame.add(new BuilderPage(controller));
                 break;
             case State.VIEWING_PART:
-                this.frame.add(new ProductsPage(this, Part.CPU));
+                this.frame.add(new ProductsPage(controller, Part.CPU));
                 break;
             case State.VIEWING_BUILD:
-                this.frame.add(new BuildPage(this));
+                this.frame.add(new BuildPage(controller));
                 break;
             default:
                 break;

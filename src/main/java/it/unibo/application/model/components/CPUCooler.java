@@ -1,6 +1,6 @@
 package it.unibo.application.model.components;
 
-public class CPUCooler extends Component {
+public class CPUCooler extends ComponentImpl {
     private final Integer maxSustainableHeat;
 
     public CPUCooler(final Integer maxSustainableHeat) {

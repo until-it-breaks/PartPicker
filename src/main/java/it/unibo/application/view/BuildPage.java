@@ -1,11 +1,14 @@
 package it.unibo.application.view;
 
 import javax.swing.*;
+
+import it.unibo.application.controller.Controller;
+
 import java.awt.*;
 
 public class BuildPage extends JPanel {
 
-    public BuildPage(AppGUI appGUI) {
+    public BuildPage(Controller controller) {
         this.setLayout(new BorderLayout());
         JPanel topBar  = new JPanel();
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));

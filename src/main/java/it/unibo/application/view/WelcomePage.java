@@ -8,6 +8,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JOptionPane;
 
+import it.unibo.application.controller.Controller;
 import it.unibo.application.model.states.State;
 
 import javax.swing.BoxLayout;
@@ -23,7 +24,7 @@ import java.awt.Component;
 
 public class WelcomePage extends JPanel {
 
-    public WelcomePage(AppGUI appGUI) {
+    public WelcomePage(Controller controller) {
         this.setLayout(new BorderLayout());
         final JPanel upperPanel = new JPanel();
         final JPanel centerPanel = new JPanel();
@@ -80,7 +81,7 @@ public class WelcomePage extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                appGUI.setState(State.OVERVIEW);
+                controller.setAppState(State.OVERVIEW);
             }
         });
     }

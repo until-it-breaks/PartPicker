@@ -1,6 +1,6 @@
 package it.unibo.application.model.components;
 
-public class GPU extends Component {
+public class GPU extends ComponentImpl {
     private final String memoryType;
     private final Integer memoryAmount;
     private final Integer maxFrequency;

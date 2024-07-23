@@ -1,6 +1,6 @@
 package it.unibo.application.model.components;
 
-public class Storage extends Component {
+public class Storage extends ComponentImpl {
     private final Integer capacity;
     private final String storageType;
     private final String interfaceType;

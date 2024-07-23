@@ -1,6 +1,6 @@
 package it.unibo.application.model.components;
 
-public class RAM extends Component {
+public class RAM extends ComponentImpl {
     private final String RamGeneration;
     private final Integer frequency;
     private final String kitConfiguration;

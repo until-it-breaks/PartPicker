@@ -1,6 +1,6 @@
 package it.unibo.application.model.components;
 
-public class Motherboard extends Component {
+public class Motherboard extends ComponentImpl {
     private final String formFactor;
     private final String chipsetName;
     private final Integer numberOfRamSlots;

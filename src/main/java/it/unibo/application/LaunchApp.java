@@ -6,6 +6,7 @@ import it.unibo.application.view.AppGUI;
 public class LaunchApp {
     public static void main(String[] args) {
         Controller controller = new Controller();
-        new AppGUI(controller);
+        AppGUI appGUI = new AppGUI(controller);
+        controller.setGUI(appGUI);
     }
 }

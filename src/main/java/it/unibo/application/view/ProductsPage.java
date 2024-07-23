@@ -2,6 +2,7 @@ package it.unibo.application.view;
 
 import javax.swing.JPanel;
 
+import it.unibo.application.controller.Controller;
 import it.unibo.application.model.Part;
 
 import java.awt.BorderLayout;
@@ -12,7 +13,7 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 
 public class ProductsPage extends JPanel {
-    public ProductsPage(AppGUI appGUI, Part part) {
+    public ProductsPage(Controller controller, Part part) {
         this.setLayout(new BorderLayout());
         JPanel topBar = new JPanel();
         topBar.add(new JLabel("Choose A " + part));

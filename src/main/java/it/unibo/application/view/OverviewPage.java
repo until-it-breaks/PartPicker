@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
+import it.unibo.application.controller.Controller;
 import it.unibo.application.model.states.State;
 
 import javax.swing.BorderFactory;
@@ -25,10 +26,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 
 public class OverviewPage extends JPanel {
-    AppGUI appGUI;
+    Controller controller;
 
-    public OverviewPage(final AppGUI appGUI) {
-        this.appGUI = appGUI;
+    public OverviewPage(final Controller controller) {
+        this.controller = controller;
         this.setLayout(new BorderLayout());
         final JPanel topBar = new JPanel();
         topBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -111,7 +112,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                appGUI.setState(State.VIEWING_PART);
+                controller.setAppState(State.VIEWING_PART);
             }
             
         });
@@ -119,7 +120,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                appGUI.setState(State.VIEWING_PART);
+                controller.setAppState(State.VIEWING_PART);
             }
             
         });
@@ -127,7 +128,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                appGUI.setState(State.VIEWING_PART);
+                controller.setAppState(State.VIEWING_PART);
             }
             
         });
@@ -135,7 +136,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                appGUI.setState(State.VIEWING_PART);
+                controller.setAppState(State.VIEWING_PART);
             }
             
         });
@@ -143,7 +144,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                appGUI.setState(State.VIEWING_PART);
+                controller.setAppState(State.VIEWING_PART);
             }
             
         });
@@ -151,7 +152,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                appGUI.setState(State.VIEWING_PART);
+                controller.setAppState(State.VIEWING_PART);
             }
             
         });
@@ -159,7 +160,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                appGUI.setState(State.VIEWING_PART);
+                controller.setAppState(State.VIEWING_PART);
             }
             
         });
@@ -167,7 +168,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                appGUI.setState(State.VIEWING_PART);
+                controller.setAppState(State.VIEWING_PART);
             }
             
         });
@@ -175,7 +176,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                appGUI.setState(State.VIEWING_PART);
+                controller.setAppState(State.VIEWING_PART);
             }
             
         });
@@ -183,7 +184,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                appGUI.setState(State.BUILDING);
+                controller.setAppState(State.BUILDING);
             }
         });
     }
@@ -210,7 +211,7 @@ public class OverviewPage extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println("Ciaone");
-                appGUI.setState(State.VIEWING_BUILD);
+                controller.setAppState(State.VIEWING_BUILD);
             }
         });
 
