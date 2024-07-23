@@ -1,6 +1,7 @@
-package it.unibo.application.model;
+package it.unibo.application.model.building;
 
 import it.unibo.application.model.components.Component;
+import it.unibo.application.model.enums.Part;
 
 public class ComponentSelector {
     Part currentCategory;

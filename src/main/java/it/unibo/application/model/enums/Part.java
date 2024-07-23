@@ -1,4 +1,4 @@
-package it.unibo.application.model;
+package it.unibo.application.model.enums;
 
 public enum Part {
     CPU("CPU"),

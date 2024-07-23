@@ -3,8 +3,7 @@ package it.unibo.application.view;
 import javax.swing.JFrame;
 
 import it.unibo.application.controller.Controller;
-import it.unibo.application.model.Part;
-import it.unibo.application.model.states.State;
+import it.unibo.application.model.enums.State;
 
 import java.awt.Dimension;
 
@@ -40,7 +39,7 @@ public class AppGUI {
                 this.frame.add(new BuilderPage(controller));
                 break;
             case State.VIEWING_PART:
-                this.frame.add(new ProductsPage(controller, Part.CPU));
+                this.frame.add(new ProductsPage(controller, controller.getComponentSelector().getCurrentCategory()));
                 break;
             case State.VIEWING_BUILD:
                 this.frame.add(new BuildPage(controller));

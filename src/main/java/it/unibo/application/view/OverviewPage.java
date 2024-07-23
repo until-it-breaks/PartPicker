@@ -7,7 +7,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import it.unibo.application.controller.Controller;
-import it.unibo.application.model.states.State;
+import it.unibo.application.model.enums.Part;
+import it.unibo.application.model.enums.State;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
@@ -36,6 +37,16 @@ public class OverviewPage extends JPanel {
         topBar.setBackground(Color.LIGHT_GRAY);
         final JLabel userInfoLabel = new JLabel("Logged in as: User");
         final JButton quitButton = new JButton("Quit");
+
+        quitButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.getLoginHandler().stopConnectionCheckRoutine();
+                controller.setAppState(State.WELCOME);
+            }
+        });
+
         topBar.add(userInfoLabel);
         topBar.add(quitButton);
 
@@ -112,6 +123,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
+                controller.getComponentSelector().setCategory(Part.CPU);
                 controller.setAppState(State.VIEWING_PART);
             }
             
@@ -120,6 +132,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
+                controller.getComponentSelector().setCategory(Part.VIDEO_CARD);
                 controller.setAppState(State.VIEWING_PART);
             }
             
@@ -128,6 +141,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
+                controller.getComponentSelector().setCategory(Part.MEMORY);
                 controller.setAppState(State.VIEWING_PART);
             }
             
@@ -136,6 +150,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
+                controller.getComponentSelector().setCategory(Part.STORAGE);
                 controller.setAppState(State.VIEWING_PART);
             }
             
@@ -144,6 +159,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
+                controller.getComponentSelector().setCategory(Part.CPU_COOLER);
                 controller.setAppState(State.VIEWING_PART);
             }
             
@@ -152,6 +168,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
+                controller.getComponentSelector().setCategory(Part.CASE);
                 controller.setAppState(State.VIEWING_PART);
             }
             
@@ -160,6 +177,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
+                controller.getComponentSelector().setCategory(Part.MOTHERBOARD);
                 controller.setAppState(State.VIEWING_PART);
             }
             
@@ -168,6 +186,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
+                controller.getComponentSelector().setCategory(Part.POWER_SUPPLY);
                 controller.setAppState(State.VIEWING_PART);
             }
             

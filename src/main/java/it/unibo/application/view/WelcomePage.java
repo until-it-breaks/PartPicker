@@ -9,7 +9,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JOptionPane;
 
 import it.unibo.application.controller.Controller;
-import it.unibo.application.model.states.State;
+import it.unibo.application.model.enums.State;
 
 import javax.swing.BoxLayout;
 import java.awt.BorderLayout;
@@ -81,7 +81,12 @@ public class WelcomePage extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.setAppState(State.OVERVIEW);
+                if (controller.getLoginHandler().performLogin(usernameField.getText(), passwordField.getPassword())) {
+                    JOptionPane.showMessageDialog(null, "You have succesfully logged in");
+                    controller.setAppState(State.OVERVIEW);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Wrong credentials");
+                }
             }
         });
     }

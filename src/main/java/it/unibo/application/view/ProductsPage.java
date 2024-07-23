@@ -3,7 +3,7 @@ package it.unibo.application.view;
 import javax.swing.JPanel;
 
 import it.unibo.application.controller.Controller;
-import it.unibo.application.model.Part;
+import it.unibo.application.model.enums.Part;
 
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;

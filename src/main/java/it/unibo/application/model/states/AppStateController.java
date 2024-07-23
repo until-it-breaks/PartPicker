@@ -1,5 +1,7 @@
 package it.unibo.application.model.states;
 
+import it.unibo.application.model.enums.State;
+
 public class AppStateController {
     private State currentState;
 
