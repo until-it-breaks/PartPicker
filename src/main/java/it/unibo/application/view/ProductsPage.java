@@ -9,29 +9,31 @@ import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.awt.GridLayout;
-import java.awt.Color;
 import javax.swing.JLabel;
 
 public class ProductsPage extends JPanel {
     public ProductsPage(Controller controller, Part part) {
         this.setLayout(new BorderLayout());
+
         JPanel topBar = new JPanel();
+        topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
         topBar.add(new NavigationBar(controller));
-        topBar.setBackground(Color.LIGHT_GRAY);
         topBar.add(new JLabel("Choose A " + part));
-        this.add(topBar, BorderLayout.NORTH);
-        
+
 
         JPanel choiceTab = new JPanel();
         choiceTab.setLayout(new BoxLayout(choiceTab, BoxLayout.Y_AXIS));
 
         JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new GridLayout(1, 5));
+
+        int numberOfSpecFields = part.getSpecifications().size();
+        headerPanel.setLayout(new GridLayout(1, numberOfSpecFields));
+    
         headerPanel.add(new JLabel("Name"));
-        headerPanel.add(new JLabel("Core Count"));
-        headerPanel.add(new JLabel("Boost Clock"));
-        headerPanel.add(new JLabel("TDP"));
-        headerPanel.add(new JLabel("Integrated Graphics"));
+
+        for (int i = 0; i < numberOfSpecFields; i++) {
+            headerPanel.add(new JLabel(part.getSpecifications().get(i)));
+        }
 
         choiceTab.add(headerPanel);
 
@@ -44,6 +46,7 @@ public class ProductsPage extends JPanel {
         choiceTab.add(createItemPanel(Part.CPU));
         choiceTab.add(createItemPanel(Part.CPU));
 
+        this.add(topBar, BorderLayout.NORTH);
         this.add(choiceTab, BorderLayout.CENTER);
     }
 

@@ -7,10 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class NavigationBar extends JPanel {
-    Controller controller;
+    private static Color BAR_COLOR = new Color(84, 85, 120);
     public NavigationBar(Controller controller) {
         this.setLayout(new FlowLayout());
-        this.setBackground(Color.BLACK);
+        this.setBackground(BAR_COLOR);
         JButton backButton = new JButton("Back");
         JButton refreshButton = new JButton("Refresh");
 
@@ -19,7 +19,18 @@ public class NavigationBar extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.setAppState(controller.getPreviousAppState());
+
             }
+        });
+
+        refreshButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO needs more work
+                System.out.println("Page refreshed");
+            }
+            
         });
         this.add(backButton);
         this.add(refreshButton);
