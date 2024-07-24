@@ -4,6 +4,8 @@ import javax.swing.JPanel;
 
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.Part;
+import it.unibo.application.view.premades.BottomBar;
+import it.unibo.application.view.premades.TopBar;
 
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
@@ -17,7 +19,7 @@ public class ProductsPage extends JPanel {
 
         JPanel topBar = new JPanel();
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
-        topBar.add(new NavigationBar(controller));
+        topBar.add(new TopBar(controller));
         topBar.add(new JLabel("Choose A " + part));
 
 
@@ -48,6 +50,7 @@ public class ProductsPage extends JPanel {
 
         this.add(topBar, BorderLayout.NORTH);
         this.add(choiceTab, BorderLayout.CENTER);
+        this.add(new BottomBar(controller), BorderLayout.SOUTH);
     }
 
     private JPanel createItemPanel(Part part) {

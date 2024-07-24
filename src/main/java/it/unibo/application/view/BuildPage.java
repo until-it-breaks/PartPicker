@@ -3,8 +3,13 @@ package it.unibo.application.view;
 import javax.swing.*;
 
 import it.unibo.application.controller.Controller;
+import it.unibo.application.model.enums.State;
+import it.unibo.application.view.premades.BottomBar;
+import it.unibo.application.view.premades.TopBar;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class BuildPage extends JPanel {
 
@@ -12,11 +17,22 @@ public class BuildPage extends JPanel {
         this.setLayout(new BorderLayout());
         JPanel topBar  = new JPanel();
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
-        topBar.add(new NavigationBar(controller));
+        topBar.add(new TopBar(controller));
         topBar.add(new JLabel("BUILD"));
         topBar.add(new JLabel("Build Name"));
+
         topBar.add(new JLabel("By user123"));
-        topBar.setBackground(Color.CYAN);
+        JButton vistAuthor = new JButton("Visit author");
+        vistAuthor.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.setAppState(State.VIEWING_PROFILE);
+                controller.getProfileSelector().setCurrentProfile(controller.getProfileSelector().getCurrentProfile()); //TODO to be modified
+            }
+            
+        });
+        topBar.add(vistAuthor);
 
         JPanel middleSection = new JPanel();
         middleSection.setLayout(new BoxLayout(middleSection, BoxLayout.Y_AXIS));
@@ -38,6 +54,7 @@ public class BuildPage extends JPanel {
         commentSection.add(new JLabel("Comment 1"));
         commentSection.add(new JLabel("Comment 2"));
         commentSection.add(new JLabel("Comment 3"));
+        commentSection.add(new BottomBar(controller));
 
         this.add(topBar, BorderLayout.NORTH);
         this.add(middleSection, BorderLayout.CENTER);

@@ -11,12 +11,10 @@ import javax.swing.JOptionPane;
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.State;
 
-import javax.swing.BoxLayout;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Font;
-import java.awt.Color;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.GridBagConstraints;
@@ -26,21 +24,16 @@ public class WelcomePage extends JPanel {
 
     public WelcomePage(Controller controller) {
         this.setLayout(new BorderLayout());
-        final JPanel upperPanel = new JPanel();
         final JPanel centerPanel = new JPanel();
         final JPanel lowerPanel = new JPanel();
 
-        this.add(upperPanel, BorderLayout.NORTH);
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(lowerPanel, BorderLayout.SOUTH);
 
-        upperPanel.setLayout(new BoxLayout(upperPanel, BoxLayout.Y_AXIS));
         JLabel largeLabel = new JLabel("Welcome to Part Picker!", SwingConstants.CENTER);
-        largeLabel.setFont(new Font("Arial", Font.BOLD, 36));
+        largeLabel.setFont(new Font("Arial", Font.BOLD, 72));
         largeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        upperPanel.add(largeLabel);
-
-        centerPanel.setBackground(Color.BLACK);
+        centerPanel.add(largeLabel);
 
         lowerPanel.setLayout(new GridBagLayout());
         JPanel credentialsPanel = new JPanel(new GridBagLayout());

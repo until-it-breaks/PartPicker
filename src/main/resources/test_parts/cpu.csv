@@ -1,0 +1,11 @@
+Product Name,Series,Family,Number Of Cores,Frequency,TDP,SMT,Integrated Graphics,Cooler Included
+AMD Ryzen 5 3600,Ryzen 5,Matisse,6,3.6 GHz,65W,Yes,No,Yes
+Intel Core i7-10700K,Core i7,Comet Lake,8,3.8 GHz,125W,Yes,Yes,No
+AMD Ryzen 9 5900X,Ryzen 9,Vermeer,12,3.7 GHz,105W,Yes,No,No
+Intel Core i5-10400,Core i5,Comet Lake,6,2.9 GHz,65W,Yes,Yes,Yes
+AMD Ryzen 7 5800X,Ryzen 7,Vermeer,8,3.8 GHz,105W,Yes,No,No
+Intel Core i9-10900K,Core i9,Comet Lake,10,3.7 GHz,125W,Yes,Yes,No
+AMD Ryzen 5 5600X,Ryzen 5,Vermeer,6,3.7 GHz,65W,Yes,No,Yes
+Intel Core i3-10100,Core i3,Comet Lake,4,3.6 GHz,65W,Yes,Yes,Yes
+AMD Ryzen 3 3300X,Ryzen 3,Matisse,4,3.8 GHz,65W,Yes,No,Yes
+Intel Pentium G6400,Pentium,Comet Lake,2,4.0 GHz,58W,No,Yes,Yes

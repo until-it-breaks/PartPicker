@@ -4,7 +4,8 @@ import javax.swing.JPanel;
 
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.Part;
-import it.unibo.application.model.enums.State;
+import it.unibo.application.view.premades.BottomBar;
+import it.unibo.application.view.premades.TopBar;
 
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
@@ -24,7 +25,7 @@ public class BuilderPage extends JPanel {
 
         JPanel topBar = new JPanel();
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
-        topBar.add(new NavigationBar(controller));
+        topBar.add(new TopBar(controller));
 
         JPanel buildNamePanel = new JPanel();
         buildNamePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -36,10 +37,11 @@ public class BuilderPage extends JPanel {
         buildNamePanel.add(buildName);
 
         topBar.add(buildNamePanel);
-        this.add(topBar, BorderLayout.NORTH);
 
-        JPanel choiceTab = new JPanel();
-        choiceTab.setLayout(new BoxLayout(choiceTab, BoxLayout.Y_AXIS));
+
+
+        JPanel middleSection = new JPanel();
+        middleSection.setLayout(new BoxLayout(middleSection, BoxLayout.Y_AXIS));
 
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new GridLayout(1, 4));
@@ -48,18 +50,17 @@ public class BuilderPage extends JPanel {
         headerPanel.add(new JLabel("Base Price"));
         headerPanel.add(new JLabel("Current Price"));
 
-        choiceTab.add(headerPanel);
+        middleSection.add(headerPanel);
 
-        choiceTab.add(createBlankItemPanel(Part.CPU));
-        choiceTab.add(createBlankItemPanel(Part.CPU_COOLER));
-        choiceTab.add(createBlankItemPanel(Part.MOTHERBOARD));
-        choiceTab.add(createBlankItemPanel(Part.MEMORY));
-        choiceTab.add(createBlankItemPanel(Part.STORAGE));
-        choiceTab.add(createBlankItemPanel(Part.VIDEO_CARD));
-        choiceTab.add(createBlankItemPanel(Part.CASE));
-        choiceTab.add(createBlankItemPanel(Part.POWER_SUPPLY));
+        middleSection.add(createBlankItemPanel(Part.CPU));
+        middleSection.add(createBlankItemPanel(Part.CPU_COOLER));
+        middleSection.add(createBlankItemPanel(Part.MOTHERBOARD));
+        middleSection.add(createBlankItemPanel(Part.MEMORY));
+        middleSection.add(createBlankItemPanel(Part.STORAGE));
+        middleSection.add(createBlankItemPanel(Part.VIDEO_CARD));
+        middleSection.add(createBlankItemPanel(Part.CASE));
+        middleSection.add(createBlankItemPanel(Part.POWER_SUPPLY));
 
-        this.add(choiceTab, BorderLayout.CENTER);
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
@@ -68,7 +69,12 @@ public class BuilderPage extends JPanel {
         JButton saveButton = new JButton("Save Build");
         bottomPanel.add(totalPanel);
         bottomPanel.add(saveButton);
-        this.add(bottomPanel, BorderLayout.SOUTH);
+        
+        middleSection.add(bottomPanel);
+
+        this.add(topBar, BorderLayout.NORTH);
+        this.add(middleSection, BorderLayout.CENTER);
+        this.add(new BottomBar(controller), BorderLayout.SOUTH);
     }
 
     private JPanel createBlankItemPanel(Part part) {

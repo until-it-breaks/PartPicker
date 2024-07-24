@@ -9,6 +9,8 @@ import javax.swing.SwingConstants;
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.Part;
 import it.unibo.application.model.enums.State;
+import it.unibo.application.view.premades.BottomBar;
+import it.unibo.application.view.premades.TopBar;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
@@ -32,23 +34,6 @@ public class OverviewPage extends JPanel {
     public OverviewPage(final Controller controller) {
         this.controller = controller;
         this.setLayout(new BorderLayout());
-        final JPanel topBar = new JPanel();
-        topBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        topBar.setBackground(Color.LIGHT_GRAY);
-        final JLabel userInfoLabel = new JLabel("Logged in as: User");
-        final JButton quitButton = new JButton("Quit");
-
-        quitButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.getLoginHandler().stopConnectionCheckRoutine();
-                controller.setAppState(State.WELCOME);
-            }
-        });
-
-        topBar.add(userInfoLabel);
-        topBar.add(quitButton);
 
         final JPanel middleSection = new JPanel();
         middleSection.setLayout(new BoxLayout(middleSection, BoxLayout.Y_AXIS));
@@ -114,10 +99,12 @@ public class OverviewPage extends JPanel {
         bottomSection.add(Box.createHorizontalGlue());
         bottomSection.add(ProfileDetailsButton);
         bottomSection.add(buildOwnButton);
+        middleSection.add(bottomSection);
+    
 
-        this.add(topBar, BorderLayout.NORTH);
+        this.add(new TopBar(controller), BorderLayout.NORTH);
         this.add(middleSection, BorderLayout.CENTER);
-        this.add(bottomSection, BorderLayout.SOUTH);
+        this.add(new BottomBar(controller), BorderLayout.SOUTH);
     
         CPUsButton.addActionListener(new ActionListener() {
 

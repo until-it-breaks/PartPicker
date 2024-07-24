@@ -1,4 +1,4 @@
-package it.unibo.application.model.building;
+package it.unibo.application.model.selectors;
 
 import it.unibo.application.model.components.Component;
 import it.unibo.application.model.enums.Part;

@@ -1,10 +1,9 @@
 package it.unibo.application.view;
 
-import javax.swing.JFrame;
-
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.State;
 
+import javax.swing.JFrame;
 import java.awt.Dimension;
 
 public class AppGUI {
@@ -43,6 +42,9 @@ public class AppGUI {
                 break;
             case State.VIEWING_BUILD:
                 this.frame.add(new BuildPage(controller));
+                break;
+            case State.VIEWING_PROFILE:
+                this.frame.add(new ProfilePage(controller));
                 break;
             default:
                 break;
