@@ -24,17 +24,7 @@ public class BuilderPage extends JPanel {
 
         JPanel topBar = new JPanel();
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
-
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.setAppState(State.OVERVIEW);
-            }
-            
-        });
-        topBar.add(backButton);
+        topBar.add(new NavigationBar(controller));
 
         JPanel buildNamePanel = new JPanel();
         buildNamePanel.setLayout(new FlowLayout(FlowLayout.LEFT));

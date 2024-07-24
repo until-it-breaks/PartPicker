@@ -3,6 +3,7 @@ package it.unibo.application.model.states;
 import it.unibo.application.model.enums.State;
 
 public class AppStateController {
+    private State previousState;
     private State currentState;
 
     public AppStateController() {
@@ -13,7 +14,12 @@ public class AppStateController {
         return this.currentState;
     }
 
+    public State getPreviousState() {
+        return this.previousState;
+    }
+
     public void setState(State newState) {
+        this.previousState = currentState;
         this.currentState = newState;
     }
 }

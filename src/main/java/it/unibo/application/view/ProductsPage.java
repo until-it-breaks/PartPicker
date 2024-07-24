@@ -9,13 +9,15 @@ import java.awt.BorderLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.awt.GridLayout;
-
+import java.awt.Color;
 import javax.swing.JLabel;
 
 public class ProductsPage extends JPanel {
     public ProductsPage(Controller controller, Part part) {
         this.setLayout(new BorderLayout());
         JPanel topBar = new JPanel();
+        topBar.add(new NavigationBar(controller));
+        topBar.setBackground(Color.LIGHT_GRAY);
         topBar.add(new JLabel("Choose A " + part));
         this.add(topBar, BorderLayout.NORTH);
         

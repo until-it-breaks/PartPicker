@@ -27,6 +27,10 @@ public class Controller {
         return appStateController.getState();
     }
 
+    public State getPreviousAppState() {
+        return appStateController.getPreviousState();
+    }
+
     public ComponentSelector getComponentSelector() {
         return componentSelector;
     }

@@ -12,6 +12,7 @@ public class BuildPage extends JPanel {
         this.setLayout(new BorderLayout());
         JPanel topBar  = new JPanel();
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
+        topBar.add(new NavigationBar(controller));
         topBar.add(new JLabel("BUILD"));
         topBar.add(new JLabel("Build Name"));
         topBar.add(new JLabel("By user123"));
