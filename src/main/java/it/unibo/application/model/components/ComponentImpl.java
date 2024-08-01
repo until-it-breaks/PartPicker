@@ -4,7 +4,7 @@ import java.time.Year;
 import java.util.Currency;
 import java.util.UUID;
 
-public class ComponentImpl implements Component {
+public class ComponentImpl implements PCComponent {
     private UUID uuid;
 
     @Override

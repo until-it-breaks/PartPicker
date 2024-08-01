@@ -24,7 +24,6 @@ public class TopBar extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.getLoginHandler().stopConnectionCheckRoutine();
                 controller.setAppState(State.WELCOME);
             }
         });

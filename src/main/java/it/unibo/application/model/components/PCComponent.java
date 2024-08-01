@@ -4,7 +4,7 @@ import java.time.Year;
 import java.util.Currency;
 import java.util.UUID;
 
-public interface Component {
+public interface PCComponent {
 
     UUID getUuid();
 

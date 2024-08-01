@@ -1,63 +1,87 @@
 package it.unibo.application.view;
 
 import javax.swing.*;
-
+import java.awt.*;
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.State;
 import it.unibo.application.view.premades.BottomBar;
 import it.unibo.application.view.premades.TopBar;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 
 public class BuildPage extends JPanel {
 
     public BuildPage(Controller controller) {
         this.setLayout(new BorderLayout());
-        JPanel topBar  = new JPanel();
-        topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
-        topBar.add(new TopBar(controller));
-        topBar.add(new JLabel("BUILD"));
-        topBar.add(new JLabel("Build Name"));
-
-        topBar.add(new JLabel("By user123"));
-        JButton vistAuthor = new JButton("Visit author");
-        vistAuthor.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.setAppState(State.VIEWING_PROFILE);
-                controller.getProfileSelector().setCurrentProfile(controller.getProfileSelector().getCurrentProfile()); //TODO to be modified
-            }
-            
-        });
-        topBar.add(vistAuthor);
 
         JPanel middleSection = new JPanel();
         middleSection.setLayout(new BoxLayout(middleSection, BoxLayout.Y_AXIS));
-        middleSection.add(new JLabel("Description"));
-        middleSection.add(new JTextArea(100, 50));
+        
+        JPanel buildInfo = new JPanel();
+        JPanel buildDescription = new JPanel();
+        JPanel buildParts = new JPanel();
+        JPanel buildComments = new JPanel();
 
-        middleSection.add(new JLabel("List of parts"));
-        middleSection.add(new JLabel("Part 1"));
-        middleSection.add(new JLabel("Part 2"));
-        middleSection.add(new JLabel("Part 3"));
-        middleSection.add(new JLabel("Part 4"));
-        middleSection.add(new JLabel("Part 5"));
-        middleSection.add(new JLabel("Part 6"));
-        middleSection.add(new JLabel("Part 7"));
+        buildInfo.setLayout(new BoxLayout(buildInfo, BoxLayout.Y_AXIS));
+        JLabel buildLabel = new JLabel("BUILD", JLabel.CENTER);
+        buildLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        buildInfo.add(buildLabel);
+    
+        JLabel buildNameLabel = new JLabel("Build Name", JLabel.CENTER);
+        buildNameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        buildInfo.add(buildNameLabel);
 
-        JPanel commentSection = new JPanel();
-        commentSection.setLayout(new BoxLayout(commentSection, BoxLayout.Y_AXIS));
-        commentSection.add(new JLabel("Comments"));
-        commentSection.add(new JLabel("Comment 1"));
-        commentSection.add(new JLabel("Comment 2"));
-        commentSection.add(new JLabel("Comment 3"));
-        commentSection.add(new BottomBar(controller));
 
-        this.add(topBar, BorderLayout.NORTH);
+        JLabel userLabel = new JLabel(
+                "<HTML><U>" + controller.getProfileSelector().getCurrentProfile().getProfileName() + "</U></HTML>",
+                JLabel.CENTER
+        );
+        userLabel.setForeground(Color.BLUE);
+        userLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        userLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.getProfileSelector().setCurrentProfile(controller.getProfileSelector().getCurrentProfile());
+                controller.setAppState(State.VIEWING_PROFILE);
+            }
+        });
+        buildInfo.add(userLabel);
+
+        buildInfo.add(new JButton("Upvote"));
+        buildInfo.add(new JButton("Downvote"));
+
+
+        buildDescription.setLayout(new BoxLayout(buildDescription, BoxLayout.Y_AXIS));
+        buildDescription.add(new JLabel("Description"));
+        JTextArea descriptionArea = new JTextArea(100, 20);
+        descriptionArea.setEnabled(false);
+        buildDescription.add(descriptionArea);
+
+        buildParts.setLayout(new BoxLayout(buildParts, BoxLayout.Y_AXIS));
+        buildParts.add(new JLabel("List of parts"));
+        buildParts.add(new JLabel("Part 1"));
+        buildParts.add(new JLabel("Part 2"));
+        buildParts.add(new JLabel("Part 3"));
+        buildParts.add(new JLabel("Part 4"));
+        buildParts.add(new JLabel("Part 5"));
+        buildParts.add(new JLabel("Part 6"));
+        buildParts.add(new JLabel("Part 7"));
+
+        buildComments.setLayout(new BoxLayout(buildComments, BoxLayout.Y_AXIS));
+        buildComments.add(new JLabel("Comments"));
+        buildComments.add(new JLabel("Comment 1"));
+        buildComments.add(new JLabel("Comment 2"));
+        buildComments.add(new JLabel("Comment 3"));
+
+        middleSection.add(buildInfo);
+        middleSection.add(buildDescription);
+        middleSection.add(buildParts);
+        middleSection.add(buildComments);
+
+        this.add(new TopBar(controller), BorderLayout.NORTH);
         this.add(middleSection, BorderLayout.CENTER);
-        this.add(commentSection, BorderLayout.SOUTH);
+        this.add(new BottomBar(controller), BorderLayout.SOUTH);
     }
 }

@@ -74,12 +74,8 @@ public class WelcomePage extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (controller.getLoginHandler().performLogin(usernameField.getText(), passwordField.getPassword())) {
-                    JOptionPane.showMessageDialog(null, "You have succesfully logged in");
-                    controller.setAppState(State.OVERVIEW);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Wrong credentials");
-                }
+                JOptionPane.showMessageDialog(null, "You have succesfully logged in");
+                controller.setAppState(State.OVERVIEW);
             }
         });
     }
