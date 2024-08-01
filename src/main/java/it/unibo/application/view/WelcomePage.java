@@ -54,9 +54,11 @@ public class WelcomePage extends JPanel {
 
         JButton registerButton = new JButton("Register");
         JButton loginButton = new JButton("Login");
+        JButton adminButton = new JButton("Admin");
 
         buttonsPanel.add(loginButton, gbc);
         buttonsPanel.add(registerButton, gbc);
+        buttonsPanel.add(adminButton, gbc);
 
         lowerPanel.add(credentialsPanel, gbc);
         lowerPanel.add(buttonsPanel, gbc);
