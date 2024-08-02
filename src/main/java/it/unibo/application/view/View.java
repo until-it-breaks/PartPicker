@@ -32,15 +32,6 @@ public class View {
             case State.BUILDING:
                 this.frame.add(new BuilderPage(controller));
                 break;
-            case State.VIEWING_PART:
-                this.frame.add(new ProductsPage(controller, controller.getComponentSelector().getCurrentCategory()));
-                break;
-            case State.VIEWING_BUILD:
-                this.frame.add(new BuildPage(controller));
-                break;
-            case State.VIEWING_PROFILE:
-                this.frame.add(new ProfilePage(controller));
-                break;
             default:
                 break;
         }
