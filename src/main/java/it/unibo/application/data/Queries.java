@@ -26,10 +26,11 @@ public final class Queries {
         """
         SELECT *
         FROM Componenti
-        WHERE TipoComponente = 'YourComponentType'
-        ORDER BY InsertionDate DESC
+        WHERE TipoComponente = ?
+        ORDER BY CodiceComponente DESC
         LIMIT 10;
         """;
+
     public static final String FIND_CPU =
         """
         SELECT *

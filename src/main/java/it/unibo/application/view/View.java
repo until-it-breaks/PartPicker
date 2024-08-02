@@ -19,10 +19,9 @@ public class View {
         this.controller = controller;
     }
 
-    public void switchPanel(State newState) {
+    public void switchPanel(State state) {
         this.frame.getContentPane().removeAll();
-
-        switch (newState) {
+        switch (state) {
             case State.WELCOME:
                 this.frame.add(new WelcomePage(controller));
                 break;
