@@ -9,7 +9,6 @@ import javax.swing.SwingConstants;
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.Part;
 import it.unibo.application.model.enums.State;
-import it.unibo.application.view.premades.TopBar;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;
@@ -104,86 +103,6 @@ public class OverviewPage extends JPanel {
         this.add(new TopBar(controller), BorderLayout.NORTH);
         this.add(middleSection, BorderLayout.CENTER);
     
-        CPUsButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.CPU);
-                controller.setAppState(State.VIEWING_PART);
-            }
-            
-        });
-        VideoCardButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.GPU);
-                controller.setAppState(State.VIEWING_PART);
-            }
-            
-        });
-        MemoryButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.RAM);
-                controller.setAppState(State.VIEWING_PART);
-            }
-            
-        });
-        StorageButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.STORAGE);
-                controller.setAppState(State.VIEWING_PART);
-            }
-            
-        });
-        CPUCoolersButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.COOLER);
-                controller.setAppState(State.VIEWING_PART);
-            }
-            
-        });
-        CasesButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.CASE);
-                controller.setAppState(State.VIEWING_PART);
-            }
-            
-        });
-        MotherboardsButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.MOTHERBOARD);
-                controller.setAppState(State.VIEWING_PART);
-            }
-            
-        });
-        PowerSuppliesButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.PSU);
-                controller.setAppState(State.VIEWING_PART);
-            }
-            
-        });
-        ProfileDetailsButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                controller.setAppState(State.VIEWING_PART);
-            }
-            
-        });
         buildOwnButton.addActionListener(new ActionListener() {
 
             @Override

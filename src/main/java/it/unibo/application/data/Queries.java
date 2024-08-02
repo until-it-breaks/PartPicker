@@ -21,11 +21,61 @@ public final class Queries {
         INSERT INTO utenti (Username, Password, DataRegistrazione, Email, Moderatore)
         VALUES (?, ?, ?, ?, ?)
         """;
-    public static final String GET_LATEST_COMPONENTS =
+
+    public static final String FIND_LATEST_COMPONENTS =
         """
         SELECT *
-        FROM componenti
-        WHERE TipoComponente = ?
-        ORDER BY CodiceComponente DESC;
+        FROM Componenti
+        WHERE TipoComponente = 'YourComponentType'
+        ORDER BY InsertionDate DESC
+        LIMIT 10;
+        """;
+    public static final String FIND_CPU =
+        """
+        SELECT *
+        FROM cpu
+        WHERE CodiceCpu = ?
+        """;
+    public static final String FIND_GPU =
+        """
+        SELECT *
+        FROM gpu
+        WHERE CodiceGpu = ?
+        """;
+    public static final String FIND_RAM =
+        """
+        SELECT *
+        FROM ram
+        WHERE CodiceRam = ?
+        """;
+    public static final String FIND_STORAGE =
+        """
+        SELECT *
+        FROM storage
+        WHERE CodiceStorage = ?
+        """;
+    public static final String FIND_MOTHERBOARD =
+        """
+        SELECT *
+        FROM motherboard
+        WHERE CodiceMotherboard = ?
+        """;
+    public static final String FIND_PSU =
+        """
+        SELECT *
+        FROM psu
+        WHERE CodicePsu = ?
+        """;
+    public static final String FIND_COOLER =
+        """
+        SELECT *
+        FROM cooler
+        WHERE CodiceCooler = ?
+        """;
+    public static final String FIND_CASE =
+        """
+        SELECT *
+        FROM case
+        WHERE CodiceCase = ?
         """;
 }

@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.Part;
-import it.unibo.application.view.premades.TopBar;
 import it.unibo.application.data.entities.Component;
 import java.util.List;
 import java.awt.*;

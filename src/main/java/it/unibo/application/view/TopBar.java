@@ -1,4 +1,4 @@
-package it.unibo.application.view.premades;
+package it.unibo.application.view;
 
 import javax.swing.*;
 import it.unibo.application.controller.Controller;

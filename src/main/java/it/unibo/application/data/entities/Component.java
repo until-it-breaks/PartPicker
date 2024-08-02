@@ -29,7 +29,7 @@ public class Component {
         public static List<Component> findByType(Connection connection, String type) {
             List<Component> components = new ArrayList<>();
             try (
-                var statement = DAOUtils.prepare(connection, Queries.GET_LATEST_COMPONENTS, type);
+                var statement = DAOUtils.prepare(connection, Queries.FIND_LATEST_COMPONENTS, type);
                 var resultSet = statement.executeQuery();
             ) {
                 while (resultSet.next()) {

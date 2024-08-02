@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.Part;
-import it.unibo.application.view.premades.TopBar;
 
 import java.awt.BorderLayout;
 import javax.swing.BoxLayout;

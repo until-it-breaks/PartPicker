@@ -24,7 +24,7 @@ public class User {
     }
 
     public final class DAO {
-        public static Optional<User> findByUsername(Connection connection, String username) {
+        public static User findByUsername(Connection connection, String username) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.FIND_USER, username);
                 var resultSet = statement.executeQuery();
@@ -36,10 +36,9 @@ public class User {
                     var email = resultSet.getString("email");
                     var isModerator = resultSet.getBoolean("moderatore");
                     var user = new User(userName, password, signUpDate, email, isModerator);
-                    return Optional.of(user);
-                } else {
-                    return Optional.empty();
+                    return user;
                 }
+                return null;
             } catch (SQLException e) {
                 throw new DAOException(e);
             }

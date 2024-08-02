@@ -1,14 +1,20 @@
 package it.unibo.application.data.entities;
 
+import it.unibo.application.data.DAOException;
+import it.unibo.application.data.DAOUtils;
+import it.unibo.application.data.Queries;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class Motherboard {
-    private int motherboardId;
-    private String formFactor;
-    private String chipsetName;
-    private int ramSlots;
-    private int gpuSlots;
-    private boolean hasWifi;
-    private String socketName;
-    private String ramGeneration;
+    public int motherboardId;
+    public String formFactor;
+    public String chipsetName;
+    public int ramSlots;
+    public int gpuSlots;
+    public boolean hasWifi;
+    public String socketName;
+    public String ramGeneration;
 
     public Motherboard(int motherboardId, String formFactor, String chipsetName, int ramSlots, int gpuSlots,
             boolean hasWifi, String socketName, String ramGeneration) {
@@ -22,68 +28,21 @@ public class Motherboard {
         this.ramGeneration = ramGeneration;
     }
 
-    public int getMotherboardId() {
-        return motherboardId;
+    public final class DAO {
+        public static Motherboard findById(Connection connection, int id) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.FIND_MOTHERBOARD, id);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    var motherboardId = resultSet.getInt("CodiceMotherboard");
+                    var formFactor = resultSet.getString("FattoreFormaMotherboard");
+                    //TODO
+                }
+                return null;
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
     }
-
-    public void setMotherboardId(int motherboardId) {
-        this.motherboardId = motherboardId;
-    }
-
-    public String getFormFactor() {
-        return formFactor;
-    }
-
-    public void setFormFactor(String formFactor) {
-        this.formFactor = formFactor;
-    }
-
-    public String getChipsetName() {
-        return chipsetName;
-    }
-
-    public void setChipsetName(String chipsetName) {
-        this.chipsetName = chipsetName;
-    }
-
-    public int getRamSlots() {
-        return ramSlots;
-    }
-
-    public void setRamSlots(int ramSlots) {
-        this.ramSlots = ramSlots;
-    }
-
-    public int getGpuSlots() {
-        return gpuSlots;
-    }
-
-    public void setGpuSlots(int gpuSlots) {
-        this.gpuSlots = gpuSlots;
-    }
-
-    public boolean isHasWifi() {
-        return hasWifi;
-    }
-
-    public void setHasWifi(boolean hasWifi) {
-        this.hasWifi = hasWifi;
-    }
-
-    public String getSocketName() {
-        return socketName;
-    }
-
-    public void setSocketName(String socketName) {
-        this.socketName = socketName;
-    }
-
-    public String getRamGeneration() {
-        return ramGeneration;
-    }
-
-    public void setRamGeneration(String ramGeneration) {
-        this.ramGeneration = ramGeneration;
-    }
-
 }
