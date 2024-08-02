@@ -1,28 +1,19 @@
 package it.unibo.application.view;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.JOptionPane;
-
 import it.unibo.application.controller.Controller;
-import it.unibo.application.model.enums.State;
+import it.unibo.application.data.entities.User;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.Font;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.GridBagConstraints;
-import java.awt.Component;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import java.sql.Date;
+import java.time.LocalDate;
 
 public class WelcomePage extends JPanel {
+    private Controller controller;
 
     public WelcomePage(Controller controller) {
+        this.controller = controller;
         this.setLayout(new BorderLayout());
         final JPanel centerPanel = new JPanel();
         final JPanel lowerPanel = new JPanel();
@@ -68,7 +59,7 @@ public class WelcomePage extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "You have succesfully registered");
+                showRegistrationDialog();
             }
         });
 
@@ -76,9 +67,42 @@ public class WelcomePage extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "You have succesfully logged in");
-                controller.setAppState(State.OVERVIEW);
+                controller.loginAttempt(usernameField.getText(), passwordField.getText());
             }
         });
+    }
+
+
+    private void showRegistrationDialog() {
+        JTextField usernameField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+        JTextField emailField = new JTextField();
+        JCheckBox isModeratorCheckBox = new JCheckBox();
+
+        JPanel panel = new JPanel(new GridLayout(4, 2));
+        panel.add(new JLabel("Username:"));
+        panel.add(usernameField);
+        panel.add(new JLabel("Password:"));
+        panel.add(passwordField);
+        panel.add(new JLabel("Email:"));
+        panel.add(emailField);
+        panel.add(new JLabel("Moderator:"));
+        panel.add(isModeratorCheckBox);
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Register", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            Date signUpDate = Date.valueOf(LocalDate.now());
+            String email = emailField.getText();
+            Boolean isModerator = isModeratorCheckBox.isSelected();
+
+            User user = new User(username, password, signUpDate, email, isModerator);
+            if (controller.registerUser(user)) {
+                JOptionPane.showMessageDialog(null, "User registered successfully!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error registering user", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 }

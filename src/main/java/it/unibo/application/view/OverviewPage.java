@@ -9,7 +9,6 @@ import javax.swing.SwingConstants;
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.Part;
 import it.unibo.application.model.enums.State;
-import it.unibo.application.view.premades.BottomBar;
 import it.unibo.application.view.premades.TopBar;
 
 import javax.swing.BorderFactory;
@@ -104,7 +103,6 @@ public class OverviewPage extends JPanel {
 
         this.add(new TopBar(controller), BorderLayout.NORTH);
         this.add(middleSection, BorderLayout.CENTER);
-        this.add(new BottomBar(controller), BorderLayout.SOUTH);
     
         CPUsButton.addActionListener(new ActionListener() {
 
@@ -119,7 +117,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.VIDEO_CARD);
+                controller.getComponentSelector().setCategory(Part.GPU);
                 controller.setAppState(State.VIEWING_PART);
             }
             
@@ -128,7 +126,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.MEMORY);
+                controller.getComponentSelector().setCategory(Part.RAM);
                 controller.setAppState(State.VIEWING_PART);
             }
             
@@ -146,7 +144,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.CPU_COOLER);
+                controller.getComponentSelector().setCategory(Part.COOLER);
                 controller.setAppState(State.VIEWING_PART);
             }
             
@@ -173,7 +171,7 @@ public class OverviewPage extends JPanel {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                controller.getComponentSelector().setCategory(Part.POWER_SUPPLY);
+                controller.getComponentSelector().setCategory(Part.PSU);
                 controller.setAppState(State.VIEWING_PART);
             }
             

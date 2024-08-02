@@ -15,9 +15,7 @@ public class TopBar extends JPanel {
         this.setBackground(BAR_COLOR);
         JButton homeButton = new JButton("Home");
         JButton backButton = new JButton("Back");
-        JButton refreshButton = new JButton("Refresh");
 
-        final JLabel userInfoLabel = new JLabel("Logged in as: User");
         final JButton quitButton = new JButton("Quit");
 
         quitButton.addActionListener(new ActionListener() {
@@ -27,8 +25,6 @@ public class TopBar extends JPanel {
                 controller.setAppState(State.WELCOME);
             }
         });
-
-        this.add(userInfoLabel);
         this.add(quitButton);
 
         homeButton.addActionListener(new ActionListener() {
@@ -46,17 +42,7 @@ public class TopBar extends JPanel {
                 controller.setAppState(controller.getPreviousAppState());
             }
         });
-
-        refreshButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO needs more work
-                System.out.println("Page refreshed");
-            }
-        });
         this.add(homeButton);
         this.add(backButton);
-        this.add(refreshButton);
     }
 }

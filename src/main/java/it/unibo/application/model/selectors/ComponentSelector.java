@@ -1,11 +1,11 @@
 package it.unibo.application.model.selectors;
 
-import it.unibo.application.model.components.PCComponent;
+import it.unibo.application.data.entities.Component;
 import it.unibo.application.model.enums.Part;
 
 public class ComponentSelector {
     Part currentCategory;
-    PCComponent selectedComponent;
+    Component selectedComponent;
 
     public ComponentSelector() {
     }
@@ -14,7 +14,7 @@ public class ComponentSelector {
         this.currentCategory = part;
     }
 
-    public void setSelectedComponent(PCComponent component) {
+    public void setSelectedComponent(Component component) {
         this.selectedComponent = component;
     }
 
@@ -22,7 +22,7 @@ public class ComponentSelector {
         return currentCategory;
     }
 
-    public PCComponent getSelectedComponent() {
+    public Component getSelectedComponent() {
         return selectedComponent;
     }
 }

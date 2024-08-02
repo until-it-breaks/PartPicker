@@ -1,13 +1,19 @@
 package it.unibo.application.data.entities;
 
 import java.util.Date;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Optional;
+import it.unibo.application.data.DAOException;
+import it.unibo.application.data.DAOUtils;
+import it.unibo.application.data.Queries;
 
 public class User {
-    private String username;    
-    private String password;
-    private Date signUpDate;
-    private String email;
-    private Boolean isModerator;
+    public  String username;    
+    public  String password;
+    public  Date signUpDate;
+    public  String email;
+    public  Boolean isModerator;
 
     public User(String username, String password, Date signUpDate, String email, Boolean isModerator) {
         this.username = username;
@@ -17,43 +23,53 @@ public class User {
         this.isModerator = isModerator;
     }
 
-    public String getUsername() {
-        return username;
-    }
+    public final class DAO {
+        public static Optional<User> findByUsername(Connection connection, String username) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.FIND_USER, username);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    var userName = resultSet.getString("username");
+                    var password = resultSet.getString("password");
+                    var signUpDate = resultSet.getDate("dataRegistrazione");
+                    var email = resultSet.getString("email");
+                    var isModerator = resultSet.getBoolean("moderatore");
+                    var user = new User(userName, password, signUpDate, email, isModerator);
+                    return Optional.of(user);
+                } else {
+                    return Optional.empty();
+                }
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+        public static boolean isUserBanned(Connection connection, String username) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.CHECK_BAN, username);
+                var resultSet = statement.executeQuery();
+            ) {
+                return resultSet.next();
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
 
-    public String getPassword() {
-        return password;
-    }
+        public static boolean insertUser(Connection connection, User user) {
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Date getSignUpDate() {
-        return signUpDate;
-    }
-
-    public void setSignUpDate(Date signUpDate) {
-        this.signUpDate = signUpDate;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Boolean getIsModerator() {
-        return isModerator;
-    }
-
-    public void setIsModerator(Boolean isModerator) {
-        this.isModerator = isModerator;
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.REGISTER_USER, user.username, user.password, user.signUpDate, user.email, user.isModerator);
+            ) {
+                return statement.executeUpdate() > 0;
+            } catch (SQLException e) {
+                if (e.getErrorCode() == 1062) { // MySQL error code for duplicate entry
+                    return false; // Indicate that the operation failed due to duplicate entry
+                }
+                throw new DAOException(e);
+            } catch (Exception e) {
+                throw new DAOException(e);
+            }
+        }
     }
 }

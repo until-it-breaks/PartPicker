@@ -4,7 +4,6 @@ import java.awt.*;
 import javax.swing.*;
 
 import it.unibo.application.controller.Controller;
-import it.unibo.application.view.premades.BottomBar;
 import it.unibo.application.view.premades.TopBar;
 
 public class ProfilePage extends JPanel {
@@ -31,6 +30,5 @@ public class ProfilePage extends JPanel {
 
         this.add(new TopBar(controller), BorderLayout.NORTH);
         this.add(middleSection, BorderLayout.CENTER);
-        this.add(new BottomBar(controller), BorderLayout.SOUTH);
     }
 }

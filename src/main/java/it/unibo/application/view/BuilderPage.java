@@ -4,111 +4,76 @@ import javax.swing.JPanel;
 
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.Part;
-import it.unibo.application.view.premades.BottomBar;
 import it.unibo.application.view.premades.TopBar;
-
-import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
+import it.unibo.application.data.entities.Component;
+import java.util.List;
+import java.awt.*;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.GridLayout;
-import java.awt.Component;
-import javax.swing.JTextArea;
-import java.awt.FlowLayout;
-
-import javax.swing.JLabel;
 
 public class BuilderPage extends JPanel {
     public BuilderPage(Controller controller) {
         this.setLayout(new BorderLayout());
 
-        JPanel topBar = new JPanel();
-        topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
-        topBar.add(new TopBar(controller));
-
-        JPanel buildNamePanel = new JPanel();
-        buildNamePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-    
-        JLabel buildNameLabel = new JLabel("Build Name:");
-        JTextArea buildName = new JTextArea("myBuild");
-        buildName.setColumns(32);
-        buildNamePanel.add(buildNameLabel);
-        buildNamePanel.add(buildName);
-
-        topBar.add(buildNamePanel);
-
-
+        this.add(new TopBar(controller), BorderLayout.NORTH);
 
         JPanel middleSection = new JPanel();
-        middleSection.setLayout(new BoxLayout(middleSection, BoxLayout.Y_AXIS));
+        middleSection.setLayout(new GridLayout(9, 4));
 
-        JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new GridLayout(1, 4));
-        headerPanel.add(new JLabel("Component"));
-        headerPanel.add(new JLabel("Selection"));
-        headerPanel.add(new JLabel("Base Price"));
-        headerPanel.add(new JLabel("Current Price"));
+        middleSection.add(new JLabel("Component"));
+        middleSection.add(new JLabel("Selection"));
+        middleSection.add(new JLabel("Price"));
+        middleSection.add(new JLabel("Actions"));
 
-        middleSection.add(headerPanel);
+        Part[] parts = Part.values();
+        for (Part part : parts) {
+            List<Component> components = controller.getComponentsByType(part);
+            middleSection.add(new JLabel(part.toString().toUpperCase()));
 
-        middleSection.add(createBlankItemPanel(Part.CPU));
-        middleSection.add(createBlankItemPanel(Part.CPU_COOLER));
-        middleSection.add(createBlankItemPanel(Part.MOTHERBOARD));
-        middleSection.add(createBlankItemPanel(Part.MEMORY));
-        middleSection.add(createBlankItemPanel(Part.STORAGE));
-        middleSection.add(createBlankItemPanel(Part.VIDEO_CARD));
-        middleSection.add(createBlankItemPanel(Part.CASE));
-        middleSection.add(createBlankItemPanel(Part.POWER_SUPPLY));
-
-
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
-        JPanel totalPanel = new JPanel();
-        totalPanel.add(new JLabel("Total : 300$"));
-        JButton saveButton = new JButton("Save Build");
-        bottomPanel.add(totalPanel);
-        bottomPanel.add(saveButton);
-        
-        middleSection.add(bottomPanel);
-
-        this.add(topBar, BorderLayout.NORTH);
-        this.add(middleSection, BorderLayout.CENTER);
-        this.add(new BottomBar(controller), BorderLayout.SOUTH);
-    }
-
-    private JPanel createBlankItemPanel(Part part) {
-        JPanel itemPanel = new JPanel();
-        itemPanel.setLayout(new GridLayout(1, 4));
-        itemPanel.add(new JLabel(part.toString()));
-        
-        JButton itemButton = new JButton("Choose A " + part.toString());
-        itemButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                itemPanel.removeAll();
-                JPanel newItemPanel = createItemPanel(part);
-                for (Component comp : newItemPanel.getComponents()) {
-                    itemPanel.add(comp);
-                }
-                itemPanel.repaint();
-                itemPanel.revalidate();
+            JComboBox<String> comboBox = new JComboBox<>();
+            comboBox.addItem("Select a " + part.toString());
+            for (Component component : components) {
+                comboBox.addItem(component.componentName);
             }
-        });
+            comboBox.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                }
+            });
+            middleSection.add(comboBox);
+            JLabel priceLabel = new JLabel();
+            middleSection.add(priceLabel);
 
-        itemPanel.add(itemButton);
-        itemPanel.add(new JLabel("")); // Placeholder for base price
-        itemPanel.add(new JLabel("")); // Placeholder for current price
-        return itemPanel;
+            JButton viewDetailsButton = new JButton("View Details");
+            viewDetailsButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    showPartDetails(part);
+                }
+            });
+            middleSection.add(viewDetailsButton);
+        }
+
+        // Add middle section to the center of the panel
+        this.add(middleSection, BorderLayout.CENTER);
+
+        // Add Total and Save Button to the bottom
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        bottomPanel.add(new JLabel("Total : 300$"));
+        JButton saveButton = new JButton("Save Build");
+        bottomPanel.add(saveButton);
+
+        this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    private JPanel createItemPanel(Part part) {
-        JPanel itemPanel = new JPanel();
-        itemPanel.setLayout(new GridLayout(1, 4));
-        itemPanel.add(new JLabel(part.toString()));
-        itemPanel.add(new JLabel("AMD Ryzen 7 7800X3D"));
-        itemPanel.add(new JLabel("384$"));
-        itemPanel.add(new JLabel("400$"));
-        return itemPanel;
+    private void showPartDetails(Part part) {
+        // Example details display
+        JOptionPane.showMessageDialog(this,
+                "Details for " + part.toString() + ":\n" +
+                "Example detail information for " + part.toString(),
+                "Part Details",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 }

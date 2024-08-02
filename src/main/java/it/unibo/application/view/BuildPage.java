@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.State;
-import it.unibo.application.view.premades.BottomBar;
 import it.unibo.application.view.premades.TopBar;
 
 import java.awt.event.MouseEvent;
@@ -82,6 +81,5 @@ public class BuildPage extends JPanel {
 
         this.add(new TopBar(controller), BorderLayout.NORTH);
         this.add(middleSection, BorderLayout.CENTER);
-        this.add(new BottomBar(controller), BorderLayout.SOUTH);
     }
 }

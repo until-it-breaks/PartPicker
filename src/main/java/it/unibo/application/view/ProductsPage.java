@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.Part;
-import it.unibo.application.view.premades.BottomBar;
 import it.unibo.application.view.premades.TopBar;
 
 import java.awt.BorderLayout;
@@ -50,7 +49,6 @@ public class ProductsPage extends JPanel {
 
         this.add(topBar, BorderLayout.NORTH);
         this.add(choiceTab, BorderLayout.CENTER);
-        this.add(new BottomBar(controller), BorderLayout.SOUTH);
     }
 
     private JPanel createItemPanel(Part part) {

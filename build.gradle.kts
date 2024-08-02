@@ -19,6 +19,7 @@ repositories { // Where to search for dependencies
 }
 
 dependencies {
+    implementation("mysql:mysql-connector-java:8.0.29")
 }
 
 application {

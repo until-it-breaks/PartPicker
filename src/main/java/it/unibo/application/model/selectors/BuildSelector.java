@@ -1,6 +1,6 @@
 package it.unibo.application.model.selectors;
 
-import it.unibo.application.model.building.Build;
+import it.unibo.application.data.entities.Build;
 
 public class BuildSelector {
     private Build currentBuild;
