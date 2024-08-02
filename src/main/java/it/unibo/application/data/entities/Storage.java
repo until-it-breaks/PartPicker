@@ -1,11 +1,17 @@
 package it.unibo.application.data.entities;
 
+import it.unibo.application.data.DAOException;
+import it.unibo.application.data.DAOUtils;
+import it.unibo.application.data.Queries;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class Storage {
-    private int storageId;
-    private int storageCapacity;
-    private int storageRpm;
-    private int cacheAmount;
-    private String storageType;
+    public int storageId;
+    public int storageCapacity;
+    public int storageRpm;
+    public int cacheAmount;
+    public String storageType;
 
     public Storage(int storageId, int storageCapacity, int storageRpm, int cacheAmount, String storageType) {
         this.storageId = storageId;
@@ -14,36 +20,26 @@ public class Storage {
         this.cacheAmount = cacheAmount;
         this.storageType = storageType;
     }
-    public int getStorageId() {
-        return storageId;
-    }
-    public void setStorageId(int storageId) {
-        this.storageId = storageId;
-    }
-    public int getStorageCapacity() {
-        return storageCapacity;
-    }
-    public void setStorageCapacity(int storageCapacity) {
-        this.storageCapacity = storageCapacity;
-    }
-    public int getStorageRpm() {
-        return storageRpm;
-    }
-    public void setStorageRpm(int storageRpm) {
-        this.storageRpm = storageRpm;
-    }
-    public int getCacheAmount() {
-        return cacheAmount;
-    }
-    public void setCacheAmount(int cacheAmount) {
-        this.cacheAmount = cacheAmount;
-    }
-    public String getStorageType() {
-        return storageType;
-    }
-    public void setStorageType(String storageType) {
-        this.storageType = storageType;
-    }
 
-
+    public final class DAO {
+    public static Storage findById(Connection connection, int id) {
+        try (
+            var statement = DAOUtils.prepare(connection, Queries.FIND_STORAGE, id);
+            var resultSet = statement.executeQuery();
+        ) {
+            if (resultSet.next()) {
+                var storageId = resultSet.getInt("CodiceStorage");
+                var storageCapacity = resultSet.getInt("CapienzaStorage");
+                var storageRpm = resultSet.getInt("RpmStorage");
+                var cacheAmount = resultSet.getInt("QuantitaCache");
+                var storageType = resultSet.getString("TipoStorage");
+                Storage storage = new Storage(storageId, storageCapacity, storageRpm, cacheAmount, storageType);
+                return storage;
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+    }
 }

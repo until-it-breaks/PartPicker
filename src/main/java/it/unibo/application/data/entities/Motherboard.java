@@ -37,7 +37,14 @@ public class Motherboard {
                 if (resultSet.next()) {
                     var motherboardId = resultSet.getInt("CodiceMotherboard");
                     var formFactor = resultSet.getString("FattoreFormaMotherboard");
-                    //TODO
+                    var chipsetName = resultSet.getString("NomeChipset");
+                    var ramSlots = resultSet.getInt("SlotRam");
+                    var gpuSlots = resultSet.getInt("SlotGpu");
+                    var hasWifi = resultSet.getBoolean("Wifi");
+                    var socketName = resultSet.getString("NomeSocket");
+                    var ramGeneration = resultSet.getString("NomeGenerazioneRam");
+                    Motherboard motherboard = new Motherboard(motherboardId, formFactor, chipsetName, ramSlots, gpuSlots, hasWifi, socketName, ramGeneration);
+                    return motherboard;
                 }
                 return null;
             } catch (SQLException e) {

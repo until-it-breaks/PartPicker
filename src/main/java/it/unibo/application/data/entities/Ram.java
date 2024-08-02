@@ -1,12 +1,18 @@
 package it.unibo.application.data.entities;
 
+import it.unibo.application.data.DAOException;
+import it.unibo.application.data.DAOUtils;
+import it.unibo.application.data.Queries;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class Ram {
-    private int ramId;
-    private int ramFrequency;
-    private int capacity;
-    private String latency;
-    private boolean isEcc;
-    private String ramGeneration;
+    public int ramId;
+    public int ramFrequency;
+    public int capacity;
+    public String latency;
+    public boolean isEcc;
+    public String ramGeneration;
 
     public Ram(int ramId, int ramFrequency, int capacity, String latency, boolean isEcc, String ramGeneration) {
         this.ramId = ramId;
@@ -17,52 +23,26 @@ public class Ram {
         this.ramGeneration = ramGeneration;
     }
 
-    public int getRamId() {
-        return ramId;
+    public final class DAO {
+        public static Ram findById(Connection connection, int id) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.FIND_RAM, id);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    var ramId = resultSet.getInt("CodiceRam");
+                    var ramFrequency = resultSet.getInt("FrequenzaRam");
+                    var capacity = resultSet.getInt("CapienzaRam");
+                    var latency = resultSet.getString("Latenza");
+                    var isEcc = resultSet.getBoolean("Ecc");
+                    var ramGeneration = resultSet.getString("NomeGenerazioneRam");
+                    Ram ram = new Ram(ramId, ramFrequency, capacity, latency, isEcc, ramGeneration);
+                    return ram;
+                }
+                return null;
+            } catch (SQLException e) {
+                throw new DAOException(e);
+            }
+        }
     }
-
-    public void setRamId(int ramId) {
-        this.ramId = ramId;
-    }
-
-    public int getRamFrequency() {
-        return ramFrequency;
-    }
-
-    public void setRamFrequency(int ramFrequency) {
-        this.ramFrequency = ramFrequency;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    public String getLatency() {
-        return latency;
-    }
-
-    public void setLatency(String latency) {
-        this.latency = latency;
-    }
-
-    public boolean isEcc() {
-        return isEcc;
-    }
-
-    public void setEcc(boolean isEcc) {
-        this.isEcc = isEcc;
-    }
-
-    public String getRamGeneration() {
-        return ramGeneration;
-    }
-
-    public void setRamGeneration(String ramGeneration) {
-        this.ramGeneration = ramGeneration;
-    }
-
 }
