@@ -7,11 +7,11 @@ import it.unibo.application.view.View;
 import java.sql.Connection;
 
 public class LaunchApp {
-    public static void main(String[] args) {
-        Connection connection = DAOUtils.localMySQLConnection("partpicker", "root", "");
-        Model model = new Model(connection);
-        View view = new View();
-        Controller controller = new Controller(model, view);
+    public static void main(final String[] args) {
+        final Connection connection = DAOUtils.localMySQLConnection("partpicker", "root", "");
+        final Model model = new Model(connection);
+        final View view = new View();
+        final Controller controller = new Controller(model, view);
         view.setController(controller);
         view.setUp();
     }

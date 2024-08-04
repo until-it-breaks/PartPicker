@@ -5,9 +5,6 @@ import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.lang.reflect.Field;
 
 public class Storage extends Component {
     public int storageId;
@@ -25,21 +22,6 @@ public class Storage extends Component {
         this.storageRpm = storageRpm;
         this.cacheAmount = cacheAmount;
         this.storageType = storageType;
-    }
-
-    public Map<String, String> toStringMap() {
-        Map<String, String> map = new HashMap<>();
-        Field[] fields = this.getClass().getFields();
-
-        for (Field field : fields) {
-            try {
-                Object value = field.get(this);
-                map.put(field.getName(), value != null ? value.toString() : "null");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        return map;
     }
 
     public final class DAO {

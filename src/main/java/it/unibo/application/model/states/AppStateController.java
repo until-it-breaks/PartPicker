@@ -18,7 +18,7 @@ public class AppStateController {
         return this.previousState;
     }
 
-    public void setState(State newState) {
+    public void setState(final State newState) {
         this.previousState = currentState;
         this.currentState = newState;
     }

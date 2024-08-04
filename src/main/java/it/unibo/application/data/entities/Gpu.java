@@ -5,9 +5,6 @@ import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.lang.reflect.Field;
 
 public class Gpu extends Component {
     public int gpuId;
@@ -29,21 +26,6 @@ public class Gpu extends Component {
         this.tgp = tgp;
     }
 
-    public Map<String, String> toStringMap() {
-        Map<String, String> map = new HashMap<>();
-        Field[] fields = this.getClass().getFields();
-
-        for (Field field : fields) {
-            try {
-                Object value = field.get(this);
-                map.put(field.getName(), value != null ? value.toString() : "null");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        return map;
-    }
-
     public final class DAO {
         public static Gpu findById(Connection connection, int id) {
             try (
@@ -60,7 +42,7 @@ public class Gpu extends Component {
                     var gpuId = resultSet.getInt("CodiceGpu");
                     var gpuFamily = resultSet.getString("FamigliaGpu");
                     var gpuMemoryType = resultSet.getString("TipoMemoriaGpu");
-                    var gpuMemoryAmount = resultSet.getInt("QuantitaMemoria");
+                    var gpuMemoryAmount = resultSet.getInt("QuantitaMemoriaGpu");
                     var gpuFrequency = resultSet.getInt("FrequenzaGpu");
                     var tgp = resultSet.getInt("Tgp");
                     Gpu gpu = new Gpu(componentId, componentName, componentType, launchYear, msrp, manufacturerId, gpuId, gpuFamily, gpuMemoryType, gpuMemoryAmount, gpuFrequency, tgp);

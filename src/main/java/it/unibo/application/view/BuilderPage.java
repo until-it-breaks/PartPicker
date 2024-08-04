@@ -18,16 +18,15 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
-import java.util.HashMap;
 
 public class BuilderPage extends JPanel {
-    private Controller controller;
-    public BuilderPage(Controller controller) {
+    private final Controller controller;
+    public BuilderPage(final Controller controller) {
         this.controller = controller;
         this.setLayout(new BorderLayout());
         this.add(new TopBar(controller), BorderLayout.NORTH);
 
-        JPanel middleSection = new JPanel();
+        final JPanel middleSection = new JPanel();
         middleSection.setLayout(new GridLayout(9, 4));
 
         middleSection.add(new JLabel("Component"));
@@ -35,33 +34,33 @@ public class BuilderPage extends JPanel {
         middleSection.add(new JLabel("Price"));
         middleSection.add(new JLabel("Actions"));
 
-        Part[] parts = Part.values();
-        for (Part part : parts) {
-            List<Component> components = controller.getComponentsByType(part);
+        final Part[] parts = Part.values();
+        for (final Part part : parts) {
+            final List<Component> components = controller.getComponentsByType(part);
             middleSection.add(new JLabel(part.toString().toUpperCase()));
 
-            JComboBox<String> comboBox = new JComboBox<>();
+            final JComboBox<String> comboBox = new JComboBox<>();
             comboBox.addItem("Select a " + part.toString());
-            for (Component component : components) {
+            for (final Component component : components) {
                 comboBox.addItem(component.componentName);
             }
             middleSection.add(comboBox);
-            JLabel priceLabel = new JLabel();
+            final JLabel priceLabel = new JLabel();
             middleSection.add(priceLabel);
 
-            JButton viewDetailsButton = new JButton("View Details");
+            final JButton viewDetailsButton = new JButton("View Details");
 
             comboBox.addActionListener(new ActionListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    int selectedIndex = comboBox.getSelectedIndex();
+                public void actionPerformed(final ActionEvent e) {
+                    final int selectedIndex = comboBox.getSelectedIndex();
                     if (selectedIndex > 0) {
-                        Component selectedComponent = components.get(selectedIndex - 1);
+                        final Component selectedComponent = components.get(selectedIndex - 1);
                         priceLabel.setText("$" + selectedComponent.msrp);
                         viewDetailsButton.setEnabled(true);
                         viewDetailsButton.addActionListener(new ActionListener() {
                             @Override
-                            public void actionPerformed(ActionEvent e) {
+                            public void actionPerformed(final ActionEvent e) {
                                 showPartDetails(selectedComponent);
                             }
                         });
@@ -75,56 +74,56 @@ public class BuilderPage extends JPanel {
         }
 
         this.add(middleSection, BorderLayout.CENTER);
-        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        final JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         bottomPanel.add(new JLabel("Total : 300$"));
-        JButton saveButton = new JButton("Save Build");
+        final JButton saveButton = new JButton("Save Build");
         bottomPanel.add(saveButton);
 
         this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    private void showPartDetails(Component component) {
+    private void showPartDetails(final Component component) {
         Map<String, String> specs;
         switch (component.componentType) {
             case "Gpu":
-                Gpu gpu = controller.getGpuById(component.componentId);
-                specs = gpu.toStringMap();
+                final Gpu gpu = controller.getGpuById(component.componentId);
+                specs = ComponentSpecsUtility.getGpuSpecs(gpu);
                 break;
             case "Cpu":
-                Cpu cpu = controller.getCpuById(component.componentId);
-                specs = cpu.toStringMap();
+                final Cpu cpu = controller.getCpuById(component.componentId);
+                specs = ComponentSpecsUtility.getCpuSpecs(cpu);
                 break;
             case "Motherboard":
-                Motherboard motherboard = controller.getMotherboardById(component.componentId);
-                specs = motherboard.toStringMap();
+                final Motherboard motherboard = controller.getMotherboardById(component.componentId);
+                specs = ComponentSpecsUtility.getMotherboardSpecs(motherboard);
                 break;
             case "Ram":
-                Ram ram = controller.getRamById(component.componentId);
-                specs = ram.toStringMap();
+                final Ram ram = controller.getRamById(component.componentId);
+                specs = ComponentSpecsUtility.getRamSpecs(ram);
                 break;
             case "Psu":
-                Psu psu = controller.getPsuById(component.componentId);
-                specs = psu.toStringMap();
+                final Psu psu = controller.getPsuById(component.componentId);
+                specs = ComponentSpecsUtility.getPsuSpecs(psu);
                 break;
             case "Case":
-                Case _case = controller.getCaseById(component.componentId);
-                specs = _case.toStringMap();
+                final Case _case = controller.getCaseById(component.componentId);
+                specs = ComponentSpecsUtility.getCaseSpecs(_case);
                 break;
             case "Storage":
-                Storage storage = controller.getStorageById(component.componentId);
-                specs = storage.toStringMap();
+                final Storage storage = controller.getStorageById(component.componentId);
+                specs = ComponentSpecsUtility.getStorageSpecs(storage);
                 break;
             case "Cooler":
-                Cooler cooler = controller.getCoolerById(component.componentId);
-                specs = cooler.toStringMap();
+                final Cooler cooler = controller.getCoolerById(component.componentId);
+                specs = ComponentSpecsUtility.getCoolerSpecs(cooler);
                 break;
             default:
-                specs = new HashMap<String, String>();
+                specs = Map.of();
                 break;
         }
         JOptionPane.showMessageDialog(this,
-                specs.toString(),
-                "Part Details",
+                ComponentSpecsUtility.formatSpecs(specs),
+                component.componentName +" specifications",
                 JOptionPane.INFORMATION_MESSAGE);
     }
 }

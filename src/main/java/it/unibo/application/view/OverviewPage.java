@@ -132,12 +132,11 @@ public class OverviewPage extends JPanel {
 
         buildFrame.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mouseClicked(final MouseEvent e) {
                 System.out.println("Ciaone");
                 controller.setAppState(State.VIEWING_BUILD);
             }
         });
-
         return buildFrame;
     }
 

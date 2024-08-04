@@ -9,13 +9,13 @@ public final class DAOUtils {
 
     // Establishes a connection to a MySQL daemon running locally at port 3306.
     //
-    public static Connection localMySQLConnection(String database, String username, String password) {
+    public static Connection localMySQLConnection(final String database, final String username, final String password) {
         try {
-            var host = "localhost";
-            var port = "3306";
-            var connectionString = "jdbc:mysql://" + host + ":" + port + "/" + database;
+            final var host = "localhost";
+            final var port = "3306";
+            final var connectionString = "jdbc:mysql://" + host + ":" + port + "/" + database;
             return DriverManager.getConnection(connectionString, username, password);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new DAOException(e);
         }
     }
@@ -27,7 +27,7 @@ public final class DAOUtils {
     //
     //     prepare(connection, MY_QUERY, query_arg1, query_arg2, ...)
     //
-    public static PreparedStatement prepare(Connection connection, String query, Object... values) throws SQLException {
+    public static PreparedStatement prepare(final Connection connection, final String query, final Object... values) throws SQLException {
         PreparedStatement statement = null;
         try {
             statement = connection.prepareStatement(query);
@@ -35,7 +35,7 @@ public final class DAOUtils {
                 statement.setObject(i + 1, values[i]);
             }
             return statement;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             if (statement != null) {
                 statement.close();
             }

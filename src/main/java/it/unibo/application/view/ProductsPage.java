@@ -12,20 +12,21 @@ import java.awt.GridLayout;
 import javax.swing.JLabel;
 
 public class ProductsPage extends JPanel {
-    public ProductsPage(Controller controller, Part part) {
+    public ProductsPage(final Controller controller, final Part part) {
         this.setLayout(new BorderLayout());
 
-        JPanel topBar = new JPanel();
+        final JPanel topBar = new JPanel();
         topBar.setLayout(new BoxLayout(topBar, BoxLayout.Y_AXIS));
         topBar.add(new TopBar(controller));
         topBar.add(new JLabel("Choose A " + part));
 
 
-        JPanel choiceTab = new JPanel();
+        final JPanel choiceTab = new JPanel();
         choiceTab.setLayout(new BoxLayout(choiceTab, BoxLayout.Y_AXIS));
 
-        JPanel headerPanel = new JPanel();
+        final JPanel headerPanel = new JPanel();
 
+        /*
         int numberOfSpecFields = part.getSpecifications().size();
         headerPanel.setLayout(new GridLayout(1, numberOfSpecFields));
     
@@ -34,6 +35,7 @@ public class ProductsPage extends JPanel {
         for (int i = 0; i < numberOfSpecFields; i++) {
             headerPanel.add(new JLabel(part.getSpecifications().get(i)));
         }
+        */
 
         choiceTab.add(headerPanel);
 
@@ -50,8 +52,8 @@ public class ProductsPage extends JPanel {
         this.add(choiceTab, BorderLayout.CENTER);
     }
 
-    private JPanel createItemPanel(Part part) {
-        JPanel itemPanel = new JPanel();
+    private JPanel createItemPanel(final Part part) {
+        final JPanel itemPanel = new JPanel();
         itemPanel.setLayout(new GridLayout(1, 5));
         itemPanel.add(new JLabel("AMD Ryzen 7 7800X3D"));
         itemPanel.add(new JLabel("8"));

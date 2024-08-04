@@ -1,10 +1,10 @@
 package it.unibo.application.model;
 
 public class Profile {
-    private String profileName;
+    private final String profileName;
     private int rating;
 
-    public Profile(String profileName) {
+    public Profile(final String profileName) {
         this.profileName = profileName;
     }
 

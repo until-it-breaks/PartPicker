@@ -5,9 +5,6 @@ import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.lang.reflect.Field;
 
 public class Case extends Component {
     public int caseId;
@@ -18,21 +15,6 @@ public class Case extends Component {
         super(componentId, componentName, componentType, launchYear, msrp, manufacturerId);
         this.caseId = caseId;
         this.formFactor = formFactor;
-    }
-
-    public Map<String, String> toStringMap() {
-        Map<String, String> map = new HashMap<>();
-        Field[] fields = this.getClass().getFields();
-
-        for (Field field : fields) {
-            try {
-                Object value = field.get(this);
-                map.put(field.getName(), value != null ? value.toString() : "null");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-        return map;
     }
 
     public final class DAO {

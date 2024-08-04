@@ -1,11 +1,8 @@
 package it.unibo.application.data.entities;
 
-import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;

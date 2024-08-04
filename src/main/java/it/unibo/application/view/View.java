@@ -15,11 +15,11 @@ public class View {
     public View() {
     }
 
-    public void setController(Controller controller) {
+    public void setController(final Controller controller) {
         this.controller = controller;
     }
 
-    public void switchPanel(State state) {
+    public void switchPanel(final State state) {
         this.frame.getContentPane().removeAll();
         switch (state) {
             case State.WELCOME:
@@ -47,7 +47,7 @@ public class View {
         frame.setVisible(true);
     }
 
-    public void showDialog(String message) {
+    public void showDialog(final String message) {
         JOptionPane.showMessageDialog(null, message);
     }
 }

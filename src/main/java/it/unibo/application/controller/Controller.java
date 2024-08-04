@@ -19,17 +19,17 @@ import it.unibo.application.model.states.AppStateController;
 import it.unibo.application.view.View;
 
 public class Controller {
-    private Model model;
-    private AppStateController appStateController;
-    private View view;
+    private final Model model;
+    private final AppStateController appStateController;
+    private final View view;
 
-    public Controller(Model model, View view) {
+    public Controller(final Model model, final View view) {
         this.model = model;
         this.view = view;
         this.appStateController = new AppStateController();
     }
 
-    public void setAppState(State newState) {
+    public void setAppState(final State newState) {
         appStateController.setState(newState);
         view.switchPanel(newState);
     }
@@ -42,7 +42,7 @@ public class Controller {
         return appStateController.getPreviousState();
     }
 
-    public void loginAttempt(String username, String password) {
+    public void loginAttempt(final String username, final String password) {
         if (model.login(username, password)) {
             view.showDialog("Login succesful");
             view.switchPanel(State.OVERVIEW);
@@ -51,43 +51,43 @@ public class Controller {
         }
     }
 
-    public boolean registerUser(User user) {
+    public boolean registerUser(final User user) {
         return model.registerUser(user);
     }
 
-    public List<Component> getComponentsByType(Part part) {
+    public List<Component> getComponentsByType(final Part part) {
         return model.getListOfComponentsByType(part);
     }
 
-    public Cpu getCpuById(int id) {
+    public Cpu getCpuById(final int id) {
         return model.getCpuById(id);
     }
 
-    public Gpu getGpuById(int id) {
+    public Gpu getGpuById(final int id) {
         return model.getGpuById(id);
     }
 
-    public Storage getStorageById(int id) {
+    public Storage getStorageById(final int id) {
         return model.getStorageById(id);
     }
 
-    public Ram getRamById(int id) {
+    public Ram getRamById(final int id) {
         return model.getRamById(id);
     }
 
-    public Psu getPsuById(int id) {
+    public Psu getPsuById(final int id) {
         return model.getPsuById(id);
     }
 
-    public Case getCaseById(int id) {
+    public Case getCaseById(final int id) {
         return model.getCaseById(id);
     }
 
-    public Motherboard getMotherboardById(int id) {
+    public Motherboard getMotherboardById(final int id) {
         return model.getMotherboardById(id);
     }
 
-    public Cooler getCoolerById(int id) {
+    public Cooler getCoolerById(final int id) {
         return model.getCoolerById(id);
     }
 }
