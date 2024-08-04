@@ -25,30 +25,30 @@ public class Storage extends Component {
     }
 
     public final class DAO {
-    public static Storage findById(Connection connection, int id) {
-        try (
-            var statement = DAOUtils.prepare(connection, Queries.FIND_STORAGE, id);
-            var resultSet = statement.executeQuery();
-        ) {
-            if (resultSet.next()) {
-                var componentId = resultSet.getInt("CodiceComponente");
-                var componentName = resultSet.getString("NomeComponente");
-                var componentType = resultSet.getString("TipoComponente");
-                var launchYear = resultSet.getDate("AnnoLancio").getYear();
-                var msrp = resultSet.getFloat("PrezzoListino");
-                var manufacturerId = resultSet.getInt("CodiceProduttore");
-                var storageId = resultSet.getInt("CodiceStorage");
-                var storageCapacity = resultSet.getInt("CapienzaStorage");
-                var storageRpm = resultSet.getInt("RpmStorage");
-                var cacheAmount = resultSet.getInt("QuantitaCache");
-                var storageType = resultSet.getString("TipoStorage");
-                Storage storage = new Storage(componentId, componentName, componentType, launchYear, msrp, manufacturerId, storageId, storageCapacity, storageRpm, cacheAmount, storageType);
-                return storage;
+        public static Storage findById(Connection connection, int id) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.FIND_STORAGE, id);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    var componentId = resultSet.getInt("CodiceComponente");
+                    var componentName = resultSet.getString("NomeComponente");
+                    var componentType = resultSet.getString("TipoComponente");
+                    var launchYear = resultSet.getDate("AnnoLancio").getYear();
+                    var msrp = resultSet.getFloat("PrezzoListino");
+                    var manufacturerId = resultSet.getInt("CodiceProduttore");
+                    var storageId = resultSet.getInt("CodiceStorage");
+                    var storageCapacity = resultSet.getInt("CapienzaStorage");
+                    var storageRpm = resultSet.getInt("RpmStorage");
+                    var cacheAmount = resultSet.getInt("QuantitaCache");
+                    var storageType = resultSet.getString("TipoStorage");
+                    Storage storage = new Storage(componentId, componentName, componentType, launchYear, msrp, manufacturerId, storageId, storageCapacity, storageRpm, cacheAmount, storageType);
+                    return storage;
+                }
+                return null;
+            } catch (SQLException e) {
+                throw new DAOException(e);
             }
-            return null;
-        } catch (SQLException e) {
-            throw new DAOException(e);
         }
-    }
     }
 }

@@ -2,18 +2,45 @@ package it.unibo.application.view;
 import java.util.Map;
 
 import it.unibo.application.data.entities.Case;
+import it.unibo.application.data.entities.Component;
 import it.unibo.application.data.entities.Cooler;
 import it.unibo.application.data.entities.Cpu;
 import it.unibo.application.data.entities.Gpu;
+import it.unibo.application.data.entities.Manufacturer;
 import it.unibo.application.data.entities.Motherboard;
 import it.unibo.application.data.entities.Psu;
 import it.unibo.application.data.entities.Ram;
 import it.unibo.application.data.entities.Storage;
+import it.unibo.application.model.enums.Part;
 
 import java.util.LinkedHashMap;
 import java.util.Collections;
 
 public final class ComponentSpecsUtility {
+
+    public static Map<String, String> getSpecs(final Component component, final Part part) {
+        switch (part) {
+            case Part.CPU:
+                return getCpuSpecs((Cpu)component);
+            case Part.COOLER:
+                return getCoolerSpecs((Cooler)component);
+            case Part.MOTHERBOARD:
+                return getMotherboardSpecs((Motherboard)component);
+            case Part.RAM:
+                return getRamSpecs((Ram)component);
+            case Part.STORAGE:
+                return getStorageSpecs((Storage)component);
+            case Part.GPU:
+                return getGpuSpecs((Gpu)component);
+            case Part.CASE:
+                return getCaseSpecs((Case)component);
+            case Part.PSU:
+                return getPsuSpecs((Psu)component);
+            default:
+                throw new IllegalStateException();
+        }
+    }
+
     public static Map<String, String> getCpuSpecs(final Cpu cpu) {
         final Map<String, String> map = new LinkedHashMap<>();
         map.put("CPU Family", cpu.cpuFamily);
@@ -86,6 +113,15 @@ public final class ComponentSpecsUtility {
         map.put("Cache Amount", storage.cacheAmount + " MB");
         map.put("Storage Type", storage.storageType);
         return Collections.unmodifiableMap(map);
+    }
+
+    public static Map<String, String> getComponentSpecs(final Component component) {
+        final Map<String, String> map = new LinkedHashMap<>();
+        map.put("ID", String.valueOf(component.componentId));
+        map.put("Name", component.componentName);
+        map.put("Launch Year", String.valueOf(component.launchYear));
+        map.put("MSRP", component.msrp + "$");
+        return map;
     }
 
     public static String formatSpecs(final Map<String, String> specs) {

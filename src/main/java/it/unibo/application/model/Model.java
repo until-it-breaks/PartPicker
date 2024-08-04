@@ -7,6 +7,7 @@ import it.unibo.application.data.entities.Component;
 import it.unibo.application.data.entities.Cooler;
 import it.unibo.application.data.entities.Cpu;
 import it.unibo.application.data.entities.Gpu;
+import it.unibo.application.data.entities.Manufacturer;
 import it.unibo.application.data.entities.Motherboard;
 import it.unibo.application.data.entities.Psu;
 import it.unibo.application.data.entities.Ram;
@@ -68,5 +69,9 @@ public final class Model {
 
     public Cooler getCoolerById(final int id) {
         return Cooler.DAO.findById(connection, id);
+    }
+
+    public Manufacturer getManufactureById(final int id) {
+        return Manufacturer.DAO.findById(connection, id);
     }
 }

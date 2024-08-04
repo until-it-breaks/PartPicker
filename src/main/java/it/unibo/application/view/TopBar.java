@@ -13,21 +13,11 @@ public class TopBar extends JPanel {
     public TopBar(final Controller controller) {
         this.setLayout(new FlowLayout());
         this.setBackground(BAR_COLOR);
-        final JButton homeButton = new JButton("Home");
+    
         final JButton backButton = new JButton("Back");
+        final JButton homeButton = new JButton("Home");
 
-        final JButton quitButton = new JButton("Quit");
-
-        quitButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                controller.setAppState(State.WELCOME);
-            }
-        });
-        this.add(quitButton);
-
-        homeButton.addActionListener(new ActionListener() {
+        backButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -35,13 +25,14 @@ public class TopBar extends JPanel {
             }
         });
 
-        backButton.addActionListener(new ActionListener() {
+        homeButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                controller.setAppState(controller.getPreviousAppState());
+                controller.setAppState(State.WELCOME);
             }
         });
+
         this.add(homeButton);
         this.add(backButton);
     }

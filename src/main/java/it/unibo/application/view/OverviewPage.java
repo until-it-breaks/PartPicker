@@ -98,16 +98,78 @@ public class OverviewPage extends JPanel {
         bottomSection.add(ProfileDetailsButton);
         bottomSection.add(buildOwnButton);
         middleSection.add(bottomSection);
-    
 
         this.add(new TopBar(controller), BorderLayout.NORTH);
         this.add(middleSection, BorderLayout.CENTER);
     
         buildOwnButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(final ActionEvent e) {
                 controller.setAppState(State.BUILDING);
+            }
+        });
+
+        CPUsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.setDesiredPart(Part.CPU);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        VideoCardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.setDesiredPart(Part.GPU);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        MemoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.setDesiredPart(Part.RAM);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        StorageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.setDesiredPart(Part.STORAGE);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        CasesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.setDesiredPart(Part.CASE);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        MotherboardsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.setDesiredPart(Part.MOTHERBOARD);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        CPUCoolersButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.setDesiredPart(Part.COOLER);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        PowerSuppliesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.setDesiredPart(Part.PSU);
+                controller.setAppState(State.PRODUCTS);
             }
         });
     }

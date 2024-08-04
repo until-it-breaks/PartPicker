@@ -31,6 +31,8 @@ public class View {
             case State.BUILDING:
                 this.frame.add(new BuilderPage(controller));
                 break;
+            case State.PRODUCTS:
+                this.frame.add(new ProductsPage(controller));
             default:
                 break;
         }

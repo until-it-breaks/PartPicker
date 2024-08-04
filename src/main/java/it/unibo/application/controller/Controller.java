@@ -7,6 +7,7 @@ import it.unibo.application.data.entities.Component;
 import it.unibo.application.data.entities.Cooler;
 import it.unibo.application.data.entities.Cpu;
 import it.unibo.application.data.entities.Gpu;
+import it.unibo.application.data.entities.Manufacturer;
 import it.unibo.application.data.entities.Motherboard;
 import it.unibo.application.data.entities.Psu;
 import it.unibo.application.data.entities.Ram;
@@ -38,8 +39,13 @@ public class Controller {
         return appStateController.getState();
     }
 
-    public State getPreviousAppState() {
-        return appStateController.getPreviousState();
+    public Part getDesiredPart() {
+        return appStateController.getDesiredPart();
+    }
+
+
+    public void setDesiredPart(final Part part) {
+        appStateController.setDesiredPart(part);
     }
 
     public void loginAttempt(final String username, final String password) {
@@ -89,5 +95,9 @@ public class Controller {
 
     public Cooler getCoolerById(final int id) {
         return model.getCoolerById(id);
+    }
+
+    public Manufacturer getManufacturerById(final int id) {
+        return model.getManufactureById(id);
     }
 }

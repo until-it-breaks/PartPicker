@@ -86,4 +86,10 @@ public final class Queries {
         FROM `case`, componenti
         WHERE CodiceCase = ? AND `case`.CodiceCase = componenti.CodiceComponente
         """;
+    public static final String FIND_MANUFACTURER =
+        """
+        SELECT *
+        FROM Produttori
+        WHERE Produttori.CodiceProduttore = ?
+        """;
 }
