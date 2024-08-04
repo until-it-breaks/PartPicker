@@ -1,21 +1,30 @@
 package it.unibo.application.view;
 
-import javax.swing.JPanel;
-
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.Part;
+import it.unibo.application.data.entities.Case;
 import it.unibo.application.data.entities.Component;
+import it.unibo.application.data.entities.Cooler;
+import it.unibo.application.data.entities.Cpu;
+import it.unibo.application.data.entities.Gpu;
+import it.unibo.application.data.entities.Motherboard;
+import it.unibo.application.data.entities.Psu;
+import it.unibo.application.data.entities.Ram;
+import it.unibo.application.data.entities.Storage;
+
 import java.util.List;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.GridLayout;
+import java.util.Map;
+import java.util.HashMap;
 
 public class BuilderPage extends JPanel {
+    private Controller controller;
     public BuilderPage(Controller controller) {
+        this.controller = controller;
         this.setLayout(new BorderLayout());
-
         this.add(new TopBar(controller), BorderLayout.NORTH);
 
         JPanel middleSection = new JPanel();
@@ -36,29 +45,36 @@ public class BuilderPage extends JPanel {
             for (Component component : components) {
                 comboBox.addItem(component.componentName);
             }
-            comboBox.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                }
-            });
             middleSection.add(comboBox);
             JLabel priceLabel = new JLabel();
             middleSection.add(priceLabel);
 
             JButton viewDetailsButton = new JButton("View Details");
-            viewDetailsButton.addActionListener(new ActionListener() {
+
+            comboBox.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    showPartDetails(part);
+                    int selectedIndex = comboBox.getSelectedIndex();
+                    if (selectedIndex > 0) {
+                        Component selectedComponent = components.get(selectedIndex - 1);
+                        priceLabel.setText("$" + selectedComponent.msrp);
+                        viewDetailsButton.setEnabled(true);
+                        viewDetailsButton.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                showPartDetails(selectedComponent);
+                            }
+                        });
+                    } else {
+                        priceLabel.setText("");
+                        viewDetailsButton.setEnabled(false);
+                    }
                 }
             });
             middleSection.add(viewDetailsButton);
         }
 
-        // Add middle section to the center of the panel
         this.add(middleSection, BorderLayout.CENTER);
-
-        // Add Total and Save Button to the bottom
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         bottomPanel.add(new JLabel("Total : 300$"));
         JButton saveButton = new JButton("Save Build");
@@ -67,11 +83,47 @@ public class BuilderPage extends JPanel {
         this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    private void showPartDetails(Part part) {
-        // Example details display
+    private void showPartDetails(Component component) {
+        Map<String, String> specs;
+        switch (component.componentType) {
+            case "Gpu":
+                Gpu gpu = controller.getGpuById(component.componentId);
+                specs = gpu.toStringMap();
+                break;
+            case "Cpu":
+                Cpu cpu = controller.getCpuById(component.componentId);
+                specs = cpu.toStringMap();
+                break;
+            case "Motherboard":
+                Motherboard motherboard = controller.getMotherboardById(component.componentId);
+                specs = motherboard.toStringMap();
+                break;
+            case "Ram":
+                Ram ram = controller.getRamById(component.componentId);
+                specs = ram.toStringMap();
+                break;
+            case "Psu":
+                Psu psu = controller.getPsuById(component.componentId);
+                specs = psu.toStringMap();
+                break;
+            case "Case":
+                Case _case = controller.getCaseById(component.componentId);
+                specs = _case.toStringMap();
+                break;
+            case "Storage":
+                Storage storage = controller.getStorageById(component.componentId);
+                specs = storage.toStringMap();
+                break;
+            case "Cooler":
+                Cooler cooler = controller.getCoolerById(component.componentId);
+                specs = cooler.toStringMap();
+                break;
+            default:
+                specs = new HashMap<String, String>();
+                break;
+        }
         JOptionPane.showMessageDialog(this,
-                "Details for " + part.toString() + ":\n" +
-                "Example detail information for " + part.toString(),
+                specs.toString(),
                 "Part Details",
                 JOptionPane.INFORMATION_MESSAGE);
     }

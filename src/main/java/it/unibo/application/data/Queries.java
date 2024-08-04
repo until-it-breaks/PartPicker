@@ -33,50 +33,50 @@ public final class Queries {
 
     public static final String FIND_CPU =
         """
-        SELECT *
-        FROM cpu
-        WHERE CodiceCpu = ?
+        SELECT componenti.*, cpu.*
+        FROM cpu, componenti
+        WHERE CodiceCpu = ? AND cpu.CodiceCpu = componenti.CodiceComponente
         """;
     public static final String FIND_GPU =
         """
-        SELECT *
-        FROM gpu
-        WHERE CodiceGpu = ?
+        SELECT componenti.*, gpu.*
+        FROM gpu, componenti
+        WHERE CodiceCpu = ? AND gpu.CodiceGpu = componenti.CodiceComponente
         """;
     public static final String FIND_RAM =
         """
-        SELECT *
-        FROM ram
-        WHERE CodiceRam = ?
+        SELECT componenti.*, ram.*
+        FROM ram, componenti
+        WHERE CodiceRam = ? AND ram.CodiceRam = componenti.CodiceComponente
         """;
     public static final String FIND_STORAGE =
         """
-        SELECT *
-        FROM storage
-        WHERE CodiceStorage = ?
+        SELECT componenti.*, storage.*
+        FROM storage, componenti
+        WHERE CodiceStorage = ? AND storage.CodiceStorage = componenti.CodiceComponente
         """;
     public static final String FIND_MOTHERBOARD =
         """
-        SELECT *
-        FROM motherboard
-        WHERE CodiceMotherboard = ?
+        SELECT componenti.*, motherboard.*
+        FROM motherboard, componenti
+        WHERE CodiceMotherboard = ? AND motherboard.CodiceMotherboard = componenti.CodiceComponente
         """;
     public static final String FIND_PSU =
         """
-        SELECT *
-        FROM psu
-        WHERE CodicePsu = ?
+        SELECT componenti.*, psu.*
+        FROM psu, componenti
+        WHERE CodicePsu = ? AND psu.CodicePsu = componenti.CodiceComponente
         """;
     public static final String FIND_COOLER =
         """
-        SELECT *
-        FROM cooler
-        WHERE CodiceCooler = ?
+        SELECT componenti.*, cooler.*
+        FROM cooler, componenti
+        WHERE CodiceCooler = ? AND cooler.CodiceCooler = componenti.CodiceComponente
         """;
     public static final String FIND_CASE =
         """
-        SELECT *
-        FROM case
-        WHERE CodiceCase = ?
+        SELECT componenti.*, case.*
+        FROM case, componenti
+        WHERE CodiceCase = ? AND case.CodiceCase = componenti.CodiceComponente
         """;
 }

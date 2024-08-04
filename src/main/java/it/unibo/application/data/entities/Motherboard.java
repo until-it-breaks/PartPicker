@@ -5,8 +5,11 @@ import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.lang.reflect.Field;
 
-public class Motherboard {
+public class Motherboard extends Component {
     public int motherboardId;
     public String formFactor;
     public String chipsetName;
@@ -15,9 +18,11 @@ public class Motherboard {
     public boolean hasWifi;
     public String socketName;
     public String ramGeneration;
-
-    public Motherboard(int motherboardId, String formFactor, String chipsetName, int ramSlots, int gpuSlots,
+    
+    public Motherboard(int componentId, String componentName, String componentType, int launchYear, float msrp,
+            int manufacturerId, int motherboardId, String formFactor, String chipsetName, int ramSlots, int gpuSlots,
             boolean hasWifi, String socketName, String ramGeneration) {
+        super(componentId, componentName, componentType, launchYear, msrp, manufacturerId);
         this.motherboardId = motherboardId;
         this.formFactor = formFactor;
         this.chipsetName = chipsetName;
@@ -28,6 +33,21 @@ public class Motherboard {
         this.ramGeneration = ramGeneration;
     }
 
+    public Map<String, String> toStringMap() {
+        Map<String, String> map = new HashMap<>();
+        Field[] fields = this.getClass().getFields();
+
+        for (Field field : fields) {
+            try {
+                Object value = field.get(this);
+                map.put(field.getName(), value != null ? value.toString() : "null");
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return map;
+    }
+
     public final class DAO {
         public static Motherboard findById(Connection connection, int id) {
             try (
@@ -35,6 +55,12 @@ public class Motherboard {
                 var resultSet = statement.executeQuery();
             ) {
                 if (resultSet.next()) {
+                    var componentId = resultSet.getInt("CodiceComponente");
+                    var componentName = resultSet.getString("NomeComponente");
+                    var componentType = resultSet.getString("TipoComponente");
+                    var launchYear = resultSet.getDate("AnnoLancio").getYear();
+                    var msrp = resultSet.getFloat("PrezzoListino");
+                    var manufacturerId = resultSet.getInt("CodiceProduttore");
                     var motherboardId = resultSet.getInt("CodiceMotherboard");
                     var formFactor = resultSet.getString("FattoreFormaMotherboard");
                     var chipsetName = resultSet.getString("NomeChipset");
@@ -43,7 +69,7 @@ public class Motherboard {
                     var hasWifi = resultSet.getBoolean("Wifi");
                     var socketName = resultSet.getString("NomeSocket");
                     var ramGeneration = resultSet.getString("NomeGenerazioneRam");
-                    Motherboard motherboard = new Motherboard(motherboardId, formFactor, chipsetName, ramSlots, gpuSlots, hasWifi, socketName, ramGeneration);
+                    Motherboard motherboard = new Motherboard(componentId, componentName, componentType, launchYear, msrp, manufacturerId, motherboardId, formFactor, chipsetName, ramSlots, gpuSlots, hasWifi, socketName, ramGeneration);
                     return motherboard;
                 }
                 return null;
