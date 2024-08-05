@@ -11,6 +11,7 @@ import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.components.Gpu;
 import it.unibo.application.data.entities.components.Ram;
 import it.unibo.application.data.entities.components.Storage;
+import it.unibo.application.data.entities.enums.Part;
 import it.unibo.application.data.entities.enums.State;
 
 import javax.swing.BorderFactory;
@@ -22,9 +23,7 @@ import javax.swing.JButton;
 import java.awt.Component;
 import java.awt.Dimension;
 import javax.swing.Box;
-import java.awt.Cursor;
 import java.awt.event.MouseEvent;
-import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -46,8 +45,8 @@ public class OverviewPage extends JPanel {
         final JPanel recentBuildsRow = new JPanel();
         recentBuildsRow.setLayout(new BoxLayout(recentBuildsRow, BoxLayout.X_AXIS));
 
-        List<Build> latestBuilds = controller.getBuilds();
-        for (Build build : latestBuilds) {
+        final List<Build> latestBuilds = controller.getBuilds();
+        for (final Build build : latestBuilds) {
             recentBuildsRow.add(createBuildFrame(build));
         }
 
@@ -59,8 +58,8 @@ public class OverviewPage extends JPanel {
         final JPanel ownBuildsRow = new JPanel();
         ownBuildsRow.setLayout(new BoxLayout(ownBuildsRow, BoxLayout.X_AXIS));
 
-        List<Build> ownBuilds = controller.getBuilds();
-        for (Build build : ownBuilds) {
+        final List<Build> ownBuilds = controller.getBuilds();
+        for (final Build build : ownBuilds) {
             ownBuildsRow.add(createBuildFrame(build));
         }
 
@@ -107,8 +106,69 @@ public class OverviewPage extends JPanel {
             }
         });
 
-        // Add ActionListeners for other buttons
-        addActionListeners();
+        CPUsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                controller.setDesiredPart(Part.CPU);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        VideoCardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                controller.setDesiredPart(Part.GPU);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        MemoryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                controller.setDesiredPart(Part.RAM);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        StorageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                controller.setDesiredPart(Part.STORAGE);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        CasesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                controller.setDesiredPart(Part.CASE);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        MotherboardsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                controller.setDesiredPart(Part.MOTHERBOARD);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        CPUCoolersButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                controller.setDesiredPart(Part.COOLER);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
+
+        PowerSuppliesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                controller.setDesiredPart(Part.PSU);
+                controller.setAppState(State.PRODUCTS);
+            }
+        });
 
     }
 
@@ -130,21 +190,20 @@ public class OverviewPage extends JPanel {
         description.setFocusable(false);
         buildFrame.add(description, BorderLayout.CENTER);
 
-        // List components and calculate total price
-        StringBuilder componentList = new StringBuilder();
+        final StringBuilder componentList = new StringBuilder();
         float totalPrice = 0;
 
-        for (Gpu gpu : build.getGpus()) {
+        for (final Gpu gpu : build.getGpus()) {
             componentList.append(gpu.getBaseInfo().getName()).append(", ");
             totalPrice += gpu.getBaseInfo().getMsrp();
         }
 
-        for (Ram ram : build.getRams()) {
+        for (final Ram ram : build.getRams()) {
             componentList.append(ram.getBaseInfo().getName()).append(", ");
             totalPrice += ram.getBaseInfo().getMsrp();
         }
 
-        for (Storage storage : build.getStorage()) {
+        for (final Storage storage : build.getStorage()) {
             componentList.append(storage.getBaseInfo().getName()).append(", ");
             totalPrice += storage.getBaseInfo().getMsrp();
         }
@@ -164,23 +223,5 @@ public class OverviewPage extends JPanel {
         });
 
         return buildFrame;
-    }
-
-    private JLabel createViewAllLabel(final String text) {
-        final JLabel viewAllLabel = new JLabel("<HTML><U>" + text + "</U></HTML>");
-        viewAllLabel.setForeground(Color.BLUE);
-        viewAllLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        viewAllLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(final MouseEvent e) {
-                JOptionPane.showMessageDialog(null, "You clicked: " + text);
-            }
-        });
-        return viewAllLabel;
-    }
-
-    private void addActionListeners() {
-        // Add ActionListeners for other buttons here
-        // Same as before, with updated action implementations if needed
     }
 }
