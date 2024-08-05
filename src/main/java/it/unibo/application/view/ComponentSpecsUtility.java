@@ -1,7 +1,7 @@
 package it.unibo.application.view;
 import java.util.Map;
 
-import it.unibo.application.data.entities.Component;
+import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.model.enums.Specs;
 
 import java.util.LinkedHashMap;
@@ -31,7 +31,7 @@ public final class ComponentSpecsUtility {
     public static Map<String, String> getCoolerSpecs(final Component cooler) {
         final Map<String, String> map = new LinkedHashMap<>();
         Map<String, String> specs = cooler.getSpecificAttributes();
-        map.put("Cooler Fan RPM", specs.get(Specs.COOLER_RPM.getKey()) + " RPM");
+        map.put("Cooler Fan RPM", specs.get(Specs.COOLER_RPM.getKey()));
         map.put("Noise Level", specs.get(Specs.COOLER_NOISE_LEVEL.getKey()) + " dB");
         map.put("Cooler Type", specs.get(Specs.COOLER_TYPE.getKey()).toString());
         return Collections.unmodifiableMap(map);
@@ -85,7 +85,7 @@ public final class ComponentSpecsUtility {
         final Map<String, String> map = new LinkedHashMap<>();
         final Map<String, String> specs = storage.getSpecificAttributes();
         map.put("Capacity", specs.get(Specs.STORAGE_CAPACITY.getKey()) + " GB");
-        map.put("Storage RPM", specs.get(Specs.STORAGE_RPM.getKey()) + " RPM");
+        map.put("Storage RPM", specs.get(Specs.STORAGE_RPM.getKey()));
         map.put("Cache Amount", specs.get(Specs.STORAGE_CACHE.getKey()) + " MB");
         map.put("Storage Type", specs.get(Specs.STORAGE_TYPE.getKey()).toString());
         return Collections.unmodifiableMap(map);

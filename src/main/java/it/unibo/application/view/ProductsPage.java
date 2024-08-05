@@ -3,7 +3,7 @@ package it.unibo.application.view;
 import javax.swing.JPanel;
 
 import it.unibo.application.controller.Controller;
-import it.unibo.application.data.entities.Component;
+import it.unibo.application.data.entities.components.Component;
 
 import java.util.List;
 import java.util.Map;

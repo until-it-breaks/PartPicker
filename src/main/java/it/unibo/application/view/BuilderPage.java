@@ -1,8 +1,8 @@
 package it.unibo.application.view;
 
 import it.unibo.application.controller.Controller;
+import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.model.enums.Part;
-import it.unibo.application.data.entities.Component;
 
 import java.util.List;
 import java.awt.*;
@@ -55,6 +55,7 @@ public class BuilderPage extends JPanel {
                         viewDetailsButton.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(final ActionEvent e) {
+                                controller.setDesiredPart(part);
                                 showPartDetails(selectedComponent);
                             }
                         });
@@ -106,6 +107,6 @@ public class BuilderPage extends JPanel {
             default:
                 throw new IllegalStateException();
         }
-        JOptionPane.showMessageDialog(this, component.getBaseInfo().getName() + "specs", specs, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, specs, component.getBaseInfo().getName() + "specs", JOptionPane.INFORMATION_MESSAGE);
     }
 }

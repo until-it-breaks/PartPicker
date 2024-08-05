@@ -1,8 +1,13 @@
 package it.unibo.application.model.enums;
 
 public enum Specs {
+    COMPONENT_ID("CodiceComponente", "Id", null),
+    COMPONENT_NAME("NomeComponente", "Component Name", null),
+    COMPONENT_LAUNCH_YEAR("AnnoLancio", "Launch Year", null),
+    COMPONENT_MSRP("PrezzoListino", "MSRP", null),
+    COMPONENT_MANUFACTURER("NomeProduttore", "Manufacturer", null),
     CASE_FORM_FACTOR("FattoreFormaCase", "Form Factor", null),
-    COOLER_RPM("CoolerRpm", "RPM", "RPM"),
+    COOLER_RPM("RpmCooler", "RPM", "RPM"),
     COOLER_NOISE_LEVEL("LivelloRumore", "Noise Level", "dB"),
     COOLER_TYPE("TipoCooler", "Type", null),
     CPU_FAMILY("FamigliaCpu", "Family", null),

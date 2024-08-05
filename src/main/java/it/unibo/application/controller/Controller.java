@@ -2,16 +2,16 @@ package it.unibo.application.controller;
 
 import java.util.List;
 
-import it.unibo.application.data.entities.Case;
-import it.unibo.application.data.entities.Component;
-import it.unibo.application.data.entities.Cooler;
-import it.unibo.application.data.entities.Cpu;
-import it.unibo.application.data.entities.Gpu;
-import it.unibo.application.data.entities.Motherboard;
-import it.unibo.application.data.entities.Psu;
-import it.unibo.application.data.entities.Ram;
-import it.unibo.application.data.entities.Storage;
 import it.unibo.application.data.entities.User;
+import it.unibo.application.data.entities.components.Case;
+import it.unibo.application.data.entities.components.Component;
+import it.unibo.application.data.entities.components.Cooler;
+import it.unibo.application.data.entities.components.Cpu;
+import it.unibo.application.data.entities.components.Gpu;
+import it.unibo.application.data.entities.components.Motherboard;
+import it.unibo.application.data.entities.components.Psu;
+import it.unibo.application.data.entities.components.Ram;
+import it.unibo.application.data.entities.components.Storage;
 import it.unibo.application.model.Model;
 import it.unibo.application.model.enums.Part;
 import it.unibo.application.model.enums.State;

@@ -40,9 +40,9 @@ public final class Queries {
 
     public static final String GET_CPUS =
         """
-        SELECT componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, cpu.*
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, cpu.*
         FROM componenti, cpu, produttori
-        WHERE cpu.CodiceCpu = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceComponente
+        WHERE cpu.CodiceCpu = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
         """;
 
     public static final String FIND_GPU =
@@ -54,9 +54,9 @@ public final class Queries {
     
     public static final String GET_GPUS =
         """
-        SELECT componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, gpu.*
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, gpu.*
         FROM componenti, gpu, produttori
-        WHERE gpu.CodiceGpu = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceComponente
+        WHERE gpu.CodiceGpu = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
         """;
 
     public static final String FIND_RAM =
@@ -67,11 +67,11 @@ public final class Queries {
         """;
 
     public static final String GET_RAMS =
-    """
-    SELECT componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, ram.*
-    FROM componenti, ram, produttori
-    WHERE ram.CodiceRam = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceComponente
-    """;
+        """
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, ram.*
+        FROM componenti, ram, produttori
+        WHERE ram.CodiceRam = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
+        """;
 
     public static final String FIND_STORAGE =
         """
@@ -81,11 +81,11 @@ public final class Queries {
         """;
 
     public static final String GET_STORAGE =
-    """
-    SELECT componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, storage.*
-    FROM componenti, storage, produttori
-    WHERE storage.CodiceStorage = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceComponente
-    """;
+        """
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, storage.*
+        FROM componenti, storage, produttori
+        WHERE storage.CodiceStorage = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
+        """;
 
     public static final String FIND_MOTHERBOARD =
         """
@@ -95,11 +95,11 @@ public final class Queries {
         """;
     
     public static final String GET_MOTHERBOARDS =
-    """
-    SELECT componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, motherboard.*
-    FROM componenti, motherboard, produttori
-    WHERE motherboard.CodiceMotherboard = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceComponente
-    """;
+        """
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, motherboard.*
+        FROM componenti, motherboard, produttori
+        WHERE motherboard.CodiceMotherboard = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
+        """;
 
     public static final String FIND_PSU =
         """
@@ -109,11 +109,12 @@ public final class Queries {
         """;
 
     public static final String GET_PSU =
-    """
-    SELECT componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, psu.*
-    FROM componenti, psu, produttori
-    WHERE psu.CodicePsu = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceComponente
-    """;
+        """
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, psu.*
+        FROM componenti, psu, produttori
+        WHERE psu.CodicePsu = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
+        """;
+
     public static final String FIND_COOLER =
         """
         SELECT componenti.*, cooler.*
@@ -122,11 +123,11 @@ public final class Queries {
         """;
 
     public static final String GET_COOLER =
-    """
-    SELECT componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, cooler.*
-    FROM componenti, cooler, produttori
-    WHERE cooler.CodiceCooler = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceComponente
-    """;
+        """
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, cooler.*
+        FROM componenti, cooler, produttori
+        WHERE cooler.CodiceCooler = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
+        """;
 
     public static final String FIND_CASE =
         """
@@ -137,9 +138,9 @@ public final class Queries {
 
     public static final String GET_CASES =
         """
-        SELECT componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, `case`.*
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, `case`.*
         FROM componenti, `case`, produttori
-        WHERE `case`.CodiceCase = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceComponente
+        WHERE `case`.CodiceCase = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
         """;
 
     public static final String FIND_MANUFACTURER =
