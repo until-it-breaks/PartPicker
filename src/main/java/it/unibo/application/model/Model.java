@@ -2,6 +2,7 @@ package it.unibo.application.model;
 
 import java.sql.Connection;
 
+import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.components.Case;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Cooler;
@@ -64,6 +65,10 @@ public final class Model {
 
     public Cooler getCoolerById(final int id) {
         return Cooler.DAO.findById(connection, id);
+    }
+
+    public List<Build> getBuilds() {
+        return Build.DAO.getBuilds(connection);
     }
 
     public List<Component> getComponents(final Part part) {

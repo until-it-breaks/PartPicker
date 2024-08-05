@@ -2,6 +2,7 @@ package it.unibo.application.controller;
 
 import java.util.List;
 
+import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.components.Case;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Cooler;
@@ -94,5 +95,9 @@ public class Controller {
 
     public List<Component> getComponents(final Part part) {
         return model.getComponents(part);
+    }
+
+    public List<Build> getBuilds() {
+        return model.getBuilds();
     }
 }

@@ -32,10 +32,10 @@ public final class Queries {
         """;
 
     public static final String FIND_CPU =
-        """
-        SELECT componenti.*, cpu.*
-        FROM cpu, componenti
-        WHERE CodiceCpu = ? AND cpu.CodiceCpu = componenti.CodiceComponente
+    """
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, cpu.*
+        FROM componenti, cpu, produttori
+        WHERE CodiceCpu = ? and cpu.CodiceCpu = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
         """;
 
     public static final String GET_CPUS =
@@ -46,10 +46,10 @@ public final class Queries {
         """;
 
     public static final String FIND_GPU =
-        """
-        SELECT componenti.*, gpu.*
-        FROM gpu, componenti
-        WHERE CodiceGpu = ? AND gpu.CodiceGpu = componenti.CodiceComponente
+    """
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, gpu.*
+        FROM componenti, gpu, produttori
+        WHERE CodiceGpu = ?  and gpu.CodiceGpu = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
         """;
     
     public static final String GET_GPUS =
@@ -60,10 +60,10 @@ public final class Queries {
         """;
 
     public static final String FIND_RAM =
-        """
-        SELECT componenti.*, ram.*
-        FROM ram, componenti
-        WHERE CodiceRam = ? AND ram.CodiceRam = componenti.CodiceComponente
+    """
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, ram.*
+        FROM componenti, ram, produttori
+        WHERE CodiceRam = ? and ram.CodiceRam = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
         """;
 
     public static final String GET_RAMS =
@@ -74,10 +74,10 @@ public final class Queries {
         """;
 
     public static final String FIND_STORAGE =
-        """
-        SELECT componenti.*, storage.*
-        FROM storage, componenti
-        WHERE CodiceStorage = ? AND storage.CodiceStorage = componenti.CodiceComponente
+    """
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, storage.*
+        FROM componenti, storage, produttori
+        WHERE CodiceStorage = ? and storage.CodiceStorage = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
         """;
 
     public static final String GET_STORAGE =
@@ -88,10 +88,10 @@ public final class Queries {
         """;
 
     public static final String FIND_MOTHERBOARD =
-        """
-        SELECT componenti.*, motherboard.*
-        FROM motherboard, componenti
-        WHERE CodiceMotherboard = ? AND motherboard.CodiceMotherboard = componenti.CodiceComponente
+    """
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, motherboard.*
+        FROM componenti, motherboard, produttori
+        WHERE CodiceMotherboard = ? and motherboard.CodiceMotherboard = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
         """;
     
     public static final String GET_MOTHERBOARDS =
@@ -103,9 +103,9 @@ public final class Queries {
 
     public static final String FIND_PSU =
         """
-        SELECT componenti.*, psu.*
-        FROM psu, componenti
-        WHERE CodicePsu = ? AND psu.CodicePsu = componenti.CodiceComponente
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, psu.*
+        FROM componenti, psu, produttori
+        WHERE CodicePsu = ? and psu.CodicePsu = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
         """;
 
     public static final String GET_PSU =
@@ -117,9 +117,9 @@ public final class Queries {
 
     public static final String FIND_COOLER =
         """
-        SELECT componenti.*, cooler.*
-        FROM cooler, componenti
-        WHERE CodiceCooler = ? AND cooler.CodiceCooler = componenti.CodiceComponente
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, cooler.*
+        FROM cooler, componenti, produttori
+        WHERE CodiceCooler = ? AND cooler.CodiceCooler = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
         """;
 
     public static final String GET_COOLER =
@@ -131,9 +131,9 @@ public final class Queries {
 
     public static final String FIND_CASE =
         """
-        SELECT componenti.*, `case`.*
-        FROM `case`, componenti
-        WHERE CodiceCase = ? AND `case`.CodiceCase = componenti.CodiceComponente
+        SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, `case`.*
+        FROM `case`, componenti, produttori
+        WHERE CodiceCase = ? AND `case`.CodiceCase = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
         """;
 
     public static final String GET_CASES =
@@ -148,5 +148,34 @@ public final class Queries {
         SELECT *
         FROM Produttori
         WHERE Produttori.CodiceProduttore = ?
+        """;
+
+    public static final String GET_BUILDS =
+        """
+        SELECT utenti.Username, pubblicazioni.DataModificaBuild, build.*, usiRam.CodiceRam, usiRam.Quantita, usiGpu.CodiceGpu, usiGpu.Quantita, usiStorage.CodiceStorage, usiStorage.Quantita
+        FROM build, utenti, pubblicazioni, usiRam, usiGpu, usiStorage
+        WHERE build.CodiceBuild = pubblicazioni.CodiceBuild AND pubblicazioni.Username = utenti.Username
+            AND usiRam.CodiceBuild = build.CodiceBuild AND usiGpu.CodiceBuild = build.CodiceBuild AND usiStorage.CodiceBuild = build.CodiceBuild
+        """;
+
+    public static final String FIND_USED_GPUS =
+        """
+        SELECT *
+        FROM usiGpu
+        WHERE usiGpu.CodiceBuild = ?
+        """;
+    
+    public static final String FIND_USED_RAMS =
+        """
+        SELECT *
+        FROM usiRam
+        WHERE usiRam.CodiceBuild = ?
+        """;
+
+    public static final String FIND_USED_STORAGE =
+        """
+        SELECT *
+        FROM usiStorage
+        WHERE usiStorage.CodiceBuild = ?
         """;
 }
