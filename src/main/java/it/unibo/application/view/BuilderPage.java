@@ -2,22 +2,13 @@ package it.unibo.application.view;
 
 import it.unibo.application.controller.Controller;
 import it.unibo.application.model.enums.Part;
-import it.unibo.application.data.entities.Case;
 import it.unibo.application.data.entities.Component;
-import it.unibo.application.data.entities.Cooler;
-import it.unibo.application.data.entities.Cpu;
-import it.unibo.application.data.entities.Gpu;
-import it.unibo.application.data.entities.Motherboard;
-import it.unibo.application.data.entities.Psu;
-import it.unibo.application.data.entities.Ram;
-import it.unibo.application.data.entities.Storage;
 
 import java.util.List;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Map;
 
 public class BuilderPage extends JPanel {
     private final Controller controller;
@@ -36,13 +27,15 @@ public class BuilderPage extends JPanel {
 
         final Part[] parts = Part.values();
         for (final Part part : parts) {
-            final List<Component> components = controller.getComponentsByType(part);
+            final List<Component> components;
+            components = controller.getComponents(part);
+
             middleSection.add(new JLabel(part.toString().toUpperCase()));
 
             final JComboBox<String> comboBox = new JComboBox<>();
             comboBox.addItem("Select a " + part.toString());
             for (final Component component : components) {
-                comboBox.addItem(component.componentName);
+                comboBox.addItem(component.getBaseInfo().getName());
             }
             middleSection.add(comboBox);
             final JLabel priceLabel = new JLabel();
@@ -53,10 +46,11 @@ public class BuilderPage extends JPanel {
             comboBox.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(final ActionEvent e) {
+                    controller.setDesiredPart(part);
                     final int selectedIndex = comboBox.getSelectedIndex();
                     if (selectedIndex > 0) {
                         final Component selectedComponent = components.get(selectedIndex - 1);
-                        priceLabel.setText("$" + selectedComponent.msrp);
+                        priceLabel.setText("$" + selectedComponent.getBaseInfo().getMsrp());
                         viewDetailsButton.setEnabled(true);
                         viewDetailsButton.addActionListener(new ActionListener() {
                             @Override
@@ -83,47 +77,35 @@ public class BuilderPage extends JPanel {
     }
 
     private void showPartDetails(final Component component) {
-        Map<String, String> specs;
-        switch (component.componentType) {
-            case "Gpu":
-                final Gpu gpu = controller.getGpuById(component.componentId);
-                specs = ComponentSpecsUtility.getGpuSpecs(gpu);
+        String specs;
+        switch (controller.getDesiredPart()) {
+            case Part.CPU:
+                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getCpuSpecs(component));
                 break;
-            case "Cpu":
-                final Cpu cpu = controller.getCpuById(component.componentId);
-                specs = ComponentSpecsUtility.getCpuSpecs(cpu);
+            case Part.COOLER:
+                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getCoolerSpecs(component));
                 break;
-            case "Motherboard":
-                final Motherboard motherboard = controller.getMotherboardById(component.componentId);
-                specs = ComponentSpecsUtility.getMotherboardSpecs(motherboard);
+            case Part.RAM:
+                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getRamSpecs(component));
                 break;
-            case "Ram":
-                final Ram ram = controller.getRamById(component.componentId);
-                specs = ComponentSpecsUtility.getRamSpecs(ram);
+            case Part.PSU:
+                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getPsuSpecs(component));
                 break;
-            case "Psu":
-                final Psu psu = controller.getPsuById(component.componentId);
-                specs = ComponentSpecsUtility.getPsuSpecs(psu);
+            case Part.MOTHERBOARD:
+                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getMotherboardSpecs(component));
                 break;
-            case "Case":
-                final Case _case = controller.getCaseById(component.componentId);
-                specs = ComponentSpecsUtility.getCaseSpecs(_case);
+            case Part.STORAGE:
+                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getStorageSpecs(component));
                 break;
-            case "Storage":
-                final Storage storage = controller.getStorageById(component.componentId);
-                specs = ComponentSpecsUtility.getStorageSpecs(storage);
+            case Part.GPU:
+                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getGpuSpecs(component));
                 break;
-            case "Cooler":
-                final Cooler cooler = controller.getCoolerById(component.componentId);
-                specs = ComponentSpecsUtility.getCoolerSpecs(cooler);
+            case Part.CASE:
+                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getCaseSpecs(component));
                 break;
             default:
-                specs = Map.of();
-                break;
+                throw new IllegalStateException();
         }
-        JOptionPane.showMessageDialog(this,
-                ComponentSpecsUtility.formatSpecs(specs),
-                component.componentName +" specifications",
-                JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, component.getBaseInfo().getName() + "specs", specs, JOptionPane.INFORMATION_MESSAGE);
     }
 }

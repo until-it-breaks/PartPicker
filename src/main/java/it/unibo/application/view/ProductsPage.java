@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 
 import it.unibo.application.controller.Controller;
 import it.unibo.application.data.entities.Component;
+
 import java.util.List;
 import java.util.Map;
 import java.awt.*;
@@ -15,7 +16,7 @@ public class ProductsPage extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(new TopBar(controller), BorderLayout.NORTH);
 
-        List<Component> components = controller.getComponentsByType(controller.getDesiredPart());
+        List<Component> components = controller.getComponents(controller.getDesiredPart());
         
         // Define column names for the table
         String[] columnNames = {"ID", "Name", "Launch Year", "MSRP"};
@@ -25,14 +26,10 @@ public class ProductsPage extends JPanel {
         
         // Add rows to the table model
         for (Component component : components) {
-            Map<String, String> specs = ComponentSpecsUtility.getComponentSpecs(component);
+            Map<String, String> specs = component.getSpecificAttributes();
             String[] rowData = new String[columnNames.length];
             for (int i = 0; i < columnNames.length; i++) {
-                if (i == 0) {
-                    rowData[i] = controller.getManufacturerById(component.manufacturerId).manufacturerName;
-                } else {
-                    rowData[i] = specs.get(columnNames[i]);
-                }
+                rowData[i] = specs.get(columnNames[i]).toString();
             }
             tableModel.addRow(rowData);
         }

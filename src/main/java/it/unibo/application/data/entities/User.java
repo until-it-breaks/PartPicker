@@ -3,7 +3,6 @@ package it.unibo.application.data.entities;
 import java.util.Date;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Optional;
 import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;

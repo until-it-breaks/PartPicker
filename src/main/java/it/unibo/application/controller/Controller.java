@@ -7,7 +7,6 @@ import it.unibo.application.data.entities.Component;
 import it.unibo.application.data.entities.Cooler;
 import it.unibo.application.data.entities.Cpu;
 import it.unibo.application.data.entities.Gpu;
-import it.unibo.application.data.entities.Manufacturer;
 import it.unibo.application.data.entities.Motherboard;
 import it.unibo.application.data.entities.Psu;
 import it.unibo.application.data.entities.Ram;
@@ -61,10 +60,6 @@ public class Controller {
         return model.registerUser(user);
     }
 
-    public List<Component> getComponentsByType(final Part part) {
-        return model.getListOfComponentsByType(part);
-    }
-
     public Cpu getCpuById(final int id) {
         return model.getCpuById(id);
     }
@@ -97,7 +92,7 @@ public class Controller {
         return model.getCoolerById(id);
     }
 
-    public Manufacturer getManufacturerById(final int id) {
-        return model.getManufactureById(id);
+    public List<Component> getComponents(Part part) {
+        return model.getComponents(part);
     }
 }

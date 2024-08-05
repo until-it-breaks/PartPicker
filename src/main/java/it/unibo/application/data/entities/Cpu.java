@@ -3,57 +3,101 @@ package it.unibo.application.data.entities;
 import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
+import it.unibo.application.model.enums.Specs;
+
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
 
-public class Cpu extends Component {
+import java.util.HashMap;
+import java.util.Map;
 
-    public int cpuId;
-    public String cpuFamily;
-    public int coreCount;
-    public int cpuFrequency;
-    public int tdp;
-    public boolean hasSmt;
-    public String socketName;
+public class Cpu implements Component {
+    private final BaseInfo baseInfo;
+    private final Map<String, String> specificAttributes;
 
-    public Cpu(int componentId, String componentName, String componentType, int launchYear, float msrp,
-            int manufacturerId, int cpuId, String cpuFamily, int coreCount, int cpuFrequency, int tdp, boolean hasSmt,
-            String socketName) {
-        super(componentId, componentName, componentType, launchYear, msrp, manufacturerId);
-        this.cpuId = cpuId;
-        this.cpuFamily = cpuFamily;
-        this.coreCount = coreCount;
-        this.cpuFrequency = cpuFrequency;
-        this.tdp = tdp;
-        this.hasSmt = hasSmt;
-        this.socketName = socketName;
+    public Cpu(final BaseInfo baseInfo, final Map<String, String> specificAttributes) {
+        this.baseInfo = baseInfo;
+        this.specificAttributes = specificAttributes;
+    }
+
+    public BaseInfo getBaseInfo() {
+        return baseInfo;
+    }
+
+    public Map<String, String> getSpecificAttributes() {
+        return specificAttributes;
     }
 
     public final class DAO {
-        public static Cpu findById(Connection connection, int id) {
+
+        public static List<Component> getCpus(final Connection connection) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_CPUS);
+                var resultSet = statement.executeQuery();
+            ) {
+                final List<Component> cpus = new ArrayList<>();
+                while (resultSet.next()) {
+                    final var componentName = resultSet.getString("NomeComponente");
+                    final var launchYear = resultSet.getDate("AnnoLancio").toLocalDate().getYear();
+                    final var msrp = resultSet.getFloat("PrezzoListino");
+                    final var manufacturerName = resultSet.getString("NomeProduttore");
+                    final var cpuId = resultSet.getInt("CodiceCpu");
+                    final var cpuFamily = resultSet.getString("FamigliaCpu");
+                    final var coreCount = resultSet.getString("NumeroCore");
+                    final var cpuFrequency = resultSet.getString("FrequenzaCpu");
+                    final var tdp = resultSet.getString("Tdp");
+                    final var hasSmt = resultSet.getString("Smt");
+                    final var socketName = resultSet.getString("NomeSocket");
+
+                    final BaseInfo baseInfo = new BaseInfo(cpuId, componentName, launchYear, msrp, manufacturerName);
+                    final Map<String, String> specificAttributes = new HashMap<>();
+                    specificAttributes.put(Specs.CPU_FAMILY.getKey(), cpuFamily);
+                    specificAttributes.put(Specs.CPU_CORE_COUNT.getKey(), coreCount);
+                    specificAttributes.put(Specs.CPU_FREQUENCY.getKey(), cpuFrequency);
+                    specificAttributes.put(Specs.CPU_TDP.getKey(), tdp);
+                    specificAttributes.put(Specs.CPU_SMT.getKey(), hasSmt);
+                    specificAttributes.put(Specs.CPU_SOCKET_NAME.getKey(), socketName);
+                    cpus.add(new Cpu(baseInfo, specificAttributes));
+                }
+                return cpus;
+            } catch (final SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static Cpu findById(final Connection connection, final int id) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.FIND_CPU, id);
                 var resultSet = statement.executeQuery();
             ) {
                 if (resultSet.next()) {
-                    var componentId = resultSet.getInt("CodiceComponente");
-                    var componentName = resultSet.getString("NomeComponente");
-                    var componentType = resultSet.getString("TipoComponente");
-                    var launchYear = resultSet.getDate("AnnoLancio").getYear();
-                    var msrp = resultSet.getFloat("PrezzoListino");
-                    var manufacturerId = resultSet.getInt("CodiceProduttore");
-                    var cpuId = resultSet.getInt("CodiceCpu");
-                    var cpuFamily = resultSet.getString("FamigliaCpu");
-                    var coreCount = resultSet.getInt("NumeroCore");
-                    var cpuFrequency = resultSet.getInt("FrequenzaCpu");
-                    var tdp = resultSet.getInt("Tdp");
-                    var hasSmt = resultSet.getBoolean("Smt");
-                    var socketName = resultSet.getString("NomeSocket");
-                    Cpu cpu = new Cpu(componentId, componentName, componentType, launchYear, msrp, manufacturerId, cpuId, cpuFamily, coreCount, cpuFrequency, tdp, hasSmt, socketName);
-                    return cpu;
+                    final var componentName = resultSet.getString("NomeComponente");
+                    final var launchYear = resultSet.getDate("AnnoLancio").toLocalDate().getYear();
+                    final var msrp = resultSet.getFloat("PrezzoListino");
+                    final var manufacturerName = resultSet.getString("NomeProduttore");
+                    final var cpuId = resultSet.getInt("CodiceCpu");
+                    final var cpuFamily = resultSet.getString("FamigliaCpu");
+                    final var coreCount = resultSet.getString("NumeroCore");
+                    final var cpuFrequency = resultSet.getString("FrequenzaCpu");
+                    final var tdp = resultSet.getString("Tdp");
+                    final var hasSmt = resultSet.getString("Smt");
+                    final var socketName = resultSet.getString("NomeSocket");
+
+                    final BaseInfo baseInfo = new BaseInfo(cpuId, componentName, launchYear, msrp, manufacturerName);
+                    final Map<String, String> specificAttributes = new HashMap<>();
+                    specificAttributes.put(Specs.CPU_FAMILY.getKey(), cpuFamily);
+                    specificAttributes.put(Specs.CPU_CORE_COUNT.getKey(), coreCount);
+                    specificAttributes.put(Specs.CPU_FREQUENCY.getKey(), cpuFrequency);
+                    specificAttributes.put(Specs.CPU_TDP.getKey(), tdp);
+                    specificAttributes.put(Specs.CPU_SMT.getKey(), hasSmt);
+                    specificAttributes.put(Specs.CPU_SOCKET_NAME.getKey(), socketName);
+
+                    return new Cpu(baseInfo, specificAttributes);
                 }
                 return null;
-            } catch (SQLException e) {
+            } catch (final SQLException e) {
                 throw new DAOException(e);
             }
         }

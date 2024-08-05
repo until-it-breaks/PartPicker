@@ -7,7 +7,6 @@ import it.unibo.application.data.entities.Component;
 import it.unibo.application.data.entities.Cooler;
 import it.unibo.application.data.entities.Cpu;
 import it.unibo.application.data.entities.Gpu;
-import it.unibo.application.data.entities.Manufacturer;
 import it.unibo.application.data.entities.Motherboard;
 import it.unibo.application.data.entities.Psu;
 import it.unibo.application.data.entities.Ram;
@@ -33,10 +32,6 @@ public final class Model {
 
     public boolean registerUser(final User user) {
         return User.DAO.insertUser(connection, user);
-    }
-
-    public List<Component> getListOfComponentsByType(final Part part) {
-        return Component.DAO.findByType(connection, part.toString());
     }
 
     public Cpu getCpuById(final int id) {
@@ -71,7 +66,26 @@ public final class Model {
         return Cooler.DAO.findById(connection, id);
     }
 
-    public Manufacturer getManufactureById(final int id) {
-        return Manufacturer.DAO.findById(connection, id);
+    public List<Component> getComponents(Part part) {
+        switch (part) {
+            case CPU:
+                return Cpu.DAO.getCpus(connection);
+            case GPU:
+                return Gpu.DAO.getGpus(connection);
+            case MOTHERBOARD:
+                return Motherboard.DAO.getMotherboards(connection);
+            case PSU:
+                return Psu.DAO.getPsus(connection);
+            case RAM:
+                return Ram.DAO.getRams(connection);
+            case STORAGE:
+                return Storage.DAO.getStorage(connection);
+            case COOLER:
+                return Cooler.DAO.getCoolers(connection);
+            case CASE:
+                return Case.DAO.getCases(connection);
+            default:
+                throw new IllegalArgumentException("Unknown part type: " + part);
+        }
     }
 }

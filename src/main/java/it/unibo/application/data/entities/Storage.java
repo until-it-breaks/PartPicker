@@ -3,50 +3,96 @@ package it.unibo.application.data.entities;
 import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
+import it.unibo.application.model.enums.Specs;
+
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class Storage extends Component {
-    public int storageId;
-    public int storageCapacity;
-    public int storageRpm;
-    public int cacheAmount;
-    public String storageType;
+public class Storage implements Component {
+    private final BaseInfo baseInfo;
+    private final Map<String, String> specificAttributes;
 
-    public Storage(int componentId, String componentName, String componentType, int launchYear, float msrp,
-            int manufacturerId, int storageId, int storageCapacity, int storageRpm, int cacheAmount,
-            String storageType) {
-        super(componentId, componentName, componentType, launchYear, msrp, manufacturerId);
-        this.storageId = storageId;
-        this.storageCapacity = storageCapacity;
-        this.storageRpm = storageRpm;
-        this.cacheAmount = cacheAmount;
-        this.storageType = storageType;
+    public Storage(final BaseInfo baseInfo, final Map<String, String> specificAttributes) {
+        this.baseInfo = baseInfo;
+        this.specificAttributes = specificAttributes;
+    }
+
+    public BaseInfo getBaseInfo() {
+        return baseInfo;
+    }
+
+    public Map<String, String> getSpecificAttributes() {
+        return specificAttributes;
     }
 
     public final class DAO {
-        public static Storage findById(Connection connection, int id) {
+
+        public static List<Component> getStorage(final Connection connection) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_STORAGE);
+                var resultSet = statement.executeQuery();
+            ) {
+                final List<Component> storageList = new ArrayList<>();
+                while (resultSet.next()) {
+                    final var componentName = resultSet.getString("NomeComponente");
+                    final var launchYear = resultSet.getDate("AnnoLancio").toLocalDate().getYear();
+                    final var msrp = resultSet.getFloat("PrezzoListino");
+                    final var manufacturerName = resultSet.getString("NomeProduttore");
+
+                    final var storageId = resultSet.getInt("CodiceStorage");
+                    final var storageCapacity = resultSet.getString("CapienzaStorage");
+                    final var storageRpm = resultSet.getString("RpmStorage");
+                    final var cacheAmount = resultSet.getString("QuantitaCache");
+                    final var storageType = resultSet.getString("TipoStorage");
+
+                    final BaseInfo baseInfo = new BaseInfo(storageId, componentName, launchYear, msrp, manufacturerName);
+                    final Map<String, String> specificAttributes = new HashMap<>();
+                    specificAttributes.put(Specs.STORAGE_CAPACITY.getKey(), storageCapacity);
+                    specificAttributes.put(Specs.STORAGE_RPM.getKey(), storageRpm);
+                    specificAttributes.put(Specs.STORAGE_CACHE.getKey(), cacheAmount);
+                    specificAttributes.put(Specs.STORAGE_TYPE.getKey(), storageType);
+
+                    storageList.add(new Storage(baseInfo, specificAttributes));
+                }
+                return storageList;
+            } catch (final SQLException e) {
+                throw new DAOException(e);
+            }
+        }
+
+        public static Storage findById(final Connection connection, final int id) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.FIND_STORAGE, id);
                 var resultSet = statement.executeQuery();
             ) {
                 if (resultSet.next()) {
-                    var componentId = resultSet.getInt("CodiceComponente");
-                    var componentName = resultSet.getString("NomeComponente");
-                    var componentType = resultSet.getString("TipoComponente");
-                    var launchYear = resultSet.getDate("AnnoLancio").getYear();
-                    var msrp = resultSet.getFloat("PrezzoListino");
-                    var manufacturerId = resultSet.getInt("CodiceProduttore");
-                    var storageId = resultSet.getInt("CodiceStorage");
-                    var storageCapacity = resultSet.getInt("CapienzaStorage");
-                    var storageRpm = resultSet.getInt("RpmStorage");
-                    var cacheAmount = resultSet.getInt("QuantitaCache");
-                    var storageType = resultSet.getString("TipoStorage");
-                    Storage storage = new Storage(componentId, componentName, componentType, launchYear, msrp, manufacturerId, storageId, storageCapacity, storageRpm, cacheAmount, storageType);
-                    return storage;
+                    final var componentName = resultSet.getString("NomeComponente");
+                    final var launchYear = resultSet.getDate("AnnoLancio").toLocalDate().getYear();
+                    final var msrp = resultSet.getFloat("PrezzoListino");
+                    final var manufacturerName = resultSet.getString("NomeProduttore");
+
+
+                    final var storageId = resultSet.getInt("CodiceStorage");
+                    final var storageCapacity = resultSet.getString("CapienzaStorage");
+                    final var storageRpm = resultSet.getString("RpmStorage");
+                    final var cacheAmount = resultSet.getString("QuantitaCache");
+                    final var storageType = resultSet.getString("TipoStorage");
+
+                    final BaseInfo baseInfo = new BaseInfo(storageId, componentName, launchYear, msrp, manufacturerName);
+                    final Map<String, String> specificAttributes = new HashMap<>();
+                    specificAttributes.put(Specs.STORAGE_CAPACITY.getKey(), storageCapacity);
+                    specificAttributes.put(Specs.STORAGE_RPM.getKey(), storageRpm);
+                    specificAttributes.put(Specs.STORAGE_CACHE.getKey(), cacheAmount);
+                    specificAttributes.put(Specs.STORAGE_TYPE.getKey(), storageType);
+
+                    return new Storage(baseInfo, specificAttributes);
                 }
                 return null;
-            } catch (SQLException e) {
+            } catch (final SQLException e) {
                 throw new DAOException(e);
             }
         }
