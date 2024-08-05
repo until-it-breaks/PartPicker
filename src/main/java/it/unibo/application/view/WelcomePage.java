@@ -1,7 +1,7 @@
 package it.unibo.application.view;
 
 import it.unibo.application.controller.Controller;
-import it.unibo.application.data.entities.User;
+import it.unibo.application.data.entities.login.User;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -54,7 +54,6 @@ public class WelcomePage extends JPanel {
         lowerPanel.add(credentialsPanel, gbc);
         lowerPanel.add(buttonsPanel, gbc);
 
-        //EVENT LISTENERS
         registerButton.addActionListener(new ActionListener() {
 
             @Override

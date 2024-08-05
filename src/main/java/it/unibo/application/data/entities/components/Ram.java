@@ -4,7 +4,7 @@ import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import it.unibo.application.data.entities.BaseInfo;
-import it.unibo.application.model.enums.Specs;
+import it.unibo.application.data.entities.enums.Specs;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,9 +17,9 @@ import java.util.Map;
 
 public class Ram implements Component {
     private final BaseInfo baseInfo;
-    private final Map<String, String> specificAttributes;
+    private final Map<Specs, String> specificAttributes;
 
-    public Ram(final BaseInfo baseInfo, final Map<String, String> specificAttributes) {
+    public Ram(final BaseInfo baseInfo, final Map<Specs, String> specificAttributes) {
         this.baseInfo = baseInfo;
         this.specificAttributes = specificAttributes;
     }
@@ -28,7 +28,7 @@ public class Ram implements Component {
         return baseInfo;
     }
 
-    public Map<String, String> getSpecificAttributes() {
+    public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
     }
 
@@ -73,16 +73,16 @@ public class Ram implements Component {
             final var ramFrequency = resultSet.getString(Specs.RAM_FREQUENCY.getKey());
             final var capacity = resultSet.getString(Specs.RAM_CAPACITY.getKey());
             final var latency = resultSet.getString(Specs.RAM_LATENCY.getKey());
-            final var isEcc = resultSet.getString(Specs.RAM_ECC.getKey());
+            final var isEcc = (resultSet.getBoolean(Specs.RAM_ECC.getKey()) == true) ? "Yes" : "No";
             final var ramGeneration = resultSet.getString(Specs.RAM_GEN.getKey());
 
             final BaseInfo baseInfo = new BaseInfo(ramId, componentName, launchYear, msrp, manufacturerName);
-            final Map<String, String> specificAttributes = new HashMap<>();
-            specificAttributes.put(Specs.RAM_FREQUENCY.getKey(), ramFrequency);
-            specificAttributes.put(Specs.RAM_CAPACITY.getKey(), capacity);
-            specificAttributes.put(Specs.RAM_LATENCY.getKey(), latency);
-            specificAttributes.put(Specs.RAM_ECC.getKey(), isEcc);
-            specificAttributes.put(Specs.RAM_GEN.getKey(), ramGeneration);
+            final Map<Specs, String> specificAttributes = new HashMap<>();
+            specificAttributes.put(Specs.RAM_FREQUENCY, ramFrequency);
+            specificAttributes.put(Specs.RAM_CAPACITY, capacity);
+            specificAttributes.put(Specs.RAM_LATENCY, latency);
+            specificAttributes.put(Specs.RAM_ECC, isEcc);
+            specificAttributes.put(Specs.RAM_GEN, ramGeneration);
 
             return new Ram(baseInfo, specificAttributes);
         }

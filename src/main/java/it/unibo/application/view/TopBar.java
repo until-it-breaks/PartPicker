@@ -2,7 +2,7 @@ package it.unibo.application.view;
 
 import javax.swing.*;
 import it.unibo.application.controller.Controller;
-import it.unibo.application.model.enums.State;
+import it.unibo.application.data.entities.enums.State;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;

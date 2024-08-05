@@ -2,7 +2,6 @@ package it.unibo.application.model;
 
 import java.sql.Connection;
 
-import it.unibo.application.data.entities.User;
 import it.unibo.application.data.entities.components.Case;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Cooler;
@@ -12,7 +11,8 @@ import it.unibo.application.data.entities.components.Motherboard;
 import it.unibo.application.data.entities.components.Psu;
 import it.unibo.application.data.entities.components.Ram;
 import it.unibo.application.data.entities.components.Storage;
-import it.unibo.application.model.enums.Part;
+import it.unibo.application.data.entities.enums.Part;
+import it.unibo.application.data.entities.login.User;
 import it.unibo.application.model.login.LoginService;
 import java.util.List;
 
@@ -66,7 +66,7 @@ public final class Model {
         return Cooler.DAO.findById(connection, id);
     }
 
-    public List<Component> getComponents(Part part) {
+    public List<Component> getComponents(final Part part) {
         switch (part) {
             case CPU:
                 return Cpu.DAO.getCpus(connection);

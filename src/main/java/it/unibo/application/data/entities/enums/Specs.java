@@ -1,4 +1,4 @@
-package it.unibo.application.model.enums;
+package it.unibo.application.data.entities.enums;
 
 public enum Specs {
     COMPONENT_ID("CodiceComponente", "Id", null),
@@ -38,7 +38,7 @@ public enum Specs {
     RAM_ECC("Ecc", "ECC", null),
     RAM_GEN("NomeGenerazioneRam", "Ram Gen", null),
     STORAGE_CAPACITY("CapienzaStorage", "Capacity", "GB"),
-    STORAGE_RPM("RpmStorage", "RPM", "RPM"),
+    STORAGE_RPM("RpmStorage", "RPM", null),
     STORAGE_CACHE("QuantitaCache", "Cache Amount", "MB"),
     STORAGE_TYPE("TipoStorage", "Storage Type", null);
 

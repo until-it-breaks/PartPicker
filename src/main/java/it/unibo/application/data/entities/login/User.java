@@ -1,4 +1,4 @@
-package it.unibo.application.data.entities;
+package it.unibo.application.data.entities.login;
 
 import java.util.Date;
 import java.sql.Connection;

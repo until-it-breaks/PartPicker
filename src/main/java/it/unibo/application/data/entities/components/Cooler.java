@@ -4,7 +4,7 @@ import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import it.unibo.application.data.entities.BaseInfo;
-import it.unibo.application.model.enums.Specs;
+import it.unibo.application.data.entities.enums.Specs;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,9 +17,9 @@ import java.util.Map;
 
 public class Cooler implements Component {
     private final BaseInfo baseInfo;
-    private final Map<String, String> specificAttributes;
+    private final Map<Specs, String> specificAttributes;
 
-    public Cooler(final BaseInfo baseInfo, final Map<String, String> specificAttributes) {
+    public Cooler(final BaseInfo baseInfo, final Map<Specs, String> specificAttributes) {
         this.baseInfo = baseInfo;
         this.specificAttributes = specificAttributes;
     }
@@ -28,7 +28,7 @@ public class Cooler implements Component {
         return baseInfo;
     }
 
-    public Map<String, String> getSpecificAttributes() {
+    public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
     }
 
@@ -73,10 +73,10 @@ public class Cooler implements Component {
             final var coolerType = resultSet.getString(Specs.COOLER_TYPE.getKey());
 
             final BaseInfo baseInfo = new BaseInfo(coolerId, componentName, launchYear, msrp, manufacturerName);
-            final Map<String, String> specificAttributes = new HashMap<>();
-            specificAttributes.put(Specs.COOLER_RPM.getKey(), coolerRpm);
-            specificAttributes.put(Specs.COOLER_NOISE_LEVEL.getKey(), noiseLevel);
-            specificAttributes.put(Specs.COOLER_TYPE.getKey(), coolerType);
+            final Map<Specs, String> specificAttributes = new HashMap<>();
+            specificAttributes.put(Specs.COOLER_RPM, coolerRpm);
+            specificAttributes.put(Specs.COOLER_NOISE_LEVEL, noiseLevel);
+            specificAttributes.put(Specs.COOLER_TYPE, coolerType);
 
             return new Cooler(baseInfo, specificAttributes);
         }

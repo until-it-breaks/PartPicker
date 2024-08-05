@@ -4,7 +4,7 @@ import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import it.unibo.application.data.entities.BaseInfo;
-import it.unibo.application.model.enums.Specs;
+import it.unibo.application.data.entities.enums.Specs;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,9 +17,9 @@ import java.util.Map;
 
 public class Gpu implements Component {
     private final BaseInfo baseInfo;
-    private final Map<String, String> specificAttributes;
+    private final Map<Specs, String> specificAttributes;
 
-    public Gpu(final BaseInfo baseInfo, final Map<String, String> specificAttributes) {
+    public Gpu(final BaseInfo baseInfo, final Map<Specs, String> specificAttributes) {
         this.baseInfo = baseInfo;
         this.specificAttributes = specificAttributes;
     }
@@ -28,7 +28,7 @@ public class Gpu implements Component {
         return baseInfo;
     }
 
-    public Map<String, String> getSpecificAttributes() {
+    public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
     }
 
@@ -75,12 +75,12 @@ public class Gpu implements Component {
             final var tgp = resultSet.getString(Specs.GPU_TGP.getKey());
 
             final BaseInfo baseInfo = new BaseInfo(gpuId, componentName, launchYear, msrp, manufacturerName);
-            final Map<String, String> specificAttributes = new HashMap<>();
-            specificAttributes.put(Specs.GPU_FAMILY.getKey(), gpuFamily);
-            specificAttributes.put(Specs.GPU_MEMORY_TYPE.getKey(), gpuMemoryType);
-            specificAttributes.put(Specs.GPU_MEMORY_AMOUNT.getKey(), gpuMemoryAmount);
-            specificAttributes.put(Specs.GPU_FREQUENCY.getKey(), gpuFrequency);
-            specificAttributes.put(Specs.GPU_TGP.getKey(), tgp);
+            final Map<Specs, String> specificAttributes = new HashMap<>();
+            specificAttributes.put(Specs.GPU_FAMILY, gpuFamily);
+            specificAttributes.put(Specs.GPU_MEMORY_TYPE, gpuMemoryType);
+            specificAttributes.put(Specs.GPU_MEMORY_AMOUNT, gpuMemoryAmount);
+            specificAttributes.put(Specs.GPU_FREQUENCY, gpuFrequency);
+            specificAttributes.put(Specs.GPU_TGP, tgp);
 
             return new Gpu(baseInfo, specificAttributes);
         }

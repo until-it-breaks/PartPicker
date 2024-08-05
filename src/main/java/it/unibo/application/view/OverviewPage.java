@@ -7,8 +7,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 import it.unibo.application.controller.Controller;
-import it.unibo.application.model.enums.Part;
-import it.unibo.application.model.enums.State;
+import it.unibo.application.data.entities.enums.Part;
+import it.unibo.application.data.entities.enums.State;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTextArea;

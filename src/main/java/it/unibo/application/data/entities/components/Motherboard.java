@@ -4,7 +4,7 @@ import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import it.unibo.application.data.entities.BaseInfo;
-import it.unibo.application.model.enums.Specs;
+import it.unibo.application.data.entities.enums.Specs;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,9 +16,9 @@ import java.util.Map;
 
 public class Motherboard implements Component {
     private final BaseInfo baseInfo;
-    private final Map<String, String> specificAttributes;
+    private final Map<Specs, String> specificAttributes;
 
-    public Motherboard(final BaseInfo baseInfo, final Map<String, String> specificAttributes) {
+    public Motherboard(final BaseInfo baseInfo, final Map<Specs, String> specificAttributes) {
         this.baseInfo = baseInfo;
         this.specificAttributes = specificAttributes;
     }
@@ -27,7 +27,7 @@ public class Motherboard implements Component {
         return baseInfo;
     }
 
-    public Map<String, String> getSpecificAttributes() {
+    public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
     }
 
@@ -73,19 +73,19 @@ public class Motherboard implements Component {
             final var chipsetName = resultSet.getString(Specs.MOTHERBOARD_CHIPSET.getKey());
             final var ramSlots = resultSet.getString(Specs.MOTHERBOARD_RAM_SLOTS.getKey());
             final var gpuSlots = resultSet.getString(Specs.MOTHERBOARD_GPU_SLOTS.getKey());
-            final var hasWifi = resultSet.getString(Specs.MOTHERBOARD_WIFI.getKey());
+            final var hasWifi = (resultSet.getBoolean(Specs.MOTHERBOARD_WIFI.getKey()) == true) ? "Yes" : "No";
             final var socketName = resultSet.getString(Specs.MOTHERBOARD_SOCKET.getKey());
             final var ramGeneration = resultSet.getString(Specs.MOTHERBOARD_RAM_GEN.getKey());
 
             final BaseInfo baseInfo = new BaseInfo(motherboardId, componentName, launchYear, msrp, manufacturerName);
-            final Map<String, String> specificAttributes = new HashMap<>();
-            specificAttributes.put(Specs.MOTHERBOARD_FORM_FACTOR.getKey(), formFactor);
-            specificAttributes.put(Specs.MOTHERBOARD_CHIPSET.getKey(), chipsetName);
-            specificAttributes.put(Specs.MOTHERBOARD_RAM_SLOTS.getKey(), ramSlots);
-            specificAttributes.put(Specs.MOTHERBOARD_GPU_SLOTS.getKey(), gpuSlots);
-            specificAttributes.put(Specs.MOTHERBOARD_WIFI.getKey(), hasWifi);
-            specificAttributes.put(Specs.MOTHERBOARD_SOCKET.getKey(), socketName);
-            specificAttributes.put(Specs.MOTHERBOARD_RAM_GEN.getKey(), ramGeneration);
+            final Map<Specs, String> specificAttributes = new HashMap<>();
+            specificAttributes.put(Specs.MOTHERBOARD_FORM_FACTOR, formFactor);
+            specificAttributes.put(Specs.MOTHERBOARD_CHIPSET, chipsetName);
+            specificAttributes.put(Specs.MOTHERBOARD_RAM_SLOTS, ramSlots);
+            specificAttributes.put(Specs.MOTHERBOARD_GPU_SLOTS, gpuSlots);
+            specificAttributes.put(Specs.MOTHERBOARD_WIFI, hasWifi);
+            specificAttributes.put(Specs.MOTHERBOARD_SOCKET, socketName);
+            specificAttributes.put(Specs.MOTHERBOARD_RAM_GEN, ramGeneration);
 
             return new Motherboard(baseInfo, specificAttributes);
         }

@@ -4,7 +4,7 @@ import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import it.unibo.application.data.entities.BaseInfo;
-import it.unibo.application.model.enums.Specs;
+import it.unibo.application.data.entities.enums.Specs;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,9 +17,9 @@ import java.util.Map;
 
 public class Cpu implements Component {
     private final BaseInfo baseInfo;
-    private final Map<String, String> specificAttributes;
+    private final Map<Specs, String> specificAttributes;
 
-    public Cpu(final BaseInfo baseInfo, final Map<String, String> specificAttributes) {
+    public Cpu(final BaseInfo baseInfo, final Map<Specs, String> specificAttributes) {
         this.baseInfo = baseInfo;
         this.specificAttributes = specificAttributes;
     }
@@ -28,7 +28,7 @@ public class Cpu implements Component {
         return baseInfo;
     }
 
-    public Map<String, String> getSpecificAttributes() {
+    public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
     }
 
@@ -73,17 +73,17 @@ public class Cpu implements Component {
             final var coreCount = resultSet.getString(Specs.CPU_CORE_COUNT.getKey());
             final var cpuFrequency = resultSet.getString(Specs.CPU_FREQUENCY.getKey());
             final var tdp = resultSet.getString(Specs.CPU_TDP.getKey());
-            final var hasSmt = resultSet.getString(Specs.CPU_SMT.getKey());
+            final var hasSmt = (resultSet.getBoolean(Specs.CPU_SMT.getKey()) == true) ? "Yes" : "No";
             final var socketName = resultSet.getString(Specs.CPU_SOCKET_NAME.getKey());
 
             final BaseInfo baseInfo = new BaseInfo(cpuId, componentName, launchYear, msrp, manufacturerName);
-            final Map<String, String> specificAttributes = new HashMap<>();
-            specificAttributes.put(Specs.CPU_FAMILY.getKey(), cpuFamily);
-            specificAttributes.put(Specs.CPU_CORE_COUNT.getKey(), coreCount);
-            specificAttributes.put(Specs.CPU_FREQUENCY.getKey(), cpuFrequency);
-            specificAttributes.put(Specs.CPU_TDP.getKey(), tdp);
-            specificAttributes.put(Specs.CPU_SMT.getKey(), hasSmt);
-            specificAttributes.put(Specs.CPU_SOCKET_NAME.getKey(), socketName);
+            final Map<Specs, String> specificAttributes = new HashMap<>();
+            specificAttributes.put(Specs.CPU_FAMILY, cpuFamily);
+            specificAttributes.put(Specs.CPU_CORE_COUNT, coreCount);
+            specificAttributes.put(Specs.CPU_FREQUENCY, cpuFrequency);
+            specificAttributes.put(Specs.CPU_TDP, tdp);
+            specificAttributes.put(Specs.CPU_SMT, hasSmt);
+            specificAttributes.put(Specs.CPU_SOCKET_NAME, socketName);
 
             return new Cpu(baseInfo, specificAttributes);
         }

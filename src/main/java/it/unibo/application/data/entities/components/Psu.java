@@ -4,7 +4,7 @@ import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import it.unibo.application.data.entities.BaseInfo;
-import it.unibo.application.model.enums.Specs;
+import it.unibo.application.data.entities.enums.Specs;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,9 +17,9 @@ import java.util.Map;
 
 public class Psu implements Component {
     private final BaseInfo baseInfo;
-    private final Map<String, String> specificAttributes;
+    private final Map<Specs, String> specificAttributes;
 
-    public Psu(final BaseInfo baseInfo, final Map<String, String> specificAttributes) {
+    public Psu(final BaseInfo baseInfo, final Map<Specs, String> specificAttributes) {
         this.baseInfo = baseInfo;
         this.specificAttributes = specificAttributes;
     }
@@ -28,7 +28,7 @@ public class Psu implements Component {
         return baseInfo;
     }
 
-    public Map<String, String> getSpecificAttributes() {
+    public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
     }
 
@@ -76,11 +76,11 @@ public class Psu implements Component {
             final var modularity = resultSet.getString(Specs.PSU_MODULARITY.getKey());
 
             final BaseInfo baseInfo = new BaseInfo(psuId, componentName, launchYear, msrp, manufacturerName);
-            final Map<String, String> specificAttributes = new HashMap<>();
-            specificAttributes.put(Specs.PSU_FORM_FACTOR.getKey(), formFactor);
-            specificAttributes.put(Specs.PSU_EFFICIENCY.getKey(), efficiency);
-            specificAttributes.put(Specs.PSU_WATTAGE.getKey(), wattage);
-            specificAttributes.put(Specs.PSU_MODULARITY.getKey(), modularity);
+            final Map<Specs, String> specificAttributes = new HashMap<>();
+            specificAttributes.put(Specs.PSU_FORM_FACTOR, formFactor);
+            specificAttributes.put(Specs.PSU_EFFICIENCY, efficiency);
+            specificAttributes.put(Specs.PSU_WATTAGE, wattage);
+            specificAttributes.put(Specs.PSU_MODULARITY, modularity);
 
             return new Psu(baseInfo, specificAttributes);
         }

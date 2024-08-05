@@ -2,7 +2,6 @@ package it.unibo.application.controller;
 
 import java.util.List;
 
-import it.unibo.application.data.entities.User;
 import it.unibo.application.data.entities.components.Case;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Cooler;
@@ -12,9 +11,10 @@ import it.unibo.application.data.entities.components.Motherboard;
 import it.unibo.application.data.entities.components.Psu;
 import it.unibo.application.data.entities.components.Ram;
 import it.unibo.application.data.entities.components.Storage;
+import it.unibo.application.data.entities.enums.Part;
+import it.unibo.application.data.entities.enums.State;
+import it.unibo.application.data.entities.login.User;
 import it.unibo.application.model.Model;
-import it.unibo.application.model.enums.Part;
-import it.unibo.application.model.enums.State;
 import it.unibo.application.model.states.AppStateController;
 import it.unibo.application.view.View;
 
@@ -92,7 +92,7 @@ public class Controller {
         return model.getCoolerById(id);
     }
 
-    public List<Component> getComponents(Part part) {
+    public List<Component> getComponents(final Part part) {
         return model.getComponents(part);
     }
 }

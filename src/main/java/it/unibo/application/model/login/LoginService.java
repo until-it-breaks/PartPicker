@@ -1,7 +1,8 @@
 package it.unibo.application.model.login;
 
-import it.unibo.application.data.entities.User;
 import java.sql.Connection;
+
+import it.unibo.application.data.entities.login.User;
 
 public class LoginService {
     public Connection connection;

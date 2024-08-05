@@ -4,7 +4,7 @@ import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import it.unibo.application.data.entities.BaseInfo;
-import it.unibo.application.model.enums.Specs;
+import it.unibo.application.data.entities.enums.Specs;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -16,9 +16,9 @@ import java.util.Map;
 
 public class Storage implements Component {
     private final BaseInfo baseInfo;
-    private final Map<String, String> specificAttributes;
+    private final Map<Specs, String> specificAttributes;
 
-    public Storage(final BaseInfo baseInfo, final Map<String, String> specificAttributes) {
+    public Storage(final BaseInfo baseInfo, final Map<Specs, String> specificAttributes) {
         this.baseInfo = baseInfo;
         this.specificAttributes = specificAttributes;
     }
@@ -27,7 +27,7 @@ public class Storage implements Component {
         return baseInfo;
     }
 
-    public Map<String, String> getSpecificAttributes() {
+    public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
     }
 
@@ -75,11 +75,11 @@ public class Storage implements Component {
             final var storageType = resultSet.getString(Specs.STORAGE_TYPE.getKey());
 
             final BaseInfo baseInfo = new BaseInfo(storageId, componentName, launchYear, msrp, manufacturerName);
-            final Map<String, String> specificAttributes = new HashMap<>();
-            specificAttributes.put(Specs.STORAGE_CAPACITY.getKey(), storageCapacity);
-            specificAttributes.put(Specs.STORAGE_RPM.getKey(), storageRpm);
-            specificAttributes.put(Specs.STORAGE_CACHE.getKey(), cacheAmount);
-            specificAttributes.put(Specs.STORAGE_TYPE.getKey(), storageType);
+            final Map<Specs, String> specificAttributes = new HashMap<>();
+            specificAttributes.put(Specs.STORAGE_CAPACITY, storageCapacity);
+            specificAttributes.put(Specs.STORAGE_RPM, storageRpm);
+            specificAttributes.put(Specs.STORAGE_CACHE, cacheAmount);
+            specificAttributes.put(Specs.STORAGE_TYPE, storageType);
 
             return new Storage(baseInfo, specificAttributes);
         }
