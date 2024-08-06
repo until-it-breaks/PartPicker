@@ -2,6 +2,7 @@ package it.unibo.application.controller;
 
 import java.util.List;
 
+import it.unibo.application.data.entities.ban.Ban;
 import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.components.Case;
 import it.unibo.application.data.entities.components.Component;
@@ -120,5 +121,9 @@ public class Controller {
 
     public UserDetails getUserDetails(final String username) {
         return model.getUserDetails(username);
+    }
+
+    public void banUser(final Ban ban) {
+       model.banUser(ban);
     }
 }

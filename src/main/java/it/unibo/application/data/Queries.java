@@ -205,4 +205,10 @@ public final class Queries {
         GROUP BY 
             u.Username
         """;
+
+    public static final String INSERT_BAN =
+        """
+        INSERT INTO ban (UsernameAssegnatario, DataInizioBan, DataFineBan, DescrizioneBan, UsernameAssegnatore)
+        VALUES (?, ?, ?, ?, ?)
+        """;
 }

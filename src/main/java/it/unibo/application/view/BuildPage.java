@@ -2,6 +2,7 @@ package it.unibo.application.view;
 
 
 import it.unibo.application.controller.Controller;
+import it.unibo.application.data.entities.ban.Ban;
 import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.components.Gpu;
 import it.unibo.application.data.entities.components.Ram;
@@ -12,6 +13,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class BuildPage extends JPanel {
     private final Controller controller;
@@ -80,7 +83,7 @@ public class BuildPage extends JPanel {
             commentsPanel.add(new JLabel("Comments:"), BorderLayout.NORTH);
 
             final JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, componentsScrollPane, commentsPanel);
-            splitPane.setDividerLocation(600); // Adjust as necessary
+            splitPane.setDividerLocation(600);
             mainPanel.add(splitPane, BorderLayout.CENTER);
         } else {
             mainPanel.add(new JLabel("Build not found"), BorderLayout.CENTER);
@@ -90,14 +93,63 @@ public class BuildPage extends JPanel {
     }
 
     private void showUserDetails(final UserDetails userDetails) {
-        final StringBuilder userDetailsText = new StringBuilder();
-        userDetailsText.append("Username: ").append(userDetails.getUsername()).append("\n")
-                .append("Registration Date: ").append(userDetails.getRegistrationDate()).append("\n")
-                .append("Email: ").append(userDetails.getEmail()).append("\n")
-                .append("Moderator: ").append(userDetails.getIsModerator() ? "Yes" : "No").append("\n")
-                .append("Average Rating: ").append(userDetails.getAverageRating()).append("\n")
-                .append("Build Count: ").append(userDetails.getBuildCount());
-
-        JOptionPane.showMessageDialog(this, userDetailsText.toString(), "User Details", JOptionPane.INFORMATION_MESSAGE);
+        final JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+    
+        final JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        textArea.setText(
+                "Username: " + userDetails.getUsername() + "\n" +
+                "Registration Date: " + userDetails.getRegistrationDate() + "\n" +
+                "Email: " + userDetails.getEmail() + "\n" +
+                "Moderator: " + (userDetails.getIsModerator() ? "Yes" : "No") + "\n" +
+                "Average Rating: " + userDetails.getAverageRating() + "\n" +
+                "Build Count: " + userDetails.getBuildCount()
+        );
+        panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
+    
+        if (controller.getLoggedUser().isModerator()) {
+            final JButton banButton = new JButton("Ban User");
+            banButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(final ActionEvent e) {
+                    showBanDialog(userDetails);
+                }
+            });
+            panel.add(banButton, BorderLayout.SOUTH);
+        }
+        JOptionPane.showMessageDialog(this, panel, "User Details", JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    private void showBanDialog(final UserDetails userDetails) {
+        final JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2));
+    
+        final JComboBox<String> banLengthComboBox = new JComboBox<>(new String[]{"1 week", "Permanent"});
+        final JTextField motiveField = new JTextField();
+    
+        panel.add(new JLabel("Ban Length:"));
+        panel.add(banLengthComboBox);
+        panel.add(new JLabel("Motive:"));
+        panel.add(motiveField);
+    
+        final int result = JOptionPane.showConfirmDialog(this, panel, "Ban User", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    
+        if (result == JOptionPane.OK_OPTION) {
+            final String banLength = (String) banLengthComboBox.getSelectedItem();
+            final String motive = motiveField.getText();
+            LocalDate endDate;
+    
+            if ("Permanent".equals(banLength)) {
+                endDate = null;
+            } else if ("1 week".equals(banLength)) {
+                endDate = LocalDate.now().plus(1, ChronoUnit.WEEKS);
+            } else {
+                endDate = null;
+            }
+    
+            final Ban ban = new Ban(userDetails.getUsername(), LocalDate.now(), endDate, motive, controller.getLoggedUser().getUsername());
+            controller.banUser(ban);
+        }
     }
 }

@@ -2,6 +2,7 @@ package it.unibo.application.model;
 
 import java.sql.Connection;
 
+import it.unibo.application.data.entities.ban.Ban;
 import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.components.Case;
 import it.unibo.application.data.entities.components.Component;
@@ -105,5 +106,9 @@ public final class Model {
 
     public UserDetails getUserDetails(final String username) {
         return UserDetails.getUserDetails(connection, username);
+    }
+
+    public void banUser(final Ban ban) {
+        Ban.DAO.insertBan(connection, ban);
     }
 }

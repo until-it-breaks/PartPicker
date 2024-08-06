@@ -22,19 +22,19 @@ public class View {
     public void switchPanel(final State state) {
         this.frame.getContentPane().removeAll();
         switch (state) {
-            case State.WELCOME:
+            case WELCOME:
                 this.frame.add(new WelcomePage(controller));
                 break;
-            case State.OVERVIEW:
+            case OVERVIEW:
                 this.frame.add(new OverviewPage(controller));
                 break;
-            case State.BUILDING:
+            case BUILDING:
                 this.frame.add(new BuilderPage(controller));
                 break;
-            case State.PRODUCTS:
+            case PRODUCTS:
                 this.frame.add(new ProductsPage(controller));
                 break;
-            case State.VIEW_BUILD:
+            case VIEW_BUILD:
                 this.frame.add(new BuildPage(controller));
             default:
                 break;
