@@ -158,6 +158,13 @@ public final class Queries {
             AND usiRam.CodiceBuild = build.CodiceBuild AND usiGpu.CodiceBuild = build.CodiceBuild AND usiStorage.CodiceBuild = build.CodiceBuild
         """;
 
+    public static final String FIND_BUILD =
+        """
+        SELECT utenti.Username, pubblicazioni.DataModificaBuild, build.*
+        FROM build, utenti, pubblicazioni
+        WHERE build.CodiceBuild = pubblicazioni.CodiceBuild AND utenti.Username = pubblicazioni.Username AND build.CodiceBuild = ?
+        """;
+
     public static final String FIND_USED_GPUS =
         """
         SELECT *
@@ -188,8 +195,8 @@ public final class Queries {
             AVG(r.RatingRecensione) AS RatingMedio, 
             COUNT(DISTINCT p.CodiceBuild) AS NumeroBuild
         FROM 
-            Utenti u, 
-            Pubblicazioni p, 
+            Utenti u,
+            Pubblicazioni p,
             Recensioni r
         WHERE
             p.Username = ?    

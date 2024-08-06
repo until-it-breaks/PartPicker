@@ -49,6 +49,14 @@ public class Controller {
         appStateController.setDesiredPart(part);
     }
 
+    public int getTargetBuild() {
+        return appStateController.getTargetBuild();
+    }
+
+    public void setTargetBuild(final int id) {
+        appStateController.setTargetBuild(id);
+    }
+
     public void loginAttempt(final String username, final String password) {
         if (model.login(username, password)) {
             view.showDialog("Login succesful");
@@ -60,6 +68,10 @@ public class Controller {
 
     public boolean registerUser(final User user) {
         return model.registerUser(user);
+    }
+
+    public String getLoggedUser() {
+        return model.getLoggedUser();
     }
 
     public Cpu getCpuById(final int id) {
@@ -100,6 +112,10 @@ public class Controller {
 
     public List<Build> getBuilds() {
         return model.getBuilds();
+    }
+
+    public Build findBuildById(final int id) {
+        return model.getBuildById(id);
     }
 
     public UserDetails getUserDetails(final String username) {

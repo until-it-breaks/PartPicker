@@ -6,10 +6,12 @@ import it.unibo.application.data.entities.enums.State;
 public class AppStateController {
     private State currentState;
     private Part desiredPart;
+    private int targetBuild;
 
     public AppStateController() {
         this.currentState = State.WELCOME;
         this.desiredPart = null;
+        this.targetBuild = 0;
     }
 
     public State getState() {
@@ -26,5 +28,21 @@ public class AppStateController {
 
     public Part getDesiredPart() {
         return this.desiredPart;
+    }
+
+    public State getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
+
+    public int getTargetBuild() {
+        return targetBuild;
+    }
+
+    public void setTargetBuild(int targetBuild) {
+        this.targetBuild = targetBuild;
     }
 }

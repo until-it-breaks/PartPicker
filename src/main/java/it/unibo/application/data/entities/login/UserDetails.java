@@ -57,6 +57,7 @@ public class UserDetails {
         ) {
             if (resultSet.next()) {
                 var name = resultSet.getString("Username");
+                System.out.println(name);
                 var registrationDate = resultSet.getDate("DataRegistrazione").toLocalDate();
                 var email = resultSet.getString("Email");
                 var isModerator = resultSet.getBoolean("Moderatore");

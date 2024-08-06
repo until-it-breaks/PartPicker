@@ -84,6 +84,7 @@ public class Build {
     }
 
     public final class DAO {
+
         public static List<Build> getBuilds(final Connection connection) {
             try (
                     var statement = DAOUtils.prepare(connection, Queries.GET_BUILDS);
@@ -106,6 +107,32 @@ public class Build {
                         builds.add(new Build(buildId, cooler, _case, psu, cpu, motherboard, getUsedGpus(connection, buildId), getUsedRams(connection, buildId), getUsedStorage(connection, buildId), author));
                     }
                     return builds;
+                } catch (final SQLException e) {
+                    throw new DAOException(e);
+            }
+        }
+
+        public static Build findBuildById(final Connection connection, final int id) {
+            try (
+                    var statement = DAOUtils.prepare(connection, Queries.FIND_BUILD, id);
+                    var resultSet = statement.executeQuery();
+                ) {
+                    if (resultSet.next()) {
+                        final var author = resultSet.getString("Username");
+                        final var buildId = resultSet.getInt("CodiceBuild");
+                        final var caseId = resultSet.getInt("CodiceCase");
+                        final var coolerId = resultSet.getInt("CodiceCooler");
+                        final var cpuId = resultSet.getInt("CodiceCpu");
+                        final var motherboardId = resultSet.getInt("CodiceMotherboard");
+                        final var psuId = resultSet.getInt("CodicePsu");
+                        final var _case = Case.DAO.findById(connection, caseId);
+                        final var cooler = Cooler.DAO.findById(connection, coolerId);
+                        final var cpu = Cpu.DAO.findById(connection, cpuId);
+                        final var psu = Psu.DAO.findById(connection, psuId);
+                        final var motherboard = Motherboard.DAO.findById(connection, motherboardId);
+                        return new Build(buildId, cooler, _case, psu, cpu, motherboard, getUsedGpus(connection, buildId), getUsedRams(connection, buildId), getUsedStorage(connection, buildId), author);
+                    }
+                    return null;
                 } catch (final SQLException e) {
                     throw new DAOException(e);
             }

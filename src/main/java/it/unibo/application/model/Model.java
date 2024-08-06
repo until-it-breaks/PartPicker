@@ -36,6 +36,10 @@ public final class Model {
         return User.DAO.insertUser(connection, user);
     }
 
+    public String getLoggedUser() {
+        return loginService.getCurrentUser();
+    }
+
     public Cpu getCpuById(final int id) {
         return Cpu.DAO.findById(connection, id);
     }
@@ -70,6 +74,10 @@ public final class Model {
 
     public List<Build> getBuilds() {
         return Build.DAO.getBuilds(connection);
+    }
+
+    public Build getBuildById(final int id) {
+        return Build.DAO.findBuildById(connection, id);
     }
 
     public List<Component> getComponents(final Part part) {
