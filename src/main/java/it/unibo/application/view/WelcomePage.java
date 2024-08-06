@@ -15,47 +15,72 @@ public class WelcomePage extends JPanel {
     public WelcomePage(final Controller controller) {
         this.controller = controller;
         this.setLayout(new BorderLayout());
-        final JPanel centerPanel = new JPanel();
-        final JPanel lowerPanel = new JPanel();
 
-        this.add(centerPanel, BorderLayout.CENTER);
-        this.add(lowerPanel, BorderLayout.SOUTH);
+        JPanel titlePanel = createTitlePanel();
+        this.add(titlePanel, BorderLayout.CENTER);
 
-        final JLabel largeLabel = new JLabel("Welcome to Part Picker!", SwingConstants.CENTER);
-        largeLabel.setFont(new Font("Arial", Font.BOLD, 72));
-        largeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        centerPanel.add(largeLabel);
+        JPanel buttonPanel = createButtonPanel();
+        this.add(buttonPanel, BorderLayout.SOUTH);
+    }
 
-        lowerPanel.setLayout(new GridBagLayout());
-        final JPanel credentialsPanel = new JPanel(new GridBagLayout());
-        final JPanel buttonsPanel = new JPanel(new GridBagLayout());
+    private JPanel createTitlePanel() {
+        JPanel titlePanel = new JPanel();
+        titlePanel.setLayout(new GridBagLayout());
 
-        final GridBagConstraints gbc = new GridBagConstraints();
+        JLabel titleLabel = new JLabel("Part Picker", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 72));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        titlePanel.add(titleLabel);
+        return titlePanel;
+    }
+
+    private JPanel createButtonPanel() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridBagLayout());
+
+        GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 10, 5, 10);
 
-        final JLabel usernameLabel = new JLabel("Username:");
-        final JLabel passwordLabel = new JLabel("Password:");
-        final JTextField usernameField = new JTextField(15);
-        final JPasswordField passwordField = new JPasswordField(15);
+        // Credentials panel
+        JPanel credentialsPanel = new JPanel(new GridBagLayout());
+        credentialsPanel.setBorder(BorderFactory.createTitledBorder("Credentials"));
 
-        credentialsPanel.add(usernameLabel, gbc);
-        credentialsPanel.add(usernameField, gbc);
-        credentialsPanel.add(passwordLabel, gbc);
-        credentialsPanel.add(passwordField, gbc);
+        JLabel usernameLabel = new JLabel("Username:");
+        JLabel passwordLabel = new JLabel("Password:");
+        JTextField usernameField = new JTextField(15);
+        JPasswordField passwordField = new JPasswordField(15);
 
-        final JButton registerButton = new JButton("Register");
-        final JButton loginButton = new JButton("Login");
-        final JButton adminButton = new JButton("Admin");
+        GridBagConstraints credentialsGbc = new GridBagConstraints();
+        credentialsGbc.insets = new Insets(5, 10, 5, 10);
+        credentialsGbc.anchor = GridBagConstraints.WEST;
+        credentialsGbc.fill = GridBagConstraints.HORIZONTAL;
+        credentialsGbc.gridx = 0;
+        credentialsGbc.gridy = 0;
+        credentialsPanel.add(usernameLabel, credentialsGbc);
 
-        buttonsPanel.add(loginButton, gbc);
-        buttonsPanel.add(registerButton, gbc);
-        buttonsPanel.add(adminButton, gbc);
+        credentialsGbc.gridx = 1;
+        credentialsPanel.add(usernameField, credentialsGbc);
 
-        lowerPanel.add(credentialsPanel, gbc);
-        lowerPanel.add(buttonsPanel, gbc);
+        credentialsGbc.gridx = 0;
+        credentialsGbc.gridy = 1;
+        credentialsPanel.add(passwordLabel, credentialsGbc);
+
+        credentialsGbc.gridx = 1;
+        credentialsPanel.add(passwordField, credentialsGbc);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new FlowLayout());
+
+        JButton registerButton = new JButton("Register");
+        JButton loginButton = new JButton("Login");
+        JButton adminButton = new JButton("Admin");
+
+        buttonsPanel.add(loginButton);
+        buttonsPanel.add(registerButton);
+        buttonsPanel.add(adminButton);
 
         registerButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(final ActionEvent e) {
                 showRegistrationDialog();
@@ -63,39 +88,50 @@ public class WelcomePage extends JPanel {
         });
 
         loginButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(final ActionEvent e) {
-                controller.loginAttempt(usernameField.getText(), passwordField.getText());
+                controller.loginAttempt(usernameField.getText(), new String(passwordField.getPassword()));
             }
         });
+
+        buttonPanel.setLayout(new BorderLayout());
+        buttonPanel.add(credentialsPanel, BorderLayout.CENTER);
+        buttonPanel.add(buttonsPanel, BorderLayout.SOUTH);
+
+        return buttonPanel;
     }
 
     private void showRegistrationDialog() {
-        final JTextField usernameField = new JTextField();
-        final JPasswordField passwordField = new JPasswordField();
-        final JTextField emailField = new JTextField();
-        final JCheckBox isModeratorCheckBox = new JCheckBox();
+        JTextField usernameField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+        JTextField emailField = new JTextField();
+        JCheckBox isModeratorCheckBox = new JCheckBox("Moderator");
 
-        final JPanel panel = new JPanel(new GridLayout(4, 2));
-        panel.add(new JLabel("Username:"));
-        panel.add(usernameField);
-        panel.add(new JLabel("Password:"));
-        panel.add(passwordField);
-        panel.add(new JLabel("Email:"));
-        panel.add(emailField);
-        panel.add(new JLabel("Moderator:"));
-        panel.add(isModeratorCheckBox);
+        JPanel registrationPanel = new JPanel(new GridLayout(4, 2, 5, 5));
+        registrationPanel.add(new JLabel("Username:"));
+        registrationPanel.add(usernameField);
+        registrationPanel.add(new JLabel("Password:"));
+        registrationPanel.add(passwordField);
+        registrationPanel.add(new JLabel("Email:"));
+        registrationPanel.add(emailField);
+        registrationPanel.add(new JLabel("Moderator:"));
+        registrationPanel.add(isModeratorCheckBox);
 
-        final int result = JOptionPane.showConfirmDialog(null, panel, "Register", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        int result = JOptionPane.showConfirmDialog(null, registrationPanel, "Register", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
-            final String username = usernameField.getText();
-            final String password = new String(passwordField.getPassword());
-            final Date signUpDate = Date.valueOf(LocalDate.now());
-            final String email = emailField.getText();
-            final Boolean isModerator = isModeratorCheckBox.isSelected();
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            String email = emailField.getText();
 
-            final User user = new User(username, password, signUpDate, email, isModerator);
+            if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "All fields must be filled out!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Date signUpDate = Date.valueOf(LocalDate.now());
+            boolean isModerator = isModeratorCheckBox.isSelected();
+
+            User user = new User(username, password, signUpDate, email, isModerator);
             if (controller.registerUser(user)) {
                 JOptionPane.showMessageDialog(null, "User registered successfully!");
             } else {
