@@ -70,7 +70,7 @@ public class Controller {
         return model.registerUser(user);
     }
 
-    public String getLoggedUser() {
+    public User getLoggedUser() {
         return model.getLoggedUser();
     }
 

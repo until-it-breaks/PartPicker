@@ -36,8 +36,8 @@ public final class Model {
         return User.DAO.insertUser(connection, user);
     }
 
-    public String getLoggedUser() {
-        return loginService.getCurrentUser();
+    public User getLoggedUser() {
+        return User.DAO.findByUsername(connection, loginService.getCurrentUser());
     }
 
     public Cpu getCpuById(final int id) {

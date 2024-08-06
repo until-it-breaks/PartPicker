@@ -34,7 +34,7 @@ public class AppStateController {
         return currentState;
     }
 
-    public void setCurrentState(State currentState) {
+    public void setCurrentState(final State currentState) {
         this.currentState = currentState;
     }
 
@@ -42,7 +42,7 @@ public class AppStateController {
         return targetBuild;
     }
 
-    public void setTargetBuild(int targetBuild) {
+    public void setTargetBuild(final int targetBuild) {
         this.targetBuild = targetBuild;
     }
 }

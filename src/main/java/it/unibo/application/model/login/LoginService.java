@@ -1,11 +1,10 @@
 package it.unibo.application.model.login;
 
 import java.sql.Connection;
-
 import it.unibo.application.data.entities.login.User;
 
 public class LoginService {
-    private Connection connection;
+    private final Connection connection;
     private String loggedUser;
 
     public LoginService(final Connection connection) {
@@ -18,7 +17,7 @@ public class LoginService {
         }
 
         final User user = User.DAO.findByUsername(connection, username);
-        if (user != null && user.password.equals(password)) {
+        if (user != null && user.getPassword().equals(password)) {
             this.loggedUser = username;
             return true;
         }

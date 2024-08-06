@@ -12,9 +12,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class BuilderPage extends JPanel {
-    private Controller controller;
+    private final Controller controller;
     private final JLabel totalPriceLabel;
     private final Map<Part, JLabel> priceLabels = new HashMap<>();
 
@@ -23,7 +22,7 @@ public class BuilderPage extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(new TopBar(controller), BorderLayout.NORTH);
 
-        JPanel middleSection = new JPanel();
+        final JPanel middleSection = new JPanel();
         middleSection.setLayout(new GridLayout(9, 4));
 
         middleSection.add(new JLabel("Component"));
@@ -131,13 +130,13 @@ public class BuilderPage extends JPanel {
     private void updateTotalPrice() {
         double totalPrice = 0.0;
 
-        for (JLabel priceLabel : priceLabels.values()) {
-            String text = priceLabel.getText().replace("€", "").trim();
+        for (final JLabel priceLabel : priceLabels.values()) {
+            final String text = priceLabel.getText().replace("€", "").trim();
             try {
                 if (!text.isEmpty()) {
                     totalPrice += Double.parseDouble(text);
                 }
-            } catch (NumberFormatException e) {
+            } catch (final NumberFormatException e) {
                 e.printStackTrace();
             }
         }
