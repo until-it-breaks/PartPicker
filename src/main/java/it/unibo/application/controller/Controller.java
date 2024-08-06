@@ -15,6 +15,7 @@ import it.unibo.application.data.entities.components.Storage;
 import it.unibo.application.data.entities.enums.Part;
 import it.unibo.application.data.entities.enums.State;
 import it.unibo.application.data.entities.login.User;
+import it.unibo.application.data.entities.login.UserDetails;
 import it.unibo.application.model.Model;
 import it.unibo.application.model.states.AppStateController;
 import it.unibo.application.view.View;
@@ -99,5 +100,9 @@ public class Controller {
 
     public List<Build> getBuilds() {
         return model.getBuilds();
+    }
+
+    public UserDetails getUserDetails(final String username) {
+        return model.getUserDetails(username);
     }
 }

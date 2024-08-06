@@ -178,4 +178,24 @@ public final class Queries {
         FROM usiStorage
         WHERE usiStorage.CodiceBuild = ?
         """;
+    public static final String FIND_USER_DETAILS = 
+        """
+        SELECT 
+            u.Username, 
+            u.DataRegistrazione, 
+            u.Email, 
+            u.Moderatore, 
+            AVG(r.RatingRecensione) AS RatingMedio, 
+            COUNT(DISTINCT p.CodiceBuild) AS NumeroBuild
+        FROM 
+            Utenti u, 
+            Pubblicazioni p, 
+            Recensioni r
+        WHERE
+            p.Username = ?    
+            AND u.Username = p.Username 
+            AND p.CodiceBuild = r.CodiceBuild
+        GROUP BY 
+            u.Username
+        """;
 }

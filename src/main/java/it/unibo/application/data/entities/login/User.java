@@ -62,7 +62,7 @@ public class User {
                 return statement.executeUpdate() > 0;
             } catch (SQLException e) {
                 if (e.getErrorCode() == 1062) { // MySQL error code for duplicate entry
-                    return false; // Indicate that the operation failed due to duplicate entry
+                    return false;
                 }
                 throw new DAOException(e);
             } catch (Exception e) {

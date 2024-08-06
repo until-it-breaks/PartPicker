@@ -14,6 +14,7 @@ import it.unibo.application.data.entities.components.Ram;
 import it.unibo.application.data.entities.components.Storage;
 import it.unibo.application.data.entities.enums.Part;
 import it.unibo.application.data.entities.login.User;
+import it.unibo.application.data.entities.login.UserDetails;
 import it.unibo.application.model.login.LoginService;
 import java.util.List;
 
@@ -92,5 +93,9 @@ public final class Model {
             default:
                 throw new IllegalArgumentException("Unknown part type: " + part);
         }
+    }
+
+    public UserDetails getUserDetails(final String username) {
+        return UserDetails.getUserDetails(connection, username);
     }
 }
