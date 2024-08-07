@@ -257,11 +257,12 @@ public final class Queries {
         """;
     public static final String GET_LATEST_BUILD_ID =
         """
-            SELECT MAX(CodiceBuild) FROM build;
+            SELECT MAX(CodiceBuild) as Max
+            FROM build;
         """;
     public static final String INSERT_BUILD = 
     """
-        INSERT INTO build (CodiceCooler, CodiceCase, CodicePsu, CodiceCpu, CodiceMotherboard)
-        VALUES (?, ?, ?, ?, ?);
+        INSERT INTO build (CodiceBuild, CodiceCooler, CodiceCase, CodicePsu, CodiceCpu, CodiceMotherboard)
+        VALUES (?, ?, ?, ?, ?, ?);
     """;
 }

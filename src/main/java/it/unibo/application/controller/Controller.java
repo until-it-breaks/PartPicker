@@ -143,4 +143,8 @@ public class Controller {
     public int getLatestBuildId() {
         return model.getLatestBuildId();
     }
+
+    public void insertBuild(Build build, User user) {
+        model.insertBuild(build, user);
+    }
 }

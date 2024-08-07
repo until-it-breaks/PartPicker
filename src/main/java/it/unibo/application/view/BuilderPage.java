@@ -3,7 +3,6 @@ package it.unibo.application.view;
 import it.unibo.application.controller.Controller;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.enums.Part;
-
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +11,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 public class BuilderPage extends JPanel {
     private final Controller controller;
@@ -19,7 +19,10 @@ public class BuilderPage extends JPanel {
     private final Map<Part, List<JComboBox<String>>> comboBoxes = new HashMap<>();
     private final Map<Part, List<JLabel>> priceLabels = new HashMap<>();
     private final JPanel middleSection;
-    private final Map<Part, JButton> viewDetailsButtons = new HashMap<>();
+    private final JPanel gpuPanel;
+    private final JPanel ramPanel;
+    private final JPanel storagePanel;
+    private final Map<Part, List<JButton>> viewDetailsButtons = new HashMap<>();
 
     public BuilderPage(final Controller controller) {
         this.controller = controller;
@@ -27,18 +30,41 @@ public class BuilderPage extends JPanel {
         this.add(new TopBar(controller), BorderLayout.NORTH);
 
         middleSection = new JPanel();
-        middleSection.setLayout(new GridLayout(0, 4));
+        middleSection.setLayout(new BoxLayout(middleSection, BoxLayout.Y_AXIS));
 
-        middleSection.add(new JLabel("Component"));
-        middleSection.add(new JLabel("Selection"));
-        middleSection.add(new JLabel("Price"));
-        middleSection.add(new JLabel("Actions"));
+        JPanel headerRow = new JPanel(new GridLayout(1, 4));
+        headerRow.add(new JLabel("Component"));
+        headerRow.add(new JLabel("Selection"));
+        headerRow.add(new JLabel("Price"));
+        headerRow.add(new JLabel("Actions"));
+        middleSection.add(headerRow);
 
         for (final Part part : Part.values()) {
-            addPartRow(part);
+            if (part != Part.GPU && part != Part.RAM && part != Part.STORAGE) {
+                addPartRow(part, middleSection);
+            }
         }
 
-        this.add(middleSection, BorderLayout.CENTER);
+        // Initialize special panels for GPU, RAM, and STORAGE
+        gpuPanel = new JPanel();
+        gpuPanel.setLayout(new BoxLayout(gpuPanel, BoxLayout.Y_AXIS));
+        middleSection.add(gpuPanel);
+
+        ramPanel = new JPanel();
+        ramPanel.setLayout(new BoxLayout(ramPanel, BoxLayout.Y_AXIS));
+        middleSection.add(ramPanel);
+
+        storagePanel = new JPanel();
+        storagePanel.setLayout(new BoxLayout(storagePanel, BoxLayout.Y_AXIS));
+        middleSection.add(storagePanel);
+
+        for (final Part part : Part.values()) {
+            if (part == Part.GPU || part == Part.RAM || part == Part.STORAGE) {
+                addPartRow(part, getPanelForPart(part));
+            }
+        }
+
+        this.add(new JScrollPane(middleSection), BorderLayout.CENTER);
 
         final JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         totalPriceLabel = new JLabel("Total: €");
@@ -50,21 +76,18 @@ public class BuilderPage extends JPanel {
         this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
-    private void addPartRow(final Part part) {
+    private void addPartRow(final Part part, JPanel parentPanel) {
         final List<Component> components = controller.getComponents(part);
 
-        middleSection.add(new JLabel(part.toString().toUpperCase()));
-
+        JPanel partRow = new JPanel(new GridLayout(1, 4));
+        JLabel partLabel = new JLabel(part.toString().toUpperCase());
         final JComboBox<String> comboBox = new JComboBox<>();
         comboBox.addItem("Select a " + part.toString());
         for (final Component component : components) {
             comboBox.addItem(component.getBaseInfo().getName());
         }
-        middleSection.add(comboBox);
 
-        final JLabel priceLabel = new JLabel();
-        middleSection.add(priceLabel);
-
+        JLabel priceLabel = new JLabel();
         final JButton viewDetailsButton = new JButton("View Details");
         viewDetailsButton.setEnabled(false);
 
@@ -77,13 +100,13 @@ public class BuilderPage extends JPanel {
                     priceLabel.setText("€" + selectedComponent.getBaseInfo().getMsrp());
                     viewDetailsButton.setEnabled(true);
                     if (part == Part.GPU || part == Part.RAM || part == Part.STORAGE) {
-                        addPartRow(part);
+                        addPartRow(part, getPanelForPart(part));  // Add to respective panel
                     }
                 } else {
                     priceLabel.setText("");
                     viewDetailsButton.setEnabled(false);
                     if (part == Part.GPU || part == Part.RAM || part == Part.STORAGE) {
-                        removePartRow(part, comboBox);
+                        removePartRow(part, comboBox, getPanelForPart(part));
                     }
                 }
                 updateTotalPrice();
@@ -102,27 +125,52 @@ public class BuilderPage extends JPanel {
             }
         });
 
-        middleSection.add(viewDetailsButton);
+        partRow.add(partLabel);
+        partRow.add(comboBox);
+        partRow.add(priceLabel);
+        partRow.add(viewDetailsButton);
+
+        parentPanel.add(partRow);
+        parentPanel.revalidate();
+        parentPanel.repaint();
 
         comboBoxes.computeIfAbsent(part, k -> new ArrayList<>()).add(comboBox);
         priceLabels.computeIfAbsent(part, k -> new ArrayList<>()).add(priceLabel);
-        viewDetailsButtons.put(part, viewDetailsButton);
+        viewDetailsButtons.computeIfAbsent(part, k -> new ArrayList<>()).add(viewDetailsButton);
 
         revalidate();
         repaint();
     }
 
-    private void removePartRow(Part part, JComboBox<String> comboBox) {
+    private void removePartRow(Part part, JComboBox<String> comboBox, JPanel parentPanel) {
         List<JComboBox<String>> comboBoxList = comboBoxes.get(part);
         List<JLabel> priceLabelList = priceLabels.get(part);
+        List<JButton> viewDetailsButtonList = viewDetailsButtons.get(part);
 
         if (comboBoxList != null && comboBoxList.size() > 1) {
             int index = comboBoxList.indexOf(comboBox);
-            middleSection.remove(comboBoxList.remove(index));
-            middleSection.remove(priceLabelList.remove(index));
-            middleSection.remove(viewDetailsButtons.get(part));
-            revalidate();
-            repaint();
+            comboBoxList.remove(index);
+            priceLabelList.remove(index);
+            viewDetailsButtonList.remove(index);
+
+            java.awt.Component rowToRemove = parentPanel.getComponent(index);
+            parentPanel.remove(rowToRemove);
+
+            parentPanel.revalidate();
+            parentPanel.repaint();
+        }
+    }
+
+    private JPanel getPanelForPart(Part part) {
+        switch (part) {
+            case GPU:
+                return gpuPanel;
+            case RAM:
+                return ramPanel;
+            case STORAGE:
+                return storagePanel;
+            default:
+                throw new IllegalArgumentException("Unexpected part: " + part);
         }
     }
 
@@ -161,7 +209,7 @@ public class BuilderPage extends JPanel {
 
     private void updateTotalPrice() {
         double totalPrice = 0.0;
-
+    
         for (final List<JLabel> priceLabelList : priceLabels.values()) {
             for (final JLabel priceLabel : priceLabelList) {
                 final String text = priceLabel.getText().replace("€", "").trim();
@@ -174,7 +222,11 @@ public class BuilderPage extends JPanel {
                 }
             }
         }
-
-        totalPriceLabel.setText("Total: €" + totalPrice);
+    
+        // Create a DecimalFormat instance to format the price with two decimal places
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        String formattedPrice = decimalFormat.format(totalPrice);
+    
+        totalPriceLabel.setText("Total: €" + formattedPrice);
     }
 }

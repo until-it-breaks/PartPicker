@@ -128,4 +128,8 @@ public final class Model {
     public int getLatestBuildId() {
         return Build.DAO.getLatestBuildId(connection);
     }
+
+    public void insertBuild(Build build, User user) {
+        Build.DAO.insertBuild(connection, build, user);
+    }
 }

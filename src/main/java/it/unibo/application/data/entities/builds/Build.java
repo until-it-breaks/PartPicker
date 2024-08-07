@@ -157,7 +157,7 @@ public class Build {
                     var resultSet = statement.executeQuery();
                 ) {
                     if (resultSet.next()) {
-                        return resultSet.getInt("CodiceBuild");
+                        return resultSet.getInt("Max");
                     }
                     throw new IllegalStateException();
                 } catch (final SQLException e) {
