@@ -29,7 +29,8 @@ public class Build {
     private final List<Storage> storage;
     private final String author;
 
-    public Build(final int build, final Cooler cooler, final Case _case, final Psu psu, final Cpu cpu, final Motherboard motherboard, final List<Gpu> gpu,
+    public Build(final int build, final Cooler cooler, final Case _case, final Psu psu,
+            final Cpu cpu, final Motherboard motherboard, final List<Gpu> gpu,
             final List<Ram> ram, final List<Storage> storage, final String author) {
         this.buildId = build;
         this.cooler = cooler;
@@ -104,7 +105,11 @@ public class Build {
                         final var cpu = Cpu.DAO.findById(connection, cpuId);
                         final var psu = Psu.DAO.findById(connection, psuId);
                         final var motherboard = Motherboard.DAO.findById(connection, motherboardId);
-                        builds.add(new Build(buildId, cooler, _case, psu, cpu, motherboard, getUsedGpus(connection, buildId), getUsedRams(connection, buildId), getUsedStorage(connection, buildId), author));
+                        builds.add(new Build(buildId, cooler, _case, psu, cpu, motherboard,
+                            GpuUsage.DAO.getUsedGpus(connection, buildId),
+                            RamUsage.DAO.getUsedRams(connection, buildId),
+                            StorageUsage.DAO.getUsedStorage(connection, buildId),
+                            author));
                     }
                     return builds;
                 } catch (final SQLException e) {
@@ -130,69 +135,13 @@ public class Build {
                         final var cpu = Cpu.DAO.findById(connection, cpuId);
                         final var psu = Psu.DAO.findById(connection, psuId);
                         final var motherboard = Motherboard.DAO.findById(connection, motherboardId);
-                        return new Build(buildId, cooler, _case, psu, cpu, motherboard, getUsedGpus(connection, buildId), getUsedRams(connection, buildId), getUsedStorage(connection, buildId), author);
+                        return new Build(buildId, cooler, _case, psu, cpu, motherboard,
+                            GpuUsage.DAO.getUsedGpus(connection, buildId),
+                            RamUsage.DAO.getUsedRams(connection, buildId),
+                            StorageUsage.DAO.getUsedStorage(connection, buildId),
+                            author);
                     }
                     return null;
-                } catch (final SQLException e) {
-                    throw new DAOException(e);
-            }
-        }
-
-        public static List<Gpu> getUsedGpus(final Connection connection, final int buildId) {
-            try (
-                    var statement = DAOUtils.prepare(connection, Queries.FIND_USED_GPUS, buildId);
-                    var resultSet = statement.executeQuery();
-                ) {
-                    final List<Gpu> gpus = new ArrayList<>();
-                    while (resultSet.next()) {
-                        final var gpuId = resultSet.getInt("CodiceGpu");
-                        final var quantity = resultSet.getInt("Quantita");
-                        final var gpu = Gpu.DAO.findById(connection, gpuId);
-                        for (int i = 0; i < quantity; i++) {
-                            gpus.add(gpu);
-                        } 
-                    }
-                    return gpus;
-                } catch (final SQLException e) {
-                    throw new DAOException(e);
-            }
-        }
-
-        public static List<Ram> getUsedRams(final Connection connection, final int buildId) {
-            try (
-                    var statement = DAOUtils.prepare(connection, Queries.FIND_USED_RAMS, buildId);
-                    var resultSet = statement.executeQuery();
-                ) {
-                    final List<Ram> rams = new ArrayList<>();
-                    while (resultSet.next()) {
-                        final var ramId = resultSet.getInt("CodiceRam");
-                        final var quantity = resultSet.getInt("Quantita");
-                        final var ram = Ram.DAO.findById(connection, ramId);
-                        for (int i = 0; i < quantity; i++) {
-                            rams.add(ram);
-                        } 
-                    }
-                    return rams;
-                } catch (final SQLException e) {
-                    throw new DAOException(e);
-            }
-        }
-
-        public static List<Storage> getUsedStorage(final Connection connection, final int buildId) {
-            try (
-                    var statement = DAOUtils.prepare(connection, Queries.FIND_USED_STORAGE, buildId);
-                    var resultSet = statement.executeQuery();
-                ) {
-                    final List<Storage> storages = new ArrayList<>();
-                    while (resultSet.next()) {
-                        final var storageId = resultSet.getInt("CodiceStorage");
-                        final var quantity = resultSet.getInt("Quantita");
-                        final var storage = Storage.DAO.findById(connection, storageId);
-                        for (int i = 0; i < quantity; i++) {
-                            storages.add(storage);
-                        } 
-                    }
-                    return storages;
                 } catch (final SQLException e) {
                     throw new DAOException(e);
             }

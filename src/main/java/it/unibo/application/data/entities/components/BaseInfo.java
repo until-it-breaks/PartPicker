@@ -7,7 +7,9 @@ public class BaseInfo {
     private final float msrp;
     private final String manufacturer;
 
-    public BaseInfo(final int componentId, final String componentName, final int launchYear, final float msrp, final String manufacturer) {
+    public BaseInfo(final int componentId, final String componentName,
+            final int launchYear, final float msrp,
+            final String manufacturer) {
         this.id = componentId;
         this.name = componentName;
         this.launchYear = launchYear;

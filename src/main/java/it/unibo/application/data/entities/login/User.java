@@ -14,7 +14,9 @@ public class User {
     private final String email;
     private final Boolean isModerator;
 
-    public User(final String username, final String password, final Date signUpDate, final String email, final Boolean isModerator) {
+    public User(final String username, final String password,
+            final Date signUpDate, final String email,
+            final Boolean isModerator) {
         this.username = username;
         this.password = password;
         this.signUpDate = signUpDate;

@@ -5,6 +5,7 @@ import java.util.Map;
 import it.unibo.application.data.entities.enums.Specs;
 
 public interface Component {
+
     BaseInfo getBaseInfo();
 
     Map<Specs, String> getSpecificAttributes();

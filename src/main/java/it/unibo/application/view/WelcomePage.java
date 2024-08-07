@@ -42,7 +42,6 @@ public class WelcomePage extends JPanel {
         final GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 10, 5, 10);
 
-        // Credentials panel
         final JPanel credentialsPanel = new JPanel(new GridBagLayout());
         credentialsPanel.setBorder(BorderFactory.createTitledBorder("Credentials"));
 

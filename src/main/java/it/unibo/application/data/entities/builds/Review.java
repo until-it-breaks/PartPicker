@@ -17,7 +17,8 @@ public class Review {
     private final String comment;
     private final LocalDate lastEditDate;
 
-    public Review(final int buildId, final String username, final int reviewRating, final String comment, final LocalDate lastEditDate) {
+    public Review(final int buildId, final String username, final int reviewRating,
+            final String comment, final LocalDate lastEditDate) {
         this.buildId = buildId;
         this.username = username;
         this.reviewRating = reviewRating;
@@ -54,11 +55,11 @@ public class Review {
                 ) {
                     final List<Review> reviews = new ArrayList<>();
                     while (resultSet.next()) {
-                        var id = resultSet.getInt("CodiceBuild");
-                        var username = resultSet.getString("Username");
-                        var rating = resultSet.getInt("RatingRecensione");
-                        var comment = resultSet.getString("Commento");
-                        var lastEditDate = resultSet.getDate("DataModificaRecensione").toLocalDate();
+                        final var id = resultSet.getInt("CodiceBuild");
+                        final var username = resultSet.getString("Username");
+                        final var rating = resultSet.getInt("RatingRecensione");
+                        final var comment = resultSet.getString("Commento");
+                        final var lastEditDate = resultSet.getDate("DataModificaRecensione").toLocalDate();
                         reviews.add(new Review(id, username, rating, comment, lastEditDate));
                     }
                     return reviews;
@@ -69,7 +70,10 @@ public class Review {
 
         public static void insertReview(final Connection connection, final Review review) {
             try (
-                    var statement = DAOUtils.prepare(connection, Queries.INSERT_REVIEW, review.getBuildId(), review.getUsername(), review.getReviewRating(), review.getComment(), review.getLastEditDate());
+                    var statement = DAOUtils.prepare(connection, Queries.INSERT_REVIEW,
+                        review.getBuildId(), review.getUsername(),
+                        review.getReviewRating(), review.getComment(),
+                        review.getLastEditDate());
                 ) {
                     statement.executeUpdate();
                 } catch (final SQLException e) {
@@ -79,7 +83,10 @@ public class Review {
 
         public static void updateReview(final Connection connection, final Review review) {
             try (
-                    var statement = DAOUtils.prepare(connection, Queries.UPDATE_REVIEW, review.getReviewRating(), review.getComment(), review.getLastEditDate(), review.getBuildId(), review.getUsername());
+                    var statement = DAOUtils.prepare(connection, Queries.UPDATE_REVIEW,
+                        review.getReviewRating(), review.getComment(),
+                        review.getLastEditDate(), review.getBuildId(),
+                        review.getUsername());
                 ) {
                     statement.executeUpdate();
                 } catch (final SQLException e) {

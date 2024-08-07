@@ -78,7 +78,6 @@ public class BuilderPage extends JPanel {
                     }
                 }
             });
-
             middleSection.add(viewDetailsButton);
         }
 

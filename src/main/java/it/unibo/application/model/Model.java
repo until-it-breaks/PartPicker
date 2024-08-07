@@ -117,11 +117,11 @@ public final class Model {
         return Review.DAO.getReviews(connection, buildId);
     }
 
-    public void insertReview(Review review) {
+    public void insertReview(final Review review) {
         Review.DAO.insertReview(connection, review);
     }
 
-    public void updateReview(Review review) {
+    public void updateReview(final Review review) {
         Review.DAO.updateReview(connection, review);
     }
 }

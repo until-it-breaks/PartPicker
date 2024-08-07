@@ -9,15 +9,16 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class UserDetails {
-    private String username;
-    private LocalDate registrationDate;
-    private String email;
-    private Boolean isModerator;
-    private Double averageRating;
-    private int buildCount;
+    private final String username;
+    private final LocalDate registrationDate;
+    private final String email;
+    private final Boolean isModerator;
+    private final Double averageRating;
+    private final int buildCount;
 
-    public UserDetails(String username, LocalDate registrationDate, String email, Boolean isModerator, Double averageRating,
-            int buildCount) {
+    public UserDetails(final String username, final LocalDate registrationDate,
+            final String email, final Boolean isModerator,
+            final Double averageRating, final int buildCount) {
         this.username = username;
         this.registrationDate = registrationDate;
         this.email = email;
@@ -50,22 +51,23 @@ public class UserDetails {
         return buildCount;
     }
 
-    public static UserDetails getUserDetails(Connection connection, String username) {
+    public static UserDetails getUserDetails(final Connection connection, final String username) {
         try (
             var statement = DAOUtils.prepare(connection, Queries.FIND_USER_DETAILS, username);
             var resultSet = statement.executeQuery();
         ) {
             if (resultSet.next()) {
-                var name = resultSet.getString("Username");
-                var registrationDate = resultSet.getDate("DataRegistrazione").toLocalDate();
-                var email = resultSet.getString("Email");
-                var isModerator = resultSet.getBoolean("Moderatore");
-                var averageRating = resultSet.getDouble("RatingMedio");
-                var buildCount = resultSet.getInt("NumeroBuild");
-                return new UserDetails(name, registrationDate, email, isModerator, averageRating, buildCount);
+                final var name = resultSet.getString("Username");
+                final var registrationDate = resultSet.getDate("DataRegistrazione").toLocalDate();
+                final var email = resultSet.getString("Email");
+                final var isModerator = resultSet.getBoolean("Moderatore");
+                final var averageRating = resultSet.getDouble("RatingMedio");
+                final var buildCount = resultSet.getInt("NumeroBuild");
+                return new UserDetails(name, registrationDate, email, isModerator,
+                    averageRating, buildCount);
             }
             return null;
-        } catch (SQLException e) {
+        } catch (final SQLException e) {
             throw new DAOException(e);
     }
 }

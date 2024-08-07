@@ -4,7 +4,7 @@ public class RamCpuCompatibility {
     private String ramGeneration;
     private int cpuId;
 
-    public RamCpuCompatibility(String ramGeneration, int cpuId) {
+    public RamCpuCompatibility(final String ramGeneration, final int cpuId) {
         this.ramGeneration = ramGeneration;
         this.cpuId = cpuId;
     }
@@ -13,7 +13,7 @@ public class RamCpuCompatibility {
         return ramGeneration;
     }
 
-    public void setRamGeneration(String ramGeneration) {
+    public void setRamGeneration(final String ramGeneration) {
         this.ramGeneration = ramGeneration;
     }
 
@@ -21,8 +21,7 @@ public class RamCpuCompatibility {
         return cpuId;
     }
 
-    public void setCpuId(int cpuId) {
+    public void setCpuId(final int cpuId) {
         this.cpuId = cpuId;
     }
-
 }

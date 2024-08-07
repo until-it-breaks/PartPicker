@@ -15,7 +15,8 @@ public class Ban {
     private String description;
     private String assigner;
 
-    public Ban(String bannedUser, LocalDate startingDate, LocalDate endingDate, String description, String assigner) {
+    public Ban(String bannedUser, LocalDate startingDate, LocalDate endingDate,
+            String description, String assigner) {
         this.bannedUser = bannedUser;
         this.startingDate = startingDate;
         this.endingDate = endingDate;
@@ -46,7 +47,10 @@ public class Ban {
     public final class DAO {
         public static void insertBan(final Connection connection, Ban ban) {
         try (
-            var statement = DAOUtils.prepare(connection, Queries.INSERT_BAN, ban.getBannedUser(), ban.getStartingDate(), ban.getEndingDate(), ban.getDescription(), ban.getAssigner());
+            var statement = DAOUtils.prepare(connection, Queries.INSERT_BAN,
+                ban.getBannedUser(), ban.getStartingDate(),
+                ban.getEndingDate(), ban.getDescription(),
+                ban.getAssigner());
         ) {
             statement.executeUpdate();
         } catch (final SQLException e) {

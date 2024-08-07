@@ -132,11 +132,11 @@ public class Controller {
         return model.getReviewsByBuild(buildId);
     }
 
-    public void insertReview(Review review) {
+    public void insertReview(final Review review) {
         model.insertReview(review);
     }
 
-    public void updateReview(Review review) {
+    public void updateReview(final Review review) {
         model.updateReview(review);
     }
 }

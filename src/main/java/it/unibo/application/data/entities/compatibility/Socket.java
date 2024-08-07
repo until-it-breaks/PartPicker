@@ -3,7 +3,7 @@ package it.unibo.application.data.entities.compatibility;
 public class Socket {
     private String socketName;
 
-    public Socket(String socketName) {
+    public Socket(final String socketName) {
         this.socketName = socketName;
     }
 
@@ -11,8 +11,7 @@ public class Socket {
         return socketName;
     }
 
-    public void setSocketName(String socketName) {
+    public void setSocketName(final String socketName) {
         this.socketName = socketName;
     }
-
 }

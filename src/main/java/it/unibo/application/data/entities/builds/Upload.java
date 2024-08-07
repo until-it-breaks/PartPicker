@@ -34,7 +34,9 @@ public class Upload {
     public final class DAO {
         public static void insertUpload(final Connection connection, final Upload upload) {
             try (
-                    var statement = DAOUtils.prepare(connection, Queries.INSERT_UPLOAD, upload.getBuildId(), upload.getUsername(), upload.getLastEditDate());
+                    var statement = DAOUtils.prepare(connection, Queries.INSERT_UPLOAD,
+                        upload.getBuildId(), upload.getUsername(),
+                        upload.getLastEditDate());
                 ) {
                     statement.executeUpdate();
                 } catch (final SQLException e) {
