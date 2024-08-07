@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.unibo.application.data.entities.ban.Ban;
 import it.unibo.application.data.entities.builds.Build;
+import it.unibo.application.data.entities.builds.Review;
 import it.unibo.application.data.entities.components.Case;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Cooler;
@@ -125,5 +126,17 @@ public class Controller {
 
     public void banUser(final Ban ban) {
        model.banUser(ban);
+    }
+
+    public List<Review> getReviewsByBuild(final int buildId) {
+        return model.getReviewsByBuild(buildId);
+    }
+
+    public void insertReview(Review review) {
+        model.insertReview(review);
+    }
+
+    public void updateReview(Review review) {
+        model.updateReview(review);
     }
 }

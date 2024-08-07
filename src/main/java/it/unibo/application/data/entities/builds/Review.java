@@ -1,15 +1,23 @@
 package it.unibo.application.data.entities.builds;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.List;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import it.unibo.application.data.DAOException;
+import it.unibo.application.data.DAOUtils;
+import it.unibo.application.data.Queries;
 
 public class Review {
-    private int buildId;
-    private String username;
-    private int reviewRating;
-    private String comment;
-    private Date lastEditDate;
+    private final int buildId;
+    private final String username;
+    private final int reviewRating;
+    private final String comment;
+    private final LocalDate lastEditDate;
 
-    public Review(int buildId, String username, int reviewRating, String comment, Date lastEditDate) {
+    public Review(final int buildId, final String username, final int reviewRating, final String comment, final LocalDate lastEditDate) {
         this.buildId = buildId;
         this.username = username;
         this.reviewRating = reviewRating;
@@ -21,40 +29,62 @@ public class Review {
         return buildId;
     }
 
-    public void setBuildId(int buildId) {
-        this.buildId = buildId;
-    }
-
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public int getReviewRating() {
         return reviewRating;
     }
 
-    public void setReviewRating(int reviewRating) {
-        this.reviewRating = reviewRating;
-    }
-
     public String getComment() {
         return comment;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public Date getLastEditDate() {
+    public LocalDate getLastEditDate() {
         return lastEditDate;
     }
 
-    public void setLastEditDate(Date lastEditDate) {
-        this.lastEditDate = lastEditDate;
-    }
+    public final class DAO {
 
+        public static List<Review> getReviews(final Connection connection, final int buildId) {
+            try (
+                    var statement = DAOUtils.prepare(connection, Queries.GET_REVIEWS, buildId);
+                    var resultSet = statement.executeQuery();
+                ) {
+                    final List<Review> reviews = new ArrayList<>();
+                    while (resultSet.next()) {
+                        var id = resultSet.getInt("CodiceBuild");
+                        var username = resultSet.getString("Username");
+                        var rating = resultSet.getInt("RatingRecensione");
+                        var comment = resultSet.getString("Commento");
+                        var lastEditDate = resultSet.getDate("DataModificaRecensione").toLocalDate();
+                        reviews.add(new Review(id, username, rating, comment, lastEditDate));
+                    }
+                    return reviews;
+                } catch (final SQLException e) {
+                    throw new DAOException(e);
+            }
+        }
+
+        public static void insertReview(final Connection connection, final Review review) {
+            try (
+                    var statement = DAOUtils.prepare(connection, Queries.INSERT_REVIEW, review.getBuildId(), review.getUsername(), review.getReviewRating(), review.getComment(), review.getLastEditDate());
+                ) {
+                    statement.executeUpdate();
+                } catch (final SQLException e) {
+                    throw new DAOException(e);
+            }
+        }
+
+        public static void updateReview(final Connection connection, final Review review) {
+            try (
+                    var statement = DAOUtils.prepare(connection, Queries.UPDATE_REVIEW, review.getReviewRating(), review.getComment(), review.getLastEditDate(), review.getBuildId(), review.getUsername());
+                ) {
+                    statement.executeUpdate();
+                } catch (final SQLException e) {
+                    throw new DAOException(e);
+            }
+        }
+    }
 }

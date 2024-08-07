@@ -218,4 +218,17 @@ public final class Queries {
         FROM recensioni
         WHERE CodiceBuild = ?
         """;
+
+    public static final String INSERT_REVIEW =
+        """
+        INSERT INTO recensioni (CodiceBuild, Username, RatingRecensione, Commento, DataModificaRecensione)
+        VALUES (?, ?, ?, ?, ?)
+        """;
+
+    public static final String UPDATE_REVIEW =
+        """
+        UPDATE recensioni
+        SET RatingRecensione = ?, Commento = ?, DataModificaRecensione = ?
+        WHERE CodiceBuild = ? AND Username = ?
+        """;
 }

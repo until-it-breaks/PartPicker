@@ -4,6 +4,7 @@ import java.sql.Connection;
 
 import it.unibo.application.data.entities.ban.Ban;
 import it.unibo.application.data.entities.builds.Build;
+import it.unibo.application.data.entities.builds.Review;
 import it.unibo.application.data.entities.components.Case;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Cooler;
@@ -110,5 +111,17 @@ public final class Model {
 
     public void banUser(final Ban ban) {
         Ban.DAO.insertBan(connection, ban);
+    }
+
+    public List<Review> getReviewsByBuild(final int buildId) {
+        return Review.DAO.getReviews(connection, buildId);
+    }
+
+    public void insertReview(Review review) {
+        Review.DAO.insertReview(connection, review);
+    }
+
+    public void updateReview(Review review) {
+        Review.DAO.updateReview(connection, review);
     }
 }
