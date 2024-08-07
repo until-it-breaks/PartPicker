@@ -2,12 +2,18 @@ package it.unibo.application.data.entities.builds;
 
 import java.util.Date;
 
-public class Upload {
-    private int buildId;
-    private String username;
-    private Date lastEditDate;
+import it.unibo.application.data.DAOException;
+import it.unibo.application.data.DAOUtils;
+import it.unibo.application.data.Queries;
+import java.sql.Connection;
+import java.sql.SQLException;
 
-    public Upload(int buildId, String username, Date lastEditDate) {
+public class Upload {
+    private final int buildId;
+    private final String username;
+    private final Date lastEditDate;
+
+    public Upload(final int buildId, final String username, final Date lastEditDate) {
         this.buildId = buildId;
         this.username = username;
         this.lastEditDate = lastEditDate;
@@ -17,24 +23,23 @@ public class Upload {
         return buildId;
     }
 
-    public void setBuildId(int buildId) {
-        this.buildId = buildId;
-    }
-
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public Date getLastEditDate() {
         return lastEditDate;
     }
-
-    public void setLastEditDate(Date lastEditDate) {
-        this.lastEditDate = lastEditDate;
-    }
     
+    public final class DAO {
+        public static void insertUpload(final Connection connection, final Upload upload) {
+            try (
+                    var statement = DAOUtils.prepare(connection, Queries.INSERT_UPLOAD, upload.getBuildId(), upload.getUsername(), upload.getLastEditDate());
+                ) {
+                    statement.executeUpdate();
+                } catch (final SQLException e) {
+                    throw new DAOException(e);
+            }
+        }
+    }
 }

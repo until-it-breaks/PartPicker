@@ -1,5 +1,11 @@
 package it.unibo.application.data.entities.builds;
 
+import it.unibo.application.data.DAOException;
+import it.unibo.application.data.DAOUtils;
+import it.unibo.application.data.Queries;
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class StorageUsage {
     private int buildId;
     private int storageId;
@@ -15,24 +21,23 @@ public class StorageUsage {
         return buildId;
     }
 
-    public void setBuildId(int buildId) {
-        this.buildId = buildId;
-    }
-
     public int getStorageId() {
         return storageId;
-    }
-
-    public void setStorageId(int storageId) {
-        this.storageId = storageId;
     }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public final class DAO {
+        public static void insertStorageUsage(final Connection connection, final StorageUsage storageUsage) {
+            try (
+                    var statement = DAOUtils.prepare(connection, Queries.INSERT_STORAGE_USAGE, storageUsage.getBuildId(), storageUsage.getStorageId(), storageUsage.getQuantity());
+                ) {
+                    statement.executeUpdate();
+                } catch (final SQLException e) {
+                    throw new DAOException(e);
+            }
+        }
     }
-    
 }

@@ -231,4 +231,28 @@ public final class Queries {
         SET RatingRecensione = ?, Commento = ?, DataModificaRecensione = ?
         WHERE CodiceBuild = ? AND Username = ?
         """;
+
+    public static final String INSERT_UPLOAD =
+        """
+        INSERT INTO pubblicazioni (CodiceBuild, Username, DataModificaBuild)
+        VALUES (?, ?, ?)
+        """;
+
+    public static final String INSERT_GPU_USAGE =
+        """
+        INSERT INTO usiGpu (CodiceBuild, CodiceGpu, Quantita)
+        VALUES (?, ?, ?)
+        """;
+    
+    public static final String INSERT_RAM_USAGE =
+        """
+        INSERT INTO usiRam (CodiceBuild, CodiceRam, Quantita)
+        VALUES (?, ?, ?)
+        """;
+
+    public static final String INSERT_STORAGE_USAGE =
+        """
+        INSERT INTO usiStorage (CodiceBuild, CodiceStorage, Quantita)
+        VALUES (?, ?, ?)
+        """;
 }
