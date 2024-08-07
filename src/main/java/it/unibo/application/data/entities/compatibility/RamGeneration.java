@@ -1,4 +1,4 @@
-package it.unibo.application.data.entities;
+package it.unibo.application.data.entities.compatibility;
 
 public class RamGeneration {
     private String ramGeneration;

@@ -1,13 +1,13 @@
-package it.unibo.application.data.entities;
+package it.unibo.application.data.entities.builds;
 
-public class StorageUsage {
+public class RamUsage {
     private int buildId;
-    private int storageId;
+    private int ramId;
     private int quantity;
 
-    public StorageUsage(int buildId, int storageId, int quantity) {
+    public RamUsage(int buildId, int ramId, int quantity) {
         this.buildId = buildId;
-        this.storageId = storageId;
+        this.ramId = ramId;
         this.quantity = quantity;
     }
 
@@ -19,12 +19,12 @@ public class StorageUsage {
         this.buildId = buildId;
     }
 
-    public int getStorageId() {
-        return storageId;
+    public int getRamId() {
+        return ramId;
     }
 
-    public void setStorageId(int storageId) {
-        this.storageId = storageId;
+    public void setRamId(int ramId) {
+        this.ramId = ramId;
     }
 
     public int getQuantity() {

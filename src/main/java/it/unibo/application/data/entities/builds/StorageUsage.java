@@ -1,13 +1,13 @@
-package it.unibo.application.data.entities;
+package it.unibo.application.data.entities.builds;
 
-public class GpuUsage {
+public class StorageUsage {
     private int buildId;
-    private int gpuId;
+    private int storageId;
     private int quantity;
 
-    public GpuUsage(int buildId, int gpuId, int quantity) {
+    public StorageUsage(int buildId, int storageId, int quantity) {
         this.buildId = buildId;
-        this.gpuId = gpuId;
+        this.storageId = storageId;
         this.quantity = quantity;
     }
 
@@ -19,12 +19,12 @@ public class GpuUsage {
         this.buildId = buildId;
     }
 
-    public int getGpuId() {
-        return gpuId;
+    public int getStorageId() {
+        return storageId;
     }
 
-    public void setGpuId(int gpuId) {
-        this.gpuId = gpuId;
+    public void setStorageId(int storageId) {
+        this.storageId = storageId;
     }
 
     public int getQuantity() {

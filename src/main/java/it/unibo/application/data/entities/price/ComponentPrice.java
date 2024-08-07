@@ -1,4 +1,4 @@
-package it.unibo.application.data.entities;
+package it.unibo.application.data.entities.price;
 
 import java.util.Date;
 

@@ -1,7 +1,7 @@
 package it.unibo.application.view;
 
 import it.unibo.application.controller.Controller;
-import it.unibo.application.data.entities.BaseInfo;
+import it.unibo.application.data.entities.components.BaseInfo;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.enums.Specs;
 

@@ -3,7 +3,6 @@ package it.unibo.application.data.entities.components;
 import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
-import it.unibo.application.data.entities.BaseInfo;
 import it.unibo.application.data.entities.enums.Specs;
 
 import java.sql.Connection;

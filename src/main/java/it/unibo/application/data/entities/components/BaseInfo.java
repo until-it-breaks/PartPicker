@@ -1,4 +1,4 @@
-package it.unibo.application.data.entities;
+package it.unibo.application.data.entities.components;
 
 public class BaseInfo {
     private final int id;
