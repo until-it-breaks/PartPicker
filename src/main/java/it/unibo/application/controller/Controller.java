@@ -139,4 +139,8 @@ public class Controller {
     public void updateReview(final Review review) {
         model.updateReview(review);
     }
+
+    public int getLatestBuildId() {
+        return model.getLatestBuildId();
+    }
 }

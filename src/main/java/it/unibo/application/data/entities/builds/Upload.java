@@ -1,6 +1,6 @@
 package it.unibo.application.data.entities.builds;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
@@ -11,9 +11,9 @@ import java.sql.SQLException;
 public class Upload {
     private final int buildId;
     private final String username;
-    private final Date lastEditDate;
+    private final LocalDate lastEditDate;
 
-    public Upload(final int buildId, final String username, final Date lastEditDate) {
+    public Upload(final int buildId, final String username, final LocalDate lastEditDate) {
         this.buildId = buildId;
         this.username = username;
         this.lastEditDate = lastEditDate;
@@ -27,7 +27,7 @@ public class Upload {
         return username;
     }
 
-    public Date getLastEditDate() {
+    public LocalDate getLastEditDate() {
         return lastEditDate;
     }
     

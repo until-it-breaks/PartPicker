@@ -124,4 +124,8 @@ public final class Model {
     public void updateReview(final Review review) {
         Review.DAO.updateReview(connection, review);
     }
+
+    public int getLatestBuildId() {
+        return Build.DAO.getLatestBuildId(connection);
+    }
 }

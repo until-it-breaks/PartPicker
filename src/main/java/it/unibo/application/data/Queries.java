@@ -255,4 +255,13 @@ public final class Queries {
         INSERT INTO usiStorage (CodiceBuild, CodiceStorage, Quantita)
         VALUES (?, ?, ?)
         """;
+    public static final String GET_LATEST_BUILD_ID =
+        """
+            SELECT MAX(CodiceBuild) FROM build;
+        """;
+    public static final String INSERT_BUILD = 
+    """
+        INSERT INTO build (CodiceCooler, CodiceCase, CodicePsu, CodiceCpu, CodiceMotherboard)
+        VALUES (?, ?, ?, ?, ?);
+    """;
 }

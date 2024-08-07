@@ -11,11 +11,15 @@ import it.unibo.application.data.entities.components.Motherboard;
 import it.unibo.application.data.entities.components.Psu;
 import it.unibo.application.data.entities.components.Ram;
 import it.unibo.application.data.entities.components.Storage;
+import it.unibo.application.data.entities.login.User;
 
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class Build {
     private final int buildId;
@@ -144,6 +148,89 @@ public class Build {
                     return null;
                 } catch (final SQLException e) {
                     throw new DAOException(e);
+            }
+        }
+
+        public static int getLatestBuildId(final Connection connection) {
+            try (
+                    var statement = DAOUtils.prepare(connection, Queries.GET_LATEST_BUILD_ID);
+                    var resultSet = statement.executeQuery();
+                ) {
+                    if (resultSet.next()) {
+                        return resultSet.getInt("CodiceBuild");
+                    }
+                    throw new IllegalStateException();
+                } catch (final SQLException e) {
+                    throw new DAOException(e);
+            }
+        }
+
+        public static void insertBuild(final Connection connection, final Build build, final User user) {
+            try {
+                connection.setAutoCommit(false);
+        
+                try (var statement = DAOUtils.prepare(connection, Queries.INSERT_BUILD, 
+                        build.getBuildId(),
+                        build.getCooler().getBaseInfo().getId(),
+                        build.get_case().getBaseInfo().getId(),
+                        build.getPsu().getBaseInfo().getId(),
+                        build.getCpu().getBaseInfo().getId(),
+                        build.getMotherboard().getBaseInfo().getId())) {
+                    statement.executeUpdate();
+                }
+        
+                Upload.DAO.insertUpload(connection, new Upload(build.getBuildId(), user.getUsername(), LocalDate.now()));
+
+                final Map<Integer, Integer> gpuUsageMap = new HashMap<>();
+                for (final Gpu gpu : build.getGpus()) {
+                    gpuUsageMap.put(gpu.getBaseInfo().getId(), gpuUsageMap.getOrDefault(gpu.getBaseInfo().getId(), 0) + 1);
+                }
+        
+                for (final Map.Entry<Integer, Integer> entry : gpuUsageMap.entrySet()) {
+                    final int gpuId = entry.getKey();
+                    final int quantity = entry.getValue();
+                    final GpuUsage gpuUsage = new GpuUsage(build.getBuildId(), gpuId, quantity);
+                    GpuUsage.DAO.insertGpuUsage(connection, gpuUsage);
+                }
+        
+                final Map<Integer, Integer> ramUsageMap = new HashMap<>();
+                for (final Ram ram : build.getRams()) {
+                    ramUsageMap.put(ram.getBaseInfo().getId(), ramUsageMap.getOrDefault(ram.getBaseInfo().getId(), 0) + 1);
+                }
+        
+                for (final Map.Entry<Integer, Integer> entry : ramUsageMap.entrySet()) {
+                    final int ramId = entry.getKey();
+                    final int quantity = entry.getValue();
+                    final RamUsage ramUsage = new RamUsage(build.getBuildId(), ramId, quantity);
+                    RamUsage.DAO.insertRamUsage(connection, ramUsage);
+                }
+        
+                final Map<Integer, Integer> storageUsageMap = new HashMap<>();
+                for (final Storage storage : build.getStorage()) {
+                    storageUsageMap.put(storage.getBaseInfo().getId(), storageUsageMap.getOrDefault(storage.getBaseInfo().getId(), 0) + 1);
+                }
+        
+                for (final Map.Entry<Integer, Integer> entry : storageUsageMap.entrySet()) {
+                    final int storageId = entry.getKey();
+                    final int quantity = entry.getValue();
+                    final StorageUsage storageUsage = new StorageUsage(build.getBuildId(), storageId, quantity);
+                    StorageUsage.DAO.insertStorageUsage(connection, storageUsage);
+                }
+
+                connection.commit();
+            } catch (final SQLException e) {
+                try {
+                    connection.rollback();
+                } catch (final SQLException rollbackEx) {
+                    throw new DAOException(rollbackEx);
+                }
+                throw new DAOException(e);
+            } finally {
+                try {
+                    connection.setAutoCommit(true);
+                } catch (final SQLException ex) {
+                    throw new DAOException(ex);
+                }
             }
         }
     }
