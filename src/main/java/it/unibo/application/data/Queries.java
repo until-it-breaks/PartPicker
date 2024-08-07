@@ -211,4 +211,11 @@ public final class Queries {
         INSERT INTO ban (UsernameAssegnatario, DataInizioBan, DataFineBan, DescrizioneBan, UsernameAssegnatore)
         VALUES (?, ?, ?, ?, ?)
         """;
+
+    public static final String GET_REVIEWS =
+        """
+        SELECT *
+        FROM recensioni
+        WHERE CodiceBuild = ?
+        """;
 }
