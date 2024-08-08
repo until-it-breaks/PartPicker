@@ -265,4 +265,25 @@ public final class Queries {
         INSERT INTO build (CodiceBuild, CodiceCooler, CodiceCase, CodicePsu, CodiceCpu, CodiceMotherboard)
         VALUES (?, ?, ?, ?, ?, ?);
     """;
+    public static final String FIND_RECENT_LOWEST_PRICE =
+    """
+        SELECT *
+        FROM PrezziComponenti p
+        WHERE p.CodiceComponente = ?
+        AND p.DataRilevamentoPrezzo = (
+            SELECT MAX(DataRilevamentoPrezzo)
+            FROM PrezziComponenti
+            WHERE CodiceComponente = p.CodiceComponente
+        )
+        AND p.PrezzoComponente = (
+            SELECT MIN(PrezzoComponente)
+            FROM PrezziComponenti
+            WHERE CodiceComponente = p.CodiceComponente
+                AND DataRilevamentoPrezzo = (
+                    SELECT MAX(DataRilevamentoPrezzo)
+                    FROM PrezziComponenti
+                    WHERE CodiceComponente = p.CodiceComponente
+                )
+        );
+    """;
 }

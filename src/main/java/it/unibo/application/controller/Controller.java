@@ -18,6 +18,7 @@ import it.unibo.application.data.entities.enums.Part;
 import it.unibo.application.data.entities.enums.State;
 import it.unibo.application.data.entities.login.User;
 import it.unibo.application.data.entities.login.UserDetails;
+import it.unibo.application.data.entities.price.ComponentPrice;
 import it.unibo.application.model.Model;
 import it.unibo.application.model.states.AppStateController;
 import it.unibo.application.view.View;
@@ -146,5 +147,9 @@ public class Controller {
 
     public void insertBuild(Build build, User user) {
         model.insertBuild(build, user);
+    }
+
+    public ComponentPrice getScrapedPrice(final int componentId) {
+        return model.getScrapedPrice(componentId);
     }
 }

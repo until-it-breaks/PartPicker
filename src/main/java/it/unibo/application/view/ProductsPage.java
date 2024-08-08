@@ -4,6 +4,7 @@ import it.unibo.application.controller.Controller;
 import it.unibo.application.data.entities.components.BaseInfo;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.enums.Specs;
+import it.unibo.application.data.entities.price.ComponentPrice;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,7 +17,10 @@ import java.util.ArrayList;
 
 public class ProductsPage extends JPanel {
 
+    private final Controller controller;
+
     public ProductsPage(final Controller controller) {
+        this.controller = controller;
         this.setLayout(new BorderLayout());
         this.add(new TopBar(controller), BorderLayout.NORTH);
 
@@ -81,24 +85,18 @@ public class ProductsPage extends JPanel {
 
     private void showComponentDetails(final Component component) {
         final BaseInfo baseInfo = component.getBaseInfo();
-        final Map<Specs, String> specs = component.getSpecificAttributes();
+
+        final ComponentPrice scrapedPrice = controller.getScrapedPrice(baseInfo.getId());
 
         final StringBuilder details = new StringBuilder();
-        details.append("ID: ").append(baseInfo.getId()).append("\n");
-        details.append("Name: ").append(baseInfo.getName()).append("\n");
-        details.append("Launch Year: ").append(baseInfo.getLaunchYear()).append("\n");
-        details.append("MSRP: ").append(baseInfo.getMsrp()).append(" €\n");
-        details.append("Manufacturer: ").append(baseInfo.getManufacturer()).append("\n");
 
-        for (final Map.Entry<Specs, String> entry : specs.entrySet()) {
-            final Specs spec = entry.getKey();
-            final String value = entry.getValue();
-            final String suffix = spec.getSuffix();
-            details.append(spec.getFieldName()).append(": ").append(value);
-            if (suffix != null && !suffix.isEmpty()) {
-                details.append(" ").append(suffix);
-            }
-            details.append("\n");
+        if (scrapedPrice != null) {
+            details.append("\nScraped Price:\n");
+            details.append("Reseller: ").append(scrapedPrice.getResellerName()).append("\n");
+            details.append("Date: ").append(scrapedPrice.getScrapeDate()).append("\n");
+            details.append("Price: ").append(scrapedPrice.getComponentPrice()).append(" €");
+        } else {
+            details.append("\nScraped Price: Not available");
         }
 
         JOptionPane.showMessageDialog(

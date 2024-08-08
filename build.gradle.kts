@@ -20,6 +20,7 @@ repositories { // Where to search for dependencies
 
 dependencies {
     implementation("mysql:mysql-connector-java:8.0.29")
+    implementation("org.knowm.xchart:xchart:3.8.8")
 }
 
 application {

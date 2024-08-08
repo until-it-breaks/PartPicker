@@ -17,6 +17,7 @@ import it.unibo.application.data.entities.components.Storage;
 import it.unibo.application.data.entities.enums.Part;
 import it.unibo.application.data.entities.login.User;
 import it.unibo.application.data.entities.login.UserDetails;
+import it.unibo.application.data.entities.price.ComponentPrice;
 import it.unibo.application.model.login.LoginService;
 import java.util.List;
 
@@ -131,5 +132,9 @@ public final class Model {
 
     public void insertBuild(Build build, User user) {
         Build.DAO.insertBuild(connection, build, user);
+    }
+
+    public ComponentPrice getScrapedPrice(final int componentId) {
+        return ComponentPrice.DAO.getLatestLowestPriceById(connection, componentId);
     }
 }
