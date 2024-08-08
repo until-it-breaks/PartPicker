@@ -9,4 +9,6 @@ public interface Component {
     BaseInfo getBaseInfo();
 
     Map<Specs, String> getSpecificAttributes();
+
+    Map<String, String> getFormattedAttributes();
 }

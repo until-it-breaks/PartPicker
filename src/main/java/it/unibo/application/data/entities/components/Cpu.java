@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Collections;
 
 public class Cpu implements Component {
     private final BaseInfo baseInfo;
@@ -29,6 +31,23 @@ public class Cpu implements Component {
 
     public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
+    }
+
+    @Override
+    public String toString() {
+        return baseInfo.getName();
+    }
+
+    @Override
+    public Map<String, String> getFormattedAttributes() {
+        final Map<String, String> map = new LinkedHashMap<>();
+        map.put("CPU Family", specificAttributes.get(Specs.CPU_FAMILY).toString());
+        map.put("Core Count", specificAttributes.get(Specs.CPU_CORE_COUNT).toString());
+        map.put("Frequency", specificAttributes.get(Specs.CPU_FREQUENCY) + " GHz");
+        map.put("TDP", specificAttributes.get(Specs.CPU_TDP) + "w");
+        map.put("SMT", specificAttributes.get(Specs.CPU_SMT).toString());
+        map.put("Socket", specificAttributes.get(Specs.CPU_SOCKET_NAME).toString());
+        return Collections.unmodifiableMap(map);
     }
 
     public final class DAO {

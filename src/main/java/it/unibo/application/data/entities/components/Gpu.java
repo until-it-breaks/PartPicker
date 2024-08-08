@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Collections;
 
 public class Gpu implements Component {
     private final BaseInfo baseInfo;
@@ -29,6 +31,22 @@ public class Gpu implements Component {
 
     public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
+    }
+
+    @Override
+    public String toString() {
+        return baseInfo.getName();
+    }
+
+    @Override
+    public Map<String, String> getFormattedAttributes() {
+        final Map<String, String> map = new LinkedHashMap<>();
+        map.put("GPU Family", specificAttributes.get(Specs.GPU_FAMILY).toString());
+        map.put("Memory Type", specificAttributes.get(Specs.GPU_MEMORY_TYPE).toString());
+        map.put("Memory Amount", specificAttributes.get(Specs.GPU_MEMORY_AMOUNT) + " GB");
+        map.put("Frequency", specificAttributes.get(Specs.GPU_FREQUENCY) + " MHz");
+        map.put("TGP", specificAttributes.get(Specs.GPU_TGP)+ "w");
+        return Collections.unmodifiableMap(map);
     }
 
     public final class DAO {

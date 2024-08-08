@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Collections;
 
 public class Ram implements Component {
     private final BaseInfo baseInfo;
@@ -29,6 +31,21 @@ public class Ram implements Component {
 
     public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
+    }
+
+    @Override
+    public String toString() {
+        return baseInfo.getName();
+    }
+
+    @Override
+    public Map<String, String> getFormattedAttributes() {
+        final Map<String, String> map = new LinkedHashMap<>();
+        map.put("Frequency", specificAttributes.get(Specs.RAM_FREQUENCY) + " MHz");
+        map.put("Capacity", specificAttributes.get(Specs.RAM_CAPACITY) + " GB");
+        map.put("Latency", specificAttributes.get(Specs.RAM_LATENCY).toString());
+        map.put("ECC", specificAttributes.get(Specs.RAM_ECC));
+        return Collections.unmodifiableMap(map);
     }
 
     public final class DAO {

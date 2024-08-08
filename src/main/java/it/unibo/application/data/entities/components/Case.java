@@ -12,23 +12,37 @@ import java.util.List;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Collections;
 import java.util.Map;
 
 public class Case implements Component {
-    private final BaseInfo baseInformation;
+    private final BaseInfo baseInfo;
     private final Map<Specs, String> specificAttributes;
 
     public Case(final BaseInfo baseInformation, final Map<Specs, String> specificAttributes) {
-        this.baseInformation = baseInformation;
+        this.baseInfo = baseInformation;
         this.specificAttributes = specificAttributes;
     }
 
     public BaseInfo getBaseInfo() {
-        return baseInformation;
+        return baseInfo;
     }
 
     public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
+    }
+
+    @Override
+    public String toString() {
+        return baseInfo.getName();
+    }
+
+    @Override
+    public Map<String, String> getFormattedAttributes() {
+        final Map<String, String> map = new LinkedHashMap<>();
+        map.put("Form Factor", specificAttributes.get(Specs.CASE_FORM_FACTOR).toString());
+        return Collections.unmodifiableMap(map);
     }
 
     public final class DAO {

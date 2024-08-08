@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Collections;
 
 public class Storage implements Component {
     private final BaseInfo baseInfo;
@@ -28,6 +30,21 @@ public class Storage implements Component {
 
     public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
+    }
+
+    @Override
+    public String toString() {
+        return baseInfo.getName();
+    }
+
+    @Override
+    public Map<String, String> getFormattedAttributes() {
+        final Map<String, String> map = new LinkedHashMap<>();
+        map.put("Capacity", specificAttributes.get(Specs.STORAGE_CAPACITY) + " GB");
+        map.put("Storage RPM", specificAttributes.get(Specs.STORAGE_RPM));
+        map.put("Cache Amount", specificAttributes.get(Specs.STORAGE_CACHE) + " MB");
+        map.put("Storage Type", specificAttributes.get(Specs.STORAGE_TYPE).toString());
+        return Collections.unmodifiableMap(map);
     }
 
     public final class DAO {

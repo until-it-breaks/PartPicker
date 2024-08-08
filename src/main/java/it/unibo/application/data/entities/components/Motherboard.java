@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Collections;
 
 public class Motherboard implements Component {
     private final BaseInfo baseInfo;
@@ -28,6 +30,24 @@ public class Motherboard implements Component {
 
     public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
+    }
+
+    @Override
+    public String toString() {
+        return baseInfo.getName();
+    }
+
+    @Override
+    public Map<String, String> getFormattedAttributes() {
+        final Map<String, String> map = new LinkedHashMap<>();
+        map.put("Form Factor", specificAttributes.get(Specs.MOTHERBOARD_FORM_FACTOR).toString());
+        map.put("Chipset", specificAttributes.get(Specs.MOTHERBOARD_CHIPSET).toString());
+        map.put("Ram Slots", specificAttributes.get(Specs.MOTHERBOARD_RAM_SLOTS).toString());
+        map.put("GPU Slots", specificAttributes.get(Specs.MOTHERBOARD_GPU_SLOTS).toString());
+        map.put("WiFi", specificAttributes.get(Specs.MOTHERBOARD_WIFI).toString());
+        map.put("Socket", specificAttributes.get(Specs.MOTHERBOARD_SOCKET).toString());
+        map.put("Supported RAM", specificAttributes.get(Specs.MOTHERBOARD_RAM_GEN).toString());
+        return Collections.unmodifiableMap(map);
     }
 
     public final class DAO {

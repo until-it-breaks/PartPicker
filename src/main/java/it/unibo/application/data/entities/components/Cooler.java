@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.LinkedHashMap;
+import java.util.Collections;
 
 public class Cooler implements Component {
     private final BaseInfo baseInfo;
@@ -29,6 +31,20 @@ public class Cooler implements Component {
 
     public Map<Specs, String> getSpecificAttributes() {
         return specificAttributes;
+    }
+
+    @Override
+    public String toString() {
+        return baseInfo.getName();
+    }
+
+    @Override
+    public Map<String, String> getFormattedAttributes() {
+        final Map<String, String> map = new LinkedHashMap<>();
+        map.put("Cooler Fan RPM", specificAttributes.get(Specs.COOLER_RPM));
+        map.put("Noise Level", specificAttributes.get(Specs.COOLER_NOISE_LEVEL) + " dB");
+        map.put("Cooler Type", specificAttributes.get(Specs.COOLER_TYPE).toString());
+        return Collections.unmodifiableMap(map);
     }
 
     public final class DAO {

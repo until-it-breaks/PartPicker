@@ -3,230 +3,410 @@ package it.unibo.application.view;
 import it.unibo.application.controller.Controller;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.enums.Part;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
+import javax.swing.border.TitledBorder;
+import java.awt.event.*;
 
 public class BuilderPage extends JPanel {
     private final Controller controller;
-    private final JLabel totalPriceLabel;
-    private final Map<Part, List<JComboBox<String>>> comboBoxes = new HashMap<>();
-    private final Map<Part, List<JLabel>> priceLabels = new HashMap<>();
-    private final JPanel middleSection;
+    private final JPanel mainPanel;
+    private final JPanel cpuPanel;
+    private final JPanel coolerPanel;
+    private final JPanel casePanel;
+    private final JPanel psuPanel;
+    private final JPanel motherboardPanel;
     private final JPanel gpuPanel;
     private final JPanel ramPanel;
     private final JPanel storagePanel;
-    private final Map<Part, List<JButton>> viewDetailsButtons = new HashMap<>();
+    private final JPanel bottomPanel;
+    private final JLabel totalPriceLabel;
+    private final JButton uploadBuildButton;
+
+    private int cpuId;
+    private int coolerId;
+    private int caseId;
+    private int psuId;
+    private int motherboardId;
+    private List<Integer> gpuIds = new ArrayList<>();
+    private List<Integer> ramIds = new ArrayList<>();
+    private List<Integer> storageIds = new ArrayList<>();
+
+    // Map to track price labels for each panel
+    private final Map<JComboBox<Component>, JLabel> comboBoxToPriceLabelMap = new HashMap<>();
+    private final Map<JPanel, List<Component>> panelToComponentsMap = new HashMap<>();
 
     public BuilderPage(final Controller controller) {
         this.controller = controller;
         this.setLayout(new BorderLayout());
+
         this.add(new TopBar(controller), BorderLayout.NORTH);
 
-        middleSection = new JPanel();
-        middleSection.setLayout(new BoxLayout(middleSection, BoxLayout.Y_AXIS));
+        this.mainPanel = new JPanel();
+        this.mainPanel.setLayout(new GridLayout(4, 2, 5, 5));
 
-        JPanel headerRow = new JPanel(new GridLayout(1, 4));
-        headerRow.add(new JLabel("Component"));
-        headerRow.add(new JLabel("Selection"));
-        headerRow.add(new JLabel("Price"));
-        headerRow.add(new JLabel("Actions"));
-        middleSection.add(headerRow);
+        final List<Component> cpus = controller.getComponents(Part.CPU);
+        final List<Component> coolers = controller.getComponents(Part.COOLER);
+        final List<Component> cases = controller.getComponents(Part.CASE);
+        final List<Component> psus = controller.getComponents(Part.PSU);
+        final List<Component> motherboards = controller.getComponents(Part.MOTHERBOARD);
+        final List<Component> gpus = controller.getComponents(Part.GPU);
+        final List<Component> rams = controller.getComponents(Part.RAM);
+        final List<Component> storage = controller.getComponents(Part.STORAGE);
 
-        for (final Part part : Part.values()) {
-            if (part != Part.GPU && part != Part.RAM && part != Part.STORAGE) {
-                addPartRow(part, middleSection);
+        this.cpuPanel = createPanel("CPU", cpus);
+        this.coolerPanel = createPanel("Cooler", coolers);
+        this.casePanel = createPanel("Case", cases);
+        this.psuPanel = createPanel("PSU", psus);
+        this.motherboardPanel = createPanel("Motherboard", motherboards);
+        this.gpuPanel = createScrollablePanelWithAddRemove("GPU", gpus);
+        this.ramPanel = createScrollablePanelWithAddRemove("RAM", rams);
+        this.storagePanel = createScrollablePanelWithAddRemove("Storage", storage);
+
+        this.mainPanel.add(cpuPanel);
+        this.mainPanel.add(coolerPanel);
+        this.mainPanel.add(casePanel);
+        this.mainPanel.add(psuPanel);
+        this.mainPanel.add(motherboardPanel);
+        this.mainPanel.add(gpuPanel);
+        this.mainPanel.add(ramPanel);
+        this.mainPanel.add(storagePanel);
+
+        this.add(mainPanel, BorderLayout.CENTER);
+
+        this.bottomPanel = new JPanel();
+        this.bottomPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        this.totalPriceLabel = new JLabel("Total Price: €0.00");
+        this.bottomPanel.add(totalPriceLabel);
+
+        this.uploadBuildButton = new JButton("Upload Build");
+
+        uploadBuildButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                gpuIds.clear();
+                ramIds.clear();
+                storageIds.clear();
+        
+                cpuId = getSelectedComponentId(cpuPanel);
+                coolerId = getSelectedComponentId(coolerPanel);
+                caseId = getSelectedComponentId(casePanel);
+                psuId = getSelectedComponentId(psuPanel);
+                motherboardId = getSelectedComponentId(motherboardPanel);
+        
+                gpuIds = getSelectedComponentIds(gpuPanel);
+                ramIds = getSelectedComponentIds(ramPanel);
+                storageIds = getSelectedComponentIds(storagePanel);
+        
+                System.out.println("CPU ID: " + cpuId);
+                System.out.println("Cooler ID: " + coolerId);
+                System.out.println("Case ID: " + caseId);
+                System.out.println("PSU ID: " + psuId);
+                System.out.println("Motherboard ID: " + motherboardId);
+                System.out.println("GPU IDs: " + gpuIds);
+                System.out.println("RAM IDs: " + ramIds);
+                System.out.println("Storage IDs: " + storageIds);
             }
-        }
+        });
 
-        // Initialize special panels for GPU, RAM, and STORAGE
-        gpuPanel = new JPanel();
-        gpuPanel.setLayout(new BoxLayout(gpuPanel, BoxLayout.Y_AXIS));
-        middleSection.add(gpuPanel);
-
-        ramPanel = new JPanel();
-        ramPanel.setLayout(new BoxLayout(ramPanel, BoxLayout.Y_AXIS));
-        middleSection.add(ramPanel);
-
-        storagePanel = new JPanel();
-        storagePanel.setLayout(new BoxLayout(storagePanel, BoxLayout.Y_AXIS));
-        middleSection.add(storagePanel);
-
-        for (final Part part : Part.values()) {
-            if (part == Part.GPU || part == Part.RAM || part == Part.STORAGE) {
-                addPartRow(part, getPanelForPart(part));
-            }
-        }
-
-        this.add(new JScrollPane(middleSection), BorderLayout.CENTER);
-
-        final JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        totalPriceLabel = new JLabel("Total: €");
-        bottomPanel.add(totalPriceLabel);
-
-        final JButton saveButton = new JButton("Save Build");
-        bottomPanel.add(saveButton);
-
+        this.bottomPanel.add(uploadBuildButton);
         this.add(bottomPanel, BorderLayout.SOUTH);
+
+        updateTotalPrice();
     }
 
-    private void addPartRow(final Part part, JPanel parentPanel) {
-        final List<Component> components = controller.getComponents(part);
+    private JPanel createPanel(final String title, final List<Component> components) {
+        final JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
 
-        JPanel partRow = new JPanel(new GridLayout(1, 4));
-        JLabel partLabel = new JLabel(part.toString().toUpperCase());
-        final JComboBox<String> comboBox = new JComboBox<>();
-        comboBox.addItem("Select a " + part.toString());
+        final TitledBorder border = BorderFactory.createTitledBorder(title);
+        panel.setBorder(border);
+
+        final JPanel topPanel = new JPanel();
+        topPanel.setLayout(new GridBagLayout());
+        final GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(2, 2, 2, 2);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        final JComboBox<Component> comboBox = new JComboBox<>();
         for (final Component component : components) {
-            comboBox.addItem(component.getBaseInfo().getName());
+            comboBox.addItem(component);
         }
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.5;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        topPanel.add(comboBox, gbc);
 
-        JLabel priceLabel = new JLabel();
-        final JButton viewDetailsButton = new JButton("View Details");
-        viewDetailsButton.setEnabled(false);
+        final JLabel priceLabel = new JLabel("Price: €0.00");
+        gbc.gridx = 1;
+        gbc.weightx = 0.2;
+        topPanel.add(priceLabel, gbc);
+
+        final JButton detailsButton = new JButton("View Details");
+        gbc.gridx = 2;
+        gbc.weightx = 0.3;
+        topPanel.add(detailsButton, gbc);
+
+        panel.add(topPanel, BorderLayout.NORTH);
+
+        comboBoxToPriceLabelMap.put(comboBox, priceLabel);
+        panelToComponentsMap.put(panel, components);
 
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                final int selectedIndex = comboBox.getSelectedIndex();
-                if (selectedIndex > 0) {
-                    final Component selectedComponent = components.get(selectedIndex - 1);
-                    priceLabel.setText("€" + selectedComponent.getBaseInfo().getMsrp());
-                    viewDetailsButton.setEnabled(true);
-                    if (part == Part.GPU || part == Part.RAM || part == Part.STORAGE) {
-                        addPartRow(part, getPanelForPart(part));  // Add to respective panel
-                    }
-                } else {
-                    priceLabel.setText("");
-                    viewDetailsButton.setEnabled(false);
-                    if (part == Part.GPU || part == Part.RAM || part == Part.STORAGE) {
-                        removePartRow(part, comboBox, getPanelForPart(part));
-                    }
+                @SuppressWarnings("unchecked")
+                final
+                JComboBox<Component> sourceComboBox = (JComboBox<Component>) e.getSource();
+                final Component selectedComponent = (Component) sourceComboBox.getSelectedItem();
+                if (selectedComponent != null) {
+                    final double price = controller.getScrapedPrice(selectedComponent.getBaseInfo().getId()).getComponentPrice();
+                    final JLabel correspondingPriceLabel = comboBoxToPriceLabelMap.get(sourceComboBox);
+                    correspondingPriceLabel.setText("Price: €" + String.format("%.2f", price));
+                    updateTotalPrice();
                 }
+            }
+        });
+
+        detailsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                final Component selectedComponent = (Component) comboBox.getSelectedItem();
+                if (selectedComponent != null) {
+                    showComponentDetails(selectedComponent);
+                }
+            }
+        });
+
+        final Component initialComponent = (Component) comboBox.getSelectedItem();
+        if (initialComponent != null) {
+            final double initialPrice = controller.getScrapedPrice(initialComponent.getBaseInfo().getId()).getComponentPrice();
+            priceLabel.setText("Price: €" + String.format("%.2f", initialPrice));
+        }
+
+        return panel;
+    }
+
+    private JPanel createScrollablePanelWithAddRemove(final String title, final List<Component> components) {
+        final JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        final TitledBorder border = BorderFactory.createTitledBorder(title);
+        panel.setBorder(border);
+
+        final JPanel dynamicPanel = new JPanel();
+        dynamicPanel.setLayout(new GridBagLayout());
+
+        final JScrollPane scrollPane = new JScrollPane(dynamicPanel);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        panel.add(scrollPane, BorderLayout.CENTER);
+
+        final JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        final JButton addButton = new JButton("Add");
+        buttonPanel.add(addButton);
+
+        final JButton removeButton = new JButton("Remove");
+        buttonPanel.add(removeButton);
+
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        addComponentSelection(dynamicPanel, components);
+
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                addComponentSelection(dynamicPanel, components);
                 updateTotalPrice();
             }
         });
 
-        viewDetailsButton.addActionListener(new ActionListener() {
+        removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                controller.setDesiredPart(part);
-                final int selectedIndex = comboBox.getSelectedIndex();
-                if (selectedIndex > 0) {
-                    final Component selectedComponent = components.get(selectedIndex - 1);
-                    showPartDetails(selectedComponent);
+                removeComponentSelection(dynamicPanel);
+                updateTotalPrice();
+            }
+        });
+        return panel;
+    }
+
+    private void addComponentSelection(final JPanel dynamicPanel, final List<Component> components) {
+        final JPanel newPanel = new JPanel();
+        newPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+        final JComboBox<Component> comboBox = new JComboBox<>();
+        for (final Component component : components) {
+            comboBox.addItem(component);
+        }
+        newPanel.add(comboBox);
+
+        final JLabel priceLabel = new JLabel("Price: €0.00");
+        newPanel.add(priceLabel);
+
+        final JButton detailsButton = new JButton("View Details");
+        newPanel.add(detailsButton);
+
+        comboBoxToPriceLabelMap.put(comboBox, priceLabel);
+
+        comboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                @SuppressWarnings("unchecked")
+                final
+                JComboBox<Component> sourceComboBox = (JComboBox<Component>) e.getSource();
+                final Component selectedComponent = (Component) sourceComboBox.getSelectedItem();
+                if (selectedComponent != null) {
+                    final double price = controller.getScrapedPrice(selectedComponent.getBaseInfo().getId()).getComponentPrice();
+                    final JLabel correspondingPriceLabel = comboBoxToPriceLabelMap.get(sourceComboBox);
+                    correspondingPriceLabel.setText("Price: €" + String.format("%.2f", price));
+                    updateTotalPrice();
                 }
             }
         });
 
-        partRow.add(partLabel);
-        partRow.add(comboBox);
-        partRow.add(priceLabel);
-        partRow.add(viewDetailsButton);
+        detailsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                final Component selectedComponent = (Component) comboBox.getSelectedItem();
+                if (selectedComponent != null) {
+                    showComponentDetails(selectedComponent);
+                }
+            }
+        });
 
-        parentPanel.add(partRow);
-        parentPanel.revalidate();
-        parentPanel.repaint();
+        final GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridy = dynamicPanel.getComponentCount();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        dynamicPanel.add(newPanel, gbc);
 
-        comboBoxes.computeIfAbsent(part, k -> new ArrayList<>()).add(comboBox);
-        priceLabels.computeIfAbsent(part, k -> new ArrayList<>()).add(priceLabel);
-        viewDetailsButtons.computeIfAbsent(part, k -> new ArrayList<>()).add(viewDetailsButton);
+        dynamicPanel.revalidate();
+        dynamicPanel.repaint();
 
-        revalidate();
-        repaint();
-    }
-
-    private void removePartRow(Part part, JComboBox<String> comboBox, JPanel parentPanel) {
-        List<JComboBox<String>> comboBoxList = comboBoxes.get(part);
-        List<JLabel> priceLabelList = priceLabels.get(part);
-        List<JButton> viewDetailsButtonList = viewDetailsButtons.get(part);
-
-        if (comboBoxList != null && comboBoxList.size() > 1) {
-            int index = comboBoxList.indexOf(comboBox);
-            comboBoxList.remove(index);
-            priceLabelList.remove(index);
-            viewDetailsButtonList.remove(index);
-
-            java.awt.Component rowToRemove = parentPanel.getComponent(index);
-            parentPanel.remove(rowToRemove);
-
-            parentPanel.revalidate();
-            parentPanel.repaint();
+        final Component initialComponent = (Component) comboBox.getSelectedItem();
+        if (initialComponent != null) {
+            final double initialPrice = controller.getScrapedPrice(initialComponent.getBaseInfo().getId()).getComponentPrice();
+            priceLabel.setText("Price: €" + String.format("%.2f", initialPrice));
         }
     }
 
-    private JPanel getPanelForPart(Part part) {
-        switch (part) {
-            case GPU:
-                return gpuPanel;
-            case RAM:
-                return ramPanel;
-            case STORAGE:
-                return storagePanel;
-            default:
-                throw new IllegalArgumentException("Unexpected part: " + part);
+    @SuppressWarnings("unchecked")
+    private void removeComponentSelection(final JPanel dynamicPanel) {
+        if (dynamicPanel.getComponentCount() > 1) {
+            final JPanel panelToRemove = (JPanel) dynamicPanel.getComponent(dynamicPanel.getComponentCount() - 1);
+            
+            JComboBox<Component> comboBoxToRemove = null;
+            for (final java.awt.Component comp : panelToRemove.getComponents()) {
+                if (comp instanceof JComboBox) {
+                    comboBoxToRemove = (JComboBox<Component>) comp;
+                    break;
+                }
+            }
+            
+            if (comboBoxToRemove != null) {
+                comboBoxToPriceLabelMap.remove(comboBoxToRemove);
+            }
+            
+            // Remove the panel
+            dynamicPanel.remove(panelToRemove);
+            dynamicPanel.revalidate();
+            dynamicPanel.repaint();
+            
+            updateTotalPrice();
         }
     }
 
-    private void showPartDetails(final Component component) {
-        String specs;
-        switch (controller.getDesiredPart()) {
-            case CPU:
-                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getCpuSpecs(component));
-                break;
-            case COOLER:
-                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getCoolerSpecs(component));
-                break;
-            case RAM:
-                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getRamSpecs(component));
-                break;
-            case PSU:
-                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getPsuSpecs(component));
-                break;
-            case MOTHERBOARD:
-                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getMotherboardSpecs(component));
-                break;
-            case STORAGE:
-                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getStorageSpecs(component));
-                break;
-            case GPU:
-                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getGpuSpecs(component));
-                break;
-            case CASE:
-                specs = ComponentSpecsUtility.formatSpecs(ComponentSpecsUtility.getCaseSpecs(component));
-                break;
-            default:
-                throw new IllegalStateException();
+    private void showComponentDetails(final Component component) {
+        final StringBuilder details = new StringBuilder();
+        details.append("Component: ").append(component.toString()).append("\n\n");
+
+        final Map<String, String> formattedAttributes = component.getFormattedAttributes();
+        for (final Map.Entry<String, String> entry : formattedAttributes.entrySet()) {
+            details.append(entry.getKey()).append(": ").append(entry.getValue()).append("\n");
         }
-        JOptionPane.showMessageDialog(this, specs, component.getBaseInfo().getName() + " Specs", JOptionPane.INFORMATION_MESSAGE);
+
+        JOptionPane.showMessageDialog(this, details.toString(), "Component Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void updateTotalPrice() {
-        double totalPrice = 0.0;
-    
-        for (final List<JLabel> priceLabelList : priceLabels.values()) {
-            for (final JLabel priceLabel : priceLabelList) {
-                final String text = priceLabel.getText().replace("€", "").trim();
+        float totalPrice = 0;
+        for (final JLabel priceLabel : comboBoxToPriceLabelMap.values()) {
+            final String text = priceLabel.getText();
+            if (text.startsWith("Price: €")) {
                 try {
-                    if (!text.isEmpty()) {
-                        totalPrice += Double.parseDouble(text);
-                    }
+                    final float price = Float.parseFloat(text.substring(8));
+                    totalPrice += price;
                 } catch (final NumberFormatException e) {
                     e.printStackTrace();
                 }
             }
         }
+        totalPriceLabel.setText("Total Price: €" + String.format("%.2f", totalPrice));
+    }
+
+    private int getSelectedComponentId(final JPanel panel) {
+        for (final java.awt.Component comp : panel.getComponents()) {
+            if (comp instanceof JPanel) {
+                // Search recursively within nested panels
+                final JPanel innerPanel = (JPanel) comp;
+                for (final java.awt.Component innerComp : innerPanel.getComponents()) {
+                    if (innerComp instanceof JComboBox) {
+                        @SuppressWarnings("unchecked")
+                        final
+                        JComboBox<Component> comboBox = (JComboBox<Component>) innerComp;
+                        final Component selectedComponent = (Component) comboBox.getSelectedItem();
+                        if (selectedComponent != null) {
+                            return selectedComponent.getBaseInfo().getId();
+                        }
+                    }
+                }
+            } else if (comp instanceof JComboBox) {
+                // Directly search if JComboBox is found
+                @SuppressWarnings("unchecked")
+                final
+                JComboBox<Component> comboBox = (JComboBox<Component>) comp;
+                final Component selectedComponent = (Component) comboBox.getSelectedItem();
+                if (selectedComponent != null) {
+                    return selectedComponent.getBaseInfo().getId();
+                }
+            }
+        }
+        return -1;
+    }
     
-        // Create a DecimalFormat instance to format the price with two decimal places
-        DecimalFormat decimalFormat = new DecimalFormat("#.00");
-        String formattedPrice = decimalFormat.format(totalPrice);
-    
-        totalPriceLabel.setText("Total: €" + formattedPrice);
+    private List<Integer> getSelectedComponentIds(final JPanel panel) {
+        final List<Integer> ids = new ArrayList<>();
+        for (final java.awt.Component panelComponent : panel.getComponents()) {
+            if (panelComponent instanceof JScrollPane) {
+                final JScrollPane scrollPane = (JScrollPane) panelComponent;
+                final JPanel dynamicPanel = (JPanel) scrollPane.getViewport().getView();
+                for (final java.awt.Component comp : dynamicPanel.getComponents()) {
+                    if (comp instanceof JPanel) {
+                        final JPanel innerPanel = (JPanel) comp;
+                        for (final java.awt.Component innerComp : innerPanel.getComponents()) {
+                            if (innerComp instanceof JComboBox) {
+                                @SuppressWarnings("unchecked")
+                                final
+                                JComboBox<Component> comboBox = (JComboBox<Component>) innerComp;
+                                final Component selectedComponent = (Component) comboBox.getSelectedItem();
+                                if (selectedComponent != null) {
+                                    ids.add(selectedComponent.getBaseInfo().getId());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return ids;
     }
 }
