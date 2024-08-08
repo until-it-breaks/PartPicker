@@ -152,4 +152,8 @@ public class Controller {
     public ComponentPrice getScrapedPrice(final int componentId) {
         return model.getScrapedPrice(componentId);
     }
+
+    public List<ComponentPrice> getRecentComponentPricesByReseller(final String reseller, final int componentId) {
+        return model.getRecentComponentPricesByReseller(componentId, reseller);
+    }
 }

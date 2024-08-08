@@ -137,4 +137,8 @@ public final class Model {
     public ComponentPrice getScrapedPrice(final int componentId) {
         return ComponentPrice.DAO.getLatestLowestPriceById(connection, componentId);
     }
+
+    public List<ComponentPrice> getRecentComponentPricesByReseller(final int componentId, final String reseller) {
+        return ComponentPrice.DAO.getLastFourteenScrapedPricesByReseller(connection, componentId, reseller);
+    }
 }

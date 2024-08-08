@@ -8,12 +8,27 @@ import it.unibo.application.data.entities.price.ComponentPrice;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.DateTickUnit;
+import org.jfree.chart.axis.DateTickUnitType;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class ProductsPage extends JPanel {
 
@@ -55,7 +70,7 @@ public class ProductsPage extends JPanel {
             rowData.add(baseInfo.getName());
             rowData.add(baseInfo.getManufacturer());
             rowData.add(String.valueOf(baseInfo.getLaunchYear()));
-            rowData.add(baseInfo.getMsrp() + " €");
+            rowData.add(String.format("%.2f €", baseInfo.getMsrp()));
 
             for (final Specs spec : firstComponentSpecs.keySet()) {
                 final String value = specs.getOrDefault(spec, "N/A");
@@ -86,24 +101,66 @@ public class ProductsPage extends JPanel {
     private void showComponentDetails(final Component component) {
         final BaseInfo baseInfo = component.getBaseInfo();
 
-        final ComponentPrice scrapedPrice = controller.getScrapedPrice(baseInfo.getId());
+        final List<ComponentPrice> amazonPrices = controller.getRecentComponentPricesByReseller("Amazon", baseInfo.getId());
+        final List<ComponentPrice> ebayPrices = controller.getRecentComponentPricesByReseller("Ebay", baseInfo.getId());
 
-        final StringBuilder details = new StringBuilder();
-
-        if (scrapedPrice != null) {
-            details.append("\nScraped Price:\n");
-            details.append("Reseller: ").append(scrapedPrice.getResellerName()).append("\n");
-            details.append("Date: ").append(scrapedPrice.getScrapeDate()).append("\n");
-            details.append("Price: ").append(scrapedPrice.getComponentPrice()).append(" €");
+        if (amazonPrices.isEmpty() && ebayPrices.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No price data available for chart.",
+                    "Price History",
+                    JOptionPane.PLAIN_MESSAGE
+            );
         } else {
-            details.append("\nScraped Price: Not available");
+            final JFreeChart chart = createChart(amazonPrices, ebayPrices);
+            final ChartPanel chartPanel = new ChartPanel(chart);
+            chartPanel.setPreferredSize(new Dimension(800, 600));
+    
+            JOptionPane.showMessageDialog(
+                    this,
+                    chartPanel,
+                    "Price History",
+                    JOptionPane.PLAIN_MESSAGE
+            );
         }
+    }
 
-        JOptionPane.showMessageDialog(
-                this,
-                details.toString(),
-                "Component Details",
-                JOptionPane.INFORMATION_MESSAGE
+    private JFreeChart createChart(final List<ComponentPrice> amazonPrices, final List<ComponentPrice> ebayPrices) {
+        final XYSeries amazonSeries = new XYSeries("Amazon", false, false);
+        final XYSeries ebaySeries = new XYSeries("eBay", false, false);
+    
+        for (final ComponentPrice price : amazonPrices) {
+            final LocalDate date = price.getScrapeDate();
+            final long millis = date.atStartOfDay().toInstant(ZoneId.systemDefault().getRules().getOffset(date.atStartOfDay())).toEpochMilli();
+            amazonSeries.add(millis, price.getComponentPrice());
+        }
+    
+        for (final ComponentPrice price : ebayPrices) {
+            final LocalDate date = price.getScrapeDate();
+            final long millis = date.atStartOfDay().toInstant(ZoneId.systemDefault().getRules().getOffset(date.atStartOfDay())).toEpochMilli();
+            ebaySeries.add(millis, price.getComponentPrice());
+        }
+    
+        final XYSeriesCollection dataset = new XYSeriesCollection();
+        dataset.addSeries(amazonSeries);
+        dataset.addSeries(ebaySeries);
+    
+        final JFreeChart chart = ChartFactory.createXYLineChart(
+                "",
+                "Date",
+                "Price (€)",
+                dataset
         );
+    
+        final XYPlot plot = (XYPlot) chart.getPlot();
+        final DateAxis dateAxis = new DateAxis("Date");
+        dateAxis.setDateFormatOverride(new SimpleDateFormat("yyyy-MM-dd"));
+        dateAxis.setTickUnit(new DateTickUnit(DateTickUnitType.DAY, 1, new SimpleDateFormat("yyyy-MM-dd")));
+        plot.setDomainAxis(dateAxis);
+    
+        final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer(true, true);
+        plot.setRenderer(renderer);
+    
+        return chart;
     }
 }
