@@ -5,19 +5,25 @@ import javax.swing.*;
 import it.unibo.application.controller.Controller;
 import it.unibo.application.data.entities.enums.Part;
 import it.unibo.application.data.entities.enums.State;
+import it.unibo.application.view.insertion.CaseInsertDialog;
+import it.unibo.application.view.insertion.CoolerInsertDialog;
+import it.unibo.application.view.insertion.CpuInsertDialog;
+import it.unibo.application.view.insertion.GpuInsertDialog;
+import it.unibo.application.view.insertion.MotherboardInsertDialog;
+import it.unibo.application.view.insertion.PsuInsertDialog;
+import it.unibo.application.view.insertion.RamInsertDialog;
+import it.unibo.application.view.insertion.StorageInsertDialog;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AdminPage extends JPanel {
-    private final Controller controller;
     private JComboBox<Part> partComboBox;
     private JButton addButton;
     private JButton backButton;
 
     public AdminPage(Controller controller) {
-        this.controller = controller;
 
         setLayout(new BorderLayout());
 
@@ -47,6 +53,34 @@ public class AdminPage extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Part selectedPart = (Part) partComboBox.getSelectedItem();
+                switch (selectedPart) {
+                    case CASE:
+                        new CaseInsertDialog(controller).showDialog();;
+                        break;
+                    case PSU:
+                        new PsuInsertDialog(controller).showDialog();
+                        break;
+                    case RAM:
+                        new RamInsertDialog(controller).showDialog();
+                        break;
+                    case STORAGE:
+                        new StorageInsertDialog(controller).showDialog();
+                        break;
+                    case GPU:
+                        new GpuInsertDialog(controller).showDialog();
+                        break;
+                    case MOTHERBOARD:
+                        new MotherboardInsertDialog(controller).showDialog();
+                        break;
+                    case COOLER:
+                        new CoolerInsertDialog(controller).showDialog();
+                        break;
+                    case CPU:
+                        new CpuInsertDialog(controller).showDialog();
+                        break;
+                    default:
+                        break;
+                }
             }
         });
 

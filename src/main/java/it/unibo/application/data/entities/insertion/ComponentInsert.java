@@ -1,7 +1,5 @@
 package it.unibo.application.data.entities.insertion;
 
-import java.time.LocalDate;
-
 import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
@@ -12,11 +10,11 @@ public class ComponentInsert {
     private final int id;
     private final String name;
     private final String type;
-    private final LocalDate launchYear;
+    private final int launchYear;
     private final float msrp;
     private final int manufacturerId;
 
-    public ComponentInsert(final int id, final String name, final String type, final LocalDate launchYear, final float msrp, final int manufacturerId) {
+    public ComponentInsert(final int id, final String name, final String type, final int launchYear, final float msrp, final int manufacturerId) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -37,7 +35,7 @@ public class ComponentInsert {
         return type;
     }
 
-    public LocalDate getLaunchYear() {
+    public int getLaunchYear() {
         return launchYear;
     }
 

@@ -305,14 +305,14 @@ public final class Queries {
 
     public static final String INSERT_CASE =
     """
-        INSERT INTO 'Case' (CodiceCase, FattoreFormaCase)
+        INSERT INTO `Case` (CodiceCase, FattoreFormaCase)
         VALUES (?, ?)
     """;
 
     public static final String INSERT_CPU =
     """
-        INSERT INTO Cpu (CodiceCpu, FamigliaCpu, NumeroCore, FrequenzaGpu, Tdp, Smt, NomeSocket)
-        VALUES (?, ?)
+        INSERT INTO Cpu (CodiceCpu, FamigliaCpu, NumeroCore, FrequenzaCpu, Tdp, Smt, NomeSocket)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     """;
 
     public static final String INSERT_COOLER =
@@ -353,7 +353,7 @@ public final class Queries {
 
     public static final String INSERT_COMPONENT =
     """
-        INSERT INTO Componente (CodiceComponente, NomeComponente, TipoComponente, AnnoLancio, PrezzoListino, CodiceProduttore)
+        INSERT INTO Componenti (CodiceComponente, NomeComponente, TipoComponente, AnnoLancio, PrezzoListino, CodiceProduttore)
         VALUES (?, ?, ?, ?, ?, ?)
     """;
 

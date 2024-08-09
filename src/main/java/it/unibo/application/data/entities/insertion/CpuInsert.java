@@ -60,7 +60,7 @@ public class CpuInsert {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.INSERT_CPU,
                     cpu.getId(), cpu.getFamily(), cpu.getCoreCount(),
-                    cpu.getFrequency(), cpu.getTdp(), cpu.getSocketName());
+                    cpu.getFrequency(), cpu.getTdp(), cpu.isSmt(), cpu.getSocketName());
             ) {
                 statement.executeUpdate();
             } catch (final SQLException e) {

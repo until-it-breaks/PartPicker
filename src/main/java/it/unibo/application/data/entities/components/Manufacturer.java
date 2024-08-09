@@ -32,6 +32,11 @@ public class Manufacturer {
         return country;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
+
     public final class DAO {
         public static List<Manufacturer> getManufacturers(final Connection connection) {
             try (

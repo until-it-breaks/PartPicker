@@ -176,4 +176,8 @@ public class Controller {
     public void insertCpuRamCompatibility(CpuRamInsert cpuRamInsert) {
         model.insertCpuRamCompatibility(cpuRamInsert);
     }
+
+    public int getLatestComponendId() {
+        return model.getLatestComponendId();
+    }
 }

@@ -171,4 +171,8 @@ public final class Model {
     public void insertCpuRamCompatibility(CpuRamInsert cpuRamInsert) {
         CpuRamInsert.DAO.insert(connection, cpuRamInsert);
     }
+
+    public int getLatestComponendId() {
+        return ComponentInsert.DAO.getLatestId(connection);
+    }
 }
