@@ -1,6 +1,7 @@
 package it.unibo.application.view;
 
 import it.unibo.application.controller.Controller;
+import it.unibo.application.data.entities.enums.State;
 import it.unibo.application.data.entities.login.User;
 
 import java.awt.*;
@@ -91,6 +92,15 @@ public class WelcomePage extends JPanel {
             public void actionPerformed(final ActionEvent e) {
                 controller.loginAttempt(usernameField.getText(), new String(passwordField.getPassword()));
             }
+        });
+
+        adminButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.setAppState(State.ADMIN);
+            }
+            
         });
 
         buttonPanel.setLayout(new BorderLayout());

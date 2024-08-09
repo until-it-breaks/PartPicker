@@ -5,5 +5,6 @@ public enum State {
     OVERVIEW,
     BUILDING,
     VIEW_BUILD,
-    PRODUCTS
+    PRODUCTS,
+    ADMIN,
 }

@@ -36,6 +36,10 @@ public class View {
                 break;
             case VIEW_BUILD:
                 this.frame.add(new BuildPage(controller));
+                break;
+            case ADMIN:
+                this.frame.add(new AdminPage(controller));
+                break;
             default:
                 break;
         }
