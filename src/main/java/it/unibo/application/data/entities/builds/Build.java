@@ -4,13 +4,11 @@ import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
 import it.unibo.application.data.entities.components.Case;
+import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Cooler;
 import it.unibo.application.data.entities.components.Cpu;
-import it.unibo.application.data.entities.components.Gpu;
 import it.unibo.application.data.entities.components.Motherboard;
 import it.unibo.application.data.entities.components.Psu;
-import it.unibo.application.data.entities.components.Ram;
-import it.unibo.application.data.entities.components.Storage;
 import it.unibo.application.data.entities.login.User;
 
 import java.util.Map;
@@ -23,19 +21,19 @@ import java.time.LocalDate;
 
 public class Build {
     private final int buildId;
-    private final Cooler cooler;
-    private final Case _case;
-    private final Psu psu;
-    private final Cpu cpu;
-    private final Motherboard motherboard;
-    private final List<Gpu> gpus;
-    private final List<Ram> rams;
-    private final List<Storage> storage;
+    private final Component cooler;
+    private final Component _case;
+    private final Component psu;
+    private final Component cpu;
+    private final Component motherboard;
+    private final List<Component> gpus;
+    private final List<Component> rams;
+    private final List<Component> storage;
     private final String author;
 
-    public Build(final int build, final Cooler cooler, final Case _case, final Psu psu,
-            final Cpu cpu, final Motherboard motherboard, final List<Gpu> gpu,
-            final List<Ram> ram, final List<Storage> storage, final String author) {
+    public Build(final int build, final Component cooler, final Component _case, final Component psu,
+            final Component cpu, final Component motherboard, final List<Component> gpu,
+            final List<Component> ram, final List<Component> storage, final String author) {
         this.buildId = build;
         this.cooler = cooler;
         this._case = _case;
@@ -52,35 +50,35 @@ public class Build {
         return buildId;
     }
 
-    public Cooler getCooler() {
+    public Component getCooler() {
         return cooler;
     }
 
-    public Case get_case() {
+    public Component get_case() {
         return _case;
     }
 
-    public Psu getPsu() {
+    public Component getPsu() {
         return psu;
     }
 
-    public Cpu getCpu() {
+    public Component getCpu() {
         return cpu;
     }
 
-    public Motherboard getMotherboard() {
+    public Component getMotherboard() {
         return motherboard;
     }
 
-    public List<Gpu> getGpus() {
+    public List<Component> getGpus() {
         return gpus;
     }
 
-    public List<Ram> getRams() {
+    public List<Component> getRams() {
         return rams;
     }
 
-    public List<Storage> getStorage() {
+    public List<Component> getStorage() {
         return storage;
     }
 
@@ -182,7 +180,7 @@ public class Build {
                 Upload.DAO.insertUpload(connection, new Upload(build.getBuildId(), user.getUsername(), LocalDate.now()));
 
                 final Map<Integer, Integer> gpuUsageMap = new HashMap<>();
-                for (final Gpu gpu : build.getGpus()) {
+                for (final Component gpu : build.getGpus()) {
                     gpuUsageMap.put(gpu.getBaseInfo().getId(), gpuUsageMap.getOrDefault(gpu.getBaseInfo().getId(), 0) + 1);
                 }
         
@@ -194,7 +192,7 @@ public class Build {
                 }
         
                 final Map<Integer, Integer> ramUsageMap = new HashMap<>();
-                for (final Ram ram : build.getRams()) {
+                for (final Component ram : build.getRams()) {
                     ramUsageMap.put(ram.getBaseInfo().getId(), ramUsageMap.getOrDefault(ram.getBaseInfo().getId(), 0) + 1);
                 }
         
@@ -206,7 +204,7 @@ public class Build {
                 }
         
                 final Map<Integer, Integer> storageUsageMap = new HashMap<>();
-                for (final Storage storage : build.getStorage()) {
+                for (final Component storage : build.getStorage()) {
                     storageUsageMap.put(storage.getBaseInfo().getId(), storageUsageMap.getOrDefault(storage.getBaseInfo().getId(), 0) + 1);
                 }
         

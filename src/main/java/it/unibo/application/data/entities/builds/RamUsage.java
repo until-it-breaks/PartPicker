@@ -3,6 +3,7 @@ package it.unibo.application.data.entities.builds;
 import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
+import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Ram;
 
 import java.sql.Connection;
@@ -46,12 +47,12 @@ public class RamUsage {
             }
         }
 
-        public static List<Ram> getUsedRams(final Connection connection, final int buildId) {
+        public static List<Component> getUsedRams(final Connection connection, final int buildId) {
             try (
                     var statement = DAOUtils.prepare(connection, Queries.FIND_USED_RAMS, buildId);
                     var resultSet = statement.executeQuery();
                 ) {
-                    final List<Ram> rams = new ArrayList<>();
+                    final List<Component> rams = new ArrayList<>();
                     while (resultSet.next()) {
                         final var ramId = resultSet.getInt("CodiceRam");
                         final var quantity = resultSet.getInt("Quantita");

@@ -3,6 +3,7 @@ package it.unibo.application.data.entities.builds;
 import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
+import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Storage;
 
 import java.sql.Connection;
@@ -46,12 +47,12 @@ public class StorageUsage {
             }
         }
 
-        public static List<Storage> getUsedStorage(final Connection connection, final int buildId) {
+        public static List<Component> getUsedStorage(final Connection connection, final int buildId) {
             try (
                     var statement = DAOUtils.prepare(connection, Queries.FIND_USED_STORAGE, buildId);
                     var resultSet = statement.executeQuery();
                 ) {
-                    final List<Storage> storages = new ArrayList<>();
+                    final List<Component> storages = new ArrayList<>();
                     while (resultSet.next()) {
                         final var storageId = resultSet.getInt("CodiceStorage");
                         final var quantity = resultSet.getInt("Quantita");

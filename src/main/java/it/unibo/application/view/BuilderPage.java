@@ -1,6 +1,7 @@
 package it.unibo.application.view;
 
 import it.unibo.application.controller.Controller;
+import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.enums.Part;
 
@@ -28,14 +29,14 @@ public class BuilderPage extends JPanel {
     private final JLabel totalPriceLabel;
     private final JButton uploadBuildButton;
 
-    private int cpuId;
-    private int coolerId;
-    private int caseId;
-    private int psuId;
-    private int motherboardId;
-    private List<Integer> gpuIds = new ArrayList<>();
-    private List<Integer> ramIds = new ArrayList<>();
-    private List<Integer> storageIds = new ArrayList<>();
+    private Component selectedCpu;
+    private Component selectedCooler;
+    private Component selectedCase;
+    private Component selectedPsu;
+    private Component selectedMotherboard;
+    private List<Component> selectedGpu = new ArrayList<>();
+    private List<Component> selectedRam = new ArrayList<>();
+    private List<Component> selectedStorage = new ArrayList<>();
 
     // Map to track price labels for each panel
     private final Map<JComboBox<Component>, JLabel> comboBoxToPriceLabelMap = new HashMap<>();
@@ -90,28 +91,25 @@ public class BuilderPage extends JPanel {
         uploadBuildButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                gpuIds.clear();
-                ramIds.clear();
-                storageIds.clear();
+                selectedGpu.clear();
+                selectedRam.clear();
+                selectedStorage.clear();
         
-                cpuId = getSelectedComponentId(cpuPanel);
-                coolerId = getSelectedComponentId(coolerPanel);
-                caseId = getSelectedComponentId(casePanel);
-                psuId = getSelectedComponentId(psuPanel);
-                motherboardId = getSelectedComponentId(motherboardPanel);
+                selectedCpu = getSelectedComponent(cpuPanel);
+                selectedCooler = getSelectedComponent(coolerPanel);
+                selectedCase = getSelectedComponent(casePanel);
+                selectedPsu = getSelectedComponent(psuPanel);
+                selectedMotherboard = getSelectedComponent(motherboardPanel);
         
-                gpuIds = getSelectedComponentIds(gpuPanel);
-                ramIds = getSelectedComponentIds(ramPanel);
-                storageIds = getSelectedComponentIds(storagePanel);
-        
-                System.out.println("CPU ID: " + cpuId);
-                System.out.println("Cooler ID: " + coolerId);
-                System.out.println("Case ID: " + caseId);
-                System.out.println("PSU ID: " + psuId);
-                System.out.println("Motherboard ID: " + motherboardId);
-                System.out.println("GPU IDs: " + gpuIds);
-                System.out.println("RAM IDs: " + ramIds);
-                System.out.println("Storage IDs: " + storageIds);
+                selectedGpu = getSelectedComponents(gpuPanel);
+                selectedRam = getSelectedComponents(ramPanel);
+                selectedStorage = getSelectedComponents(storagePanel);
+
+                int id = controller.getLatestBuildId() + 1;
+                Build build = new Build(id, selectedCooler, selectedCase,
+                    selectedPsu, selectedCpu, selectedMotherboard, selectedGpu,
+                    selectedRam, selectedStorage, controller.getLoggedUser().getUsername());
+                controller.insertBuild(build, controller.getLoggedUser());
             }
         });
 
@@ -316,7 +314,6 @@ public class BuilderPage extends JPanel {
                 comboBoxToPriceLabelMap.remove(comboBoxToRemove);
             }
             
-            // Remove the panel
             dynamicPanel.remove(panelToRemove);
             dynamicPanel.revalidate();
             dynamicPanel.repaint();
@@ -353,7 +350,7 @@ public class BuilderPage extends JPanel {
         totalPriceLabel.setText("Total Price: €" + String.format("%.2f", totalPrice));
     }
 
-    private int getSelectedComponentId(final JPanel panel) {
+    private Component getSelectedComponent(final JPanel panel) {
         for (final java.awt.Component comp : panel.getComponents()) {
             if (comp instanceof JPanel) {
                 // Search recursively within nested panels
@@ -363,10 +360,7 @@ public class BuilderPage extends JPanel {
                         @SuppressWarnings("unchecked")
                         final
                         JComboBox<Component> comboBox = (JComboBox<Component>) innerComp;
-                        final Component selectedComponent = (Component) comboBox.getSelectedItem();
-                        if (selectedComponent != null) {
-                            return selectedComponent.getBaseInfo().getId();
-                        }
+                        return (Component) comboBox.getSelectedItem();
                     }
                 }
             } else if (comp instanceof JComboBox) {
@@ -375,16 +369,14 @@ public class BuilderPage extends JPanel {
                 final
                 JComboBox<Component> comboBox = (JComboBox<Component>) comp;
                 final Component selectedComponent = (Component) comboBox.getSelectedItem();
-                if (selectedComponent != null) {
-                    return selectedComponent.getBaseInfo().getId();
-                }
+                return (Component) selectedComponent;
             }
         }
-        return -1;
+        return null;
     }
     
-    private List<Integer> getSelectedComponentIds(final JPanel panel) {
-        final List<Integer> ids = new ArrayList<>();
+    private List<Component> getSelectedComponents(final JPanel panel) {
+        final List<Component> components = new ArrayList<>();
         for (final java.awt.Component panelComponent : panel.getComponents()) {
             if (panelComponent instanceof JScrollPane) {
                 final JScrollPane scrollPane = (JScrollPane) panelComponent;
@@ -398,15 +390,13 @@ public class BuilderPage extends JPanel {
                                 final
                                 JComboBox<Component> comboBox = (JComboBox<Component>) innerComp;
                                 final Component selectedComponent = (Component) comboBox.getSelectedItem();
-                                if (selectedComponent != null) {
-                                    ids.add(selectedComponent.getBaseInfo().getId());
-                                }
+                                components.add(selectedComponent);
                             }
                         }
                     }
                 }
             }
         }
-        return ids;
+        return components;
     }
 }

@@ -1,13 +1,10 @@
 package it.unibo.application.view;
 
-
 import it.unibo.application.controller.Controller;
 import it.unibo.application.data.entities.ban.Ban;
 import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.builds.Review;
-import it.unibo.application.data.entities.components.Gpu;
-import it.unibo.application.data.entities.components.Ram;
-import it.unibo.application.data.entities.components.Storage;
+import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.login.UserDetails;
 
 import java.awt.*;
@@ -95,15 +92,15 @@ public class BuildPage extends JPanel {
         componentsPanel.add(new JLabel("CPU: " + build.getCpu().getBaseInfo().getName()));
         componentsPanel.add(new JLabel("Motherboard: " + build.getMotherboard().getBaseInfo().getName()));
 
-        for (final Gpu gpu : build.getGpus()) {
+        for (final Component gpu : build.getGpus()) {
             componentsPanel.add(new JLabel("GPU: " + gpu.getBaseInfo().getName()));
         }
 
-        for (final Ram ram : build.getRams()) {
+        for (final Component ram : build.getRams()) {
             componentsPanel.add(new JLabel("RAM: " + ram.getBaseInfo().getName()));
         }
 
-        for (final Storage storage : build.getStorage()) {
+        for (final Component storage : build.getStorage()) {
             componentsPanel.add(new JLabel("Storage: " + storage.getBaseInfo().getName()));
         }
 

@@ -3,6 +3,7 @@ package it.unibo.application.data.entities.builds;
 import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
+import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Gpu;
 
 import java.sql.Connection;
@@ -46,12 +47,12 @@ public class GpuUsage {
             }
         }
 
-        public static List<Gpu> getUsedGpus(final Connection connection, final int buildId) {
+        public static List<Component> getUsedGpus(final Connection connection, final int buildId) {
             try (
                     var statement = DAOUtils.prepare(connection, Queries.FIND_USED_GPUS, buildId);
                     var resultSet = statement.executeQuery();
                 ) {
-                    final List<Gpu> gpus = new ArrayList<>();
+                    final List<Component> gpus = new ArrayList<>();
                     while (resultSet.next()) {
                         final var gpuId = resultSet.getInt("CodiceGpu");
                         final var quantity = resultSet.getInt("Quantita");
