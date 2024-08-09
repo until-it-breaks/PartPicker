@@ -22,17 +22,8 @@ public final class Queries {
         VALUES (?, ?, ?, ?, ?)
         """;
 
-    public static final String FIND_LATEST_COMPONENTS =
-        """
-        SELECT *
-        FROM Componenti
-        WHERE TipoComponente = ?
-        ORDER BY CodiceComponente DESC
-        LIMIT 10;
-        """;
-
     public static final String FIND_CPU =
-    """
+        """
         SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, cpu.*
         FROM componenti, cpu, produttori
         WHERE CodiceCpu = ? and cpu.CodiceCpu = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
@@ -46,7 +37,7 @@ public final class Queries {
         """;
 
     public static final String FIND_GPU =
-    """
+        """
         SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, gpu.*
         FROM componenti, gpu, produttori
         WHERE CodiceGpu = ?  and gpu.CodiceGpu = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
@@ -60,7 +51,7 @@ public final class Queries {
         """;
 
     public static final String FIND_RAM =
-    """
+        """
         SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, ram.*
         FROM componenti, ram, produttori
         WHERE CodiceRam = ? and ram.CodiceRam = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
@@ -74,7 +65,7 @@ public final class Queries {
         """;
 
     public static final String FIND_STORAGE =
-    """
+        """
         SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, storage.*
         FROM componenti, storage, produttori
         WHERE CodiceStorage = ? and storage.CodiceStorage = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
@@ -88,7 +79,7 @@ public final class Queries {
         """;
 
     public static final String FIND_MOTHERBOARD =
-    """
+        """
         SELECT componenti.CodiceComponente, componenti.NomeComponente, componenti.AnnoLancio, componenti.PrezzoListino, NomeProduttore, motherboard.*
         FROM componenti, motherboard, produttori
         WHERE CodiceMotherboard = ? and motherboard.CodiceMotherboard = componenti.CodiceComponente and produttori.CodiceProduttore = componenti.CodiceProduttore
