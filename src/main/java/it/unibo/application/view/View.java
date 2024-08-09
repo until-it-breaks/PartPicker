@@ -5,6 +5,8 @@ import it.unibo.application.data.entities.enums.State;
 
 import javax.swing.*;
 import java.awt.*;
+import javax.imageio.ImageIO;
+import java.io.IOException;
 
 public class View {
     private static final String APP_NAME = "Part Picker";
@@ -13,6 +15,12 @@ public class View {
     private Controller controller;
 
     public View() {
+        try {
+            Image icon = ImageIO.read(getClass().getResourceAsStream("/icon.png"));
+            frame.setIconImage(icon);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setController(final Controller controller) {
