@@ -56,11 +56,11 @@ public class CpuInsert {
     }
 
     public final class DAO {
-        public static void insert(final Connection connection, final CpuInsert componentInsert) {
+        public static void insert(final Connection connection, final CpuInsert cpu) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.INSERT_CPU,
-                    componentInsert.getId(), componentInsert.getFamily(), componentInsert.getCoreCount(),
-                    componentInsert.getFrequency(), componentInsert.getTdp(), componentInsert.getSocketName());
+                    cpu.getId(), cpu.getFamily(), cpu.getCoreCount(),
+                    cpu.getFrequency(), cpu.getTdp(), cpu.getSocketName());
             ) {
                 statement.executeUpdate();
             } catch (final SQLException e) {

@@ -297,11 +297,10 @@ public final class Queries {
         WHERE NomeGenerazioneRam = ? AND CodiceCpu = ?
     """;
 
-    public static final String GET_MANUFACTURER_BY_NAME =
+    public static final String GET_MANUFACTURERS =
     """
         SELECT *
         FROM produttori
-        WHERE NomeProduttore = ?
     """;
 
     public static final String INSERT_CASE =

@@ -36,11 +36,11 @@ public class CoolerInsert {
     }
 
     public final class DAO {
-        public static void insert(final Connection connection, final CoolerInsert componentInsert) {
+        public static void insert(final Connection connection, final CoolerInsert cooler) {
             try (
                 var statement = DAOUtils.prepare(connection, Queries.INSERT_COOLER,
-                    componentInsert.getId(), componentInsert.getRpm(),
-                    componentInsert.getNoiseLevel(), componentInsert.getType());
+                    cooler.getId(), cooler.getRpm(),
+                    cooler.getNoiseLevel(), cooler.getType());
             ) {
                 statement.executeUpdate();
             } catch (final SQLException e) {

@@ -6,6 +6,8 @@ import it.unibo.application.data.Queries;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Manufacturer {
     private final int id;
@@ -31,18 +33,19 @@ public class Manufacturer {
     }
 
     public final class DAO {
-        public static Manufacturer getManufacturer(final Connection connection, final String manufacturer) {
+        public static List<Manufacturer> getManufacturers(final Connection connection) {
             try (
-                var statement = DAOUtils.prepare(connection, Queries.GET_MANUFACTURER_BY_NAME, manufacturer);
+                var statement = DAOUtils.prepare(connection, Queries.GET_MANUFACTURERS);
                 var resultSet = statement.executeQuery();
                 ) {
-                    if (resultSet.next()) {
+                    List<Manufacturer> manufacturers = new ArrayList<>();
+                    while (resultSet.next()) {
                         var id = resultSet.getInt("CodiceProduttore");
                         var name = resultSet.getString("NomeProduttore");
                         var country = resultSet.getString("PaeseProduttore");
-                        return new Manufacturer(id, name, country);
+                        manufacturers.add(new Manufacturer(id, name, country));
                     }
-                    return null;
+                    return manufacturers;
                 } catch (final SQLException e) {
                     throw new DAOException(e);
             }

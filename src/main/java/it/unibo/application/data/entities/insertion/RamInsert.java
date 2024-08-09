@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import it.unibo.application.data.DAOException;
 import it.unibo.application.data.DAOUtils;
 import it.unibo.application.data.Queries;
-import it.unibo.application.data.entities.components.Ram;
 
 public class RamInsert {
     private int id;

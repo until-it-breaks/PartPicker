@@ -133,8 +133,8 @@ public class Controller {
         return model.getComponentCompatibilityChecker();
     }
 
-    public Manufacturer getManufacturerByName(final String name) {
-        return model.getManufacturerByName(name);
+    public List<Manufacturer> getManufacturers() {
+        return model.getManufacturers();
     }
 
     public void insertCpu(CpuInsert cpu) {

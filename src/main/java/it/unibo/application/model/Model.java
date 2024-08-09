@@ -128,8 +128,8 @@ public final class Model {
         return componentCompatibilityChecker;
     }
 
-    public Manufacturer getManufacturerByName(final String name) {
-        return Manufacturer.DAO.getManufacturer(connection, name);
+    public List<Manufacturer> getManufacturers() {
+        return Manufacturer.DAO.getManufacturers(connection);
     }
 
     public void insertCpu(CpuInsert cpu) {
