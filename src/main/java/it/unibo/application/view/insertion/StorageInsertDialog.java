@@ -13,25 +13,25 @@ import java.util.List;
 public class StorageInsertDialog {
     private final Controller controller;
 
-    public StorageInsertDialog(Controller controller) {
+    public StorageInsertDialog(final Controller controller) {
         this.controller = controller;
     }
 
     public void showDialog() {
-        JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
+        final JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
 
-        JTextField capacityField = new JTextField();
-        JTextField rpmField = new JTextField();
-        JTextField cacheAmountField = new JTextField();
-        JComboBox<String> typeComboBox = new JComboBox<>(new String[]{"Hdd", "Ssd"});
+        final JTextField capacityField = new JTextField();
+        final JTextField rpmField = new JTextField();
+        final JTextField cacheAmountField = new JTextField();
+        final JComboBox<String> typeComboBox = new JComboBox<>(new String[]{"Hdd", "Ssd"});
 
-        JTextField nameField = new JTextField();
-        JTextField launchYearField = new JTextField();
-        JTextField msrpField = new JTextField();
-        JComboBox<Manufacturer> manufacturerComboBox = new JComboBox<>();
+        final JTextField nameField = new JTextField();
+        final JTextField launchYearField = new JTextField();
+        final JTextField msrpField = new JTextField();
+        final JComboBox<Manufacturer> manufacturerComboBox = new JComboBox<>();
 
-        List<Manufacturer> manufacturers = controller.getManufacturers();
-        for (Manufacturer manufacturer : manufacturers) {
+        final List<Manufacturer> manufacturers = controller.getManufacturers();
+        for (final Manufacturer manufacturer : manufacturers) {
             manufacturerComboBox.addItem(manufacturer);
         }
 
@@ -56,7 +56,7 @@ public class StorageInsertDialog {
         cacheAmountField.setEnabled(false);
 
         typeComboBox.addActionListener(e -> {
-            String selectedType = (String) typeComboBox.getSelectedItem();
+            final String selectedType = (String) typeComboBox.getSelectedItem();
             if ("Hdd".equals(selectedType)) {
                 rpmField.setEnabled(true);
                 cacheAmountField.setEnabled(true);
@@ -68,7 +68,7 @@ public class StorageInsertDialog {
             }
         });
 
-        int result = JOptionPane.showConfirmDialog(null, panel, "Add New Storage", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        final int result = JOptionPane.showConfirmDialog(null, panel, "Add New Storage", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             try {
                 if (nameField.getText().trim().isEmpty() || launchYearField.getText().trim().isEmpty() ||
@@ -83,13 +83,13 @@ public class StorageInsertDialog {
                     if (capacity <= 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("Capacity must be a positive integer.");
                 }
 
                 int rpm = 0;
                 int cacheAmount = 0;
-                String type = (String) typeComboBox.getSelectedItem();
+                final String type = (String) typeComboBox.getSelectedItem();
 
                 if ("Hdd".equals(type)) {
                     try {
@@ -97,7 +97,7 @@ public class StorageInsertDialog {
                         if (rpm <= 0) {
                             throw new NumberFormatException();
                         }
-                    } catch (NumberFormatException ex) {
+                    } catch (final NumberFormatException ex) {
                         throw new IllegalArgumentException("RPM must be a positive integer for HDD.");
                     }
 
@@ -106,7 +106,7 @@ public class StorageInsertDialog {
                         if (cacheAmount < 0) {
                             throw new NumberFormatException();
                         }
-                    } catch (NumberFormatException ex) {
+                    } catch (final NumberFormatException ex) {
                         throw new IllegalArgumentException("Cache Amount must be a non-negative integer for HDD.");
                     }
                 }
@@ -114,11 +114,11 @@ public class StorageInsertDialog {
                 int launchYear;
                 try {
                     launchYear = Integer.parseInt(launchYearField.getText().trim());
-                    int currentYear = java.time.Year.now().getValue();
+                    final int currentYear = java.time.Year.now().getValue();
                     if (launchYear < 1970 || launchYear > currentYear) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("Launch Year must be a valid year between 1970 and " + java.time.Year.now().getValue() + ".");
                 }
 
@@ -128,27 +128,27 @@ public class StorageInsertDialog {
                     if (msrp < 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("MSRP must be a positive number.");
                 }
 
-                String name = nameField.getText().trim();
-                Manufacturer selectedManufacturer = (Manufacturer) manufacturerComboBox.getSelectedItem();
-                int manufacturerId = selectedManufacturer.getId();
+                final String name = nameField.getText().trim();
+                final Manufacturer selectedManufacturer = (Manufacturer) manufacturerComboBox.getSelectedItem();
+                final int manufacturerId = selectedManufacturer.getId();
 
-                int newComponentId = controller.getLatestComponendId() + 1;
+                final int newComponentId = controller.getLatestComponendId() + 1;
 
-                ComponentInsert newComponent = new ComponentInsert(newComponentId, name, "Storage", launchYear, msrp, manufacturerId);
+                final ComponentInsert newComponent = new ComponentInsert(newComponentId, name, "Storage", launchYear, msrp, manufacturerId);
                 controller.insertComponent(newComponent);
 
-                StorageInsert newStorage = new StorageInsert(newComponentId, capacity, rpm, cacheAmount, type);
+                final StorageInsert newStorage = new StorageInsert(newComponentId, capacity, rpm, cacheAmount, type);
                 controller.insertStorage(newStorage);
 
                 JOptionPane.showMessageDialog(null, "Storage and Component inserted successfully!");
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Validation Error", JOptionPane.WARNING_MESSAGE);
                 showDialog();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }

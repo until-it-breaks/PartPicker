@@ -52,7 +52,7 @@ public class ComponentPrice {
                         final var componentPrice = resultSet.getDouble("PrezzoComponente");
                         return new ComponentPrice(id, resellerName, scrapeDate, componentPrice);
                     }
-                    return null;
+                    return new ComponentPrice(componentId, null, null, 0);
                 } catch (final SQLException e) {
                     throw new DAOException(e);
             }

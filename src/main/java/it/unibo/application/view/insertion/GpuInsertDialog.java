@@ -13,26 +13,26 @@ import java.util.List;
 public class GpuInsertDialog {
     private final Controller controller;
 
-    public GpuInsertDialog(Controller controller) {
+    public GpuInsertDialog(final Controller controller) {
         this.controller = controller;
     }
 
     public void showDialog() {
-        JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
+        final JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
 
-        JTextField familyField = new JTextField();
-        JComboBox<String> memoryTypeComboBox = new JComboBox<>(new String[]{"GDDR5", "GDDR6", "GDDR6X"});
-        JTextField memoryAmountField = new JTextField();
-        JTextField frequencyField = new JTextField();
-        JTextField tgpField = new JTextField();
+        final JTextField familyField = new JTextField();
+        final JComboBox<String> memoryTypeComboBox = new JComboBox<>(new String[]{"GDDR5", "GDDR6", "GDDR6X"});
+        final JTextField memoryAmountField = new JTextField();
+        final JTextField frequencyField = new JTextField();
+        final JTextField tgpField = new JTextField();
 
-        JTextField nameField = new JTextField();
-        JTextField launchYearField = new JTextField();
-        JTextField msrpField = new JTextField();
-        JComboBox<Manufacturer> manufacturerComboBox = new JComboBox<>();
+        final JTextField nameField = new JTextField();
+        final JTextField launchYearField = new JTextField();
+        final JTextField msrpField = new JTextField();
+        final JComboBox<Manufacturer> manufacturerComboBox = new JComboBox<>();
 
-        List<Manufacturer> manufacturers = controller.getManufacturers();
-        for (Manufacturer manufacturer : manufacturers) {
+        final List<Manufacturer> manufacturers = controller.getManufacturers();
+        for (final Manufacturer manufacturer : manufacturers) {
             manufacturerComboBox.addItem(manufacturer);
         }
 
@@ -55,7 +55,7 @@ public class GpuInsertDialog {
         panel.add(new JLabel("Manufacturer:"));
         panel.add(manufacturerComboBox);
 
-        int result = JOptionPane.showConfirmDialog(null, panel, "Add New GPU", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        final int result = JOptionPane.showConfirmDialog(null, panel, "Add New GPU", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             try {
                 if (familyField.getText().trim().isEmpty() || memoryAmountField.getText().trim().isEmpty() ||
@@ -65,8 +65,8 @@ public class GpuInsertDialog {
                     throw new IllegalArgumentException("All fields must be filled.");
                 }
 
-                String family = familyField.getText().trim();
-                String memoryType = (String) memoryTypeComboBox.getSelectedItem();
+                final String family = familyField.getText().trim();
+                final String memoryType = (String) memoryTypeComboBox.getSelectedItem();
 
                 int memoryAmount;
                 try {
@@ -74,7 +74,7 @@ public class GpuInsertDialog {
                     if (memoryAmount <= 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("Memory Amount must be a positive integer.");
                 }
 
@@ -84,7 +84,7 @@ public class GpuInsertDialog {
                     if (frequency <= 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("Frequency must be a positive integer.");
                 }
 
@@ -94,18 +94,18 @@ public class GpuInsertDialog {
                     if (tgp <= 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("TGP must be a positive integer.");
                 }
 
                 int launchYear;
                 try {
                     launchYear = Integer.parseInt(launchYearField.getText().trim());
-                    int currentYear = java.time.Year.now().getValue();
+                    final int currentYear = java.time.Year.now().getValue();
                     if (launchYear < 1970 || launchYear > currentYear) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("Launch Year must be a valid year between 1900 and " + java.time.Year.now().getValue() + ".");
                 }
 
@@ -115,27 +115,27 @@ public class GpuInsertDialog {
                     if (msrp < 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("MSRP must be a positive number.");
                 }
 
-                String name = nameField.getText().trim();
-                Manufacturer selectedManufacturer = (Manufacturer) manufacturerComboBox.getSelectedItem();
-                int manufacturerId = selectedManufacturer.getId();
+                final String name = nameField.getText().trim();
+                final Manufacturer selectedManufacturer = (Manufacturer) manufacturerComboBox.getSelectedItem();
+                final int manufacturerId = selectedManufacturer.getId();
 
-                int newComponentId = controller.getLatestComponendId() + 1;
+                final int newComponentId = controller.getLatestComponendId() + 1;
 
-                ComponentInsert newComponent = new ComponentInsert(newComponentId, name, "gpu", launchYear, msrp, manufacturerId);
+                final ComponentInsert newComponent = new ComponentInsert(newComponentId, name, "gpu", launchYear, msrp, manufacturerId);
                 controller.insertComponent(newComponent);
 
-                GpuInsert newGpu = new GpuInsert(newComponentId, family, memoryType, memoryAmount, frequency, tgp);
+                final GpuInsert newGpu = new GpuInsert(newComponentId, family, memoryType, memoryAmount, frequency, tgp);
                 controller.insertGpu(newGpu);
 
                 JOptionPane.showMessageDialog(null, "GPU and Component inserted successfully!");
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Validation Error", JOptionPane.WARNING_MESSAGE);
                 showDialog();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }

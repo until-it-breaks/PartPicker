@@ -14,37 +14,37 @@ import java.util.List;
 public class CpuInsertDialog {
     private final Controller controller;
 
-    public CpuInsertDialog(Controller controller) {
+    public CpuInsertDialog(final Controller controller) {
         this.controller = controller;
     }
 
     public void showDialog() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
+        final JPanel panel = new JPanel(new GridBagLayout());
+        final GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
 
-        JTextField familyField = new JTextField();
-        JTextField coreCountField = new JTextField();
-        JTextField frequencyField = new JTextField();
-        JTextField tdpField = new JTextField();
-        JCheckBox smtCheckBox = new JCheckBox("Support SMT");
-        JComboBox<String> socketNameComboBox = new JComboBox<>(new String[]{"AM4", "AM5", "LGA 1200", "LGA 1700"});
+        final JTextField familyField = new JTextField();
+        final JTextField coreCountField = new JTextField();
+        final JTextField frequencyField = new JTextField();
+        final JTextField tdpField = new JTextField();
+        final JCheckBox smtCheckBox = new JCheckBox("Support SMT");
+        final JComboBox<String> socketNameComboBox = new JComboBox<>(new String[]{"AM4", "AM5", "LGA 1200", "LGA 1700"});
 
-        DefaultListModel<String> ramGenListModel = new DefaultListModel<>();
-        JList<String> ramGenList = new JList<>(ramGenListModel);
+        final DefaultListModel<String> ramGenListModel = new DefaultListModel<>();
+        final JList<String> ramGenList = new JList<>(ramGenListModel);
         ramGenList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         ramGenListModel.addElement("DDR4");
         ramGenListModel.addElement("DDR5");
 
-        JTextField nameField = new JTextField();
-        JTextField launchYearField = new JTextField();
-        JTextField msrpField = new JTextField();
-        JComboBox<Manufacturer> manufacturerComboBox = new JComboBox<>();
+        final JTextField nameField = new JTextField();
+        final JTextField launchYearField = new JTextField();
+        final JTextField msrpField = new JTextField();
+        final JComboBox<Manufacturer> manufacturerComboBox = new JComboBox<>();
 
-        List<Manufacturer> manufacturers = controller.getManufacturers();
-        for (Manufacturer manufacturer : manufacturers) {
+        final List<Manufacturer> manufacturers = controller.getManufacturers();
+        for (final Manufacturer manufacturer : manufacturers) {
             manufacturerComboBox.addItem(manufacturer);
         }
 
@@ -126,7 +126,7 @@ public class CpuInsertDialog {
         gbc.gridx = 1;
         panel.add(manufacturerComboBox, gbc);
 
-        int result = JOptionPane.showConfirmDialog(null, panel, "Add New CPU", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        final int result = JOptionPane.showConfirmDialog(null, panel, "Add New CPU", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             try {
                 if (familyField.getText().trim().isEmpty() || coreCountField.getText().trim().isEmpty() ||
@@ -137,7 +137,7 @@ public class CpuInsertDialog {
                     throw new IllegalArgumentException("All fields must be filled.");
                 }
 
-                String family = familyField.getText().trim();
+                final String family = familyField.getText().trim();
 
                 int coreCount;
                 try {
@@ -145,7 +145,7 @@ public class CpuInsertDialog {
                     if (coreCount <= 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("Core Count must be a positive integer.");
                 }
 
@@ -155,7 +155,7 @@ public class CpuInsertDialog {
                     if (frequency <= 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("Frequency must be a positive number.");
                 }
 
@@ -165,20 +165,20 @@ public class CpuInsertDialog {
                     if (tdp <= 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("TDP must be a positive integer.");
                 }
 
-                String socketName = (String) socketNameComboBox.getSelectedItem();
+                final String socketName = (String) socketNameComboBox.getSelectedItem();
 
                 int launchYear;
                 try {
                     launchYear = Integer.parseInt(launchYearField.getText().trim());
-                    int currentYear = java.time.Year.now().getValue();
+                    final int currentYear = java.time.Year.now().getValue();
                     if (launchYear < 1970 || launchYear > currentYear) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("Launch Year must be a valid year between 1970 and " + java.time.Year.now().getValue() + ".");
                 }
 
@@ -188,32 +188,32 @@ public class CpuInsertDialog {
                     if (msrp < 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("MSRP must be a positive number.");
                 }
 
-                String name = nameField.getText().trim();
-                boolean smt = smtCheckBox.isSelected();
-                Manufacturer selectedManufacturer = (Manufacturer) manufacturerComboBox.getSelectedItem();
-                int manufacturerId = selectedManufacturer.getId();
+                final String name = nameField.getText().trim();
+                final boolean smt = smtCheckBox.isSelected();
+                final Manufacturer selectedManufacturer = (Manufacturer) manufacturerComboBox.getSelectedItem();
+                final int manufacturerId = selectedManufacturer.getId();
 
-                int newComponentId = controller.getLatestComponendId() + 1;
+                final int newComponentId = controller.getLatestComponendId() + 1;
 
-                ComponentInsert newComponent = new ComponentInsert(newComponentId, name, "cpu", launchYear, msrp, manufacturerId);
+                final ComponentInsert newComponent = new ComponentInsert(newComponentId, name, "cpu", launchYear, msrp, manufacturerId);
                 controller.insertComponent(newComponent);
 
-                CpuInsert newCpu = new CpuInsert(newComponentId, family, coreCount, frequency, tdp, smt, socketName);
+                final CpuInsert newCpu = new CpuInsert(newComponentId, family, coreCount, frequency, tdp, smt, socketName);
                 controller.insertCpu(newCpu);
-                for (String ramGen : ramGenList.getSelectedValuesList()) {
-                    CpuRamInsert cpuRamInsert = new CpuRamInsert(ramGen, newComponentId);
+                for (final String ramGen : ramGenList.getSelectedValuesList()) {
+                    final CpuRamInsert cpuRamInsert = new CpuRamInsert(ramGen, newComponentId);
                     controller.insertCpuRamCompatibility(cpuRamInsert);
                 }
 
                 JOptionPane.showMessageDialog(null, "CPU and Component, along with RAM compatibility, inserted successfully!");
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Validation Error", JOptionPane.WARNING_MESSAGE);
                 showDialog();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }

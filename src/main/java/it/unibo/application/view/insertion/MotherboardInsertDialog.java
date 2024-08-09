@@ -13,28 +13,28 @@ import it.unibo.application.data.entities.insertion.MotherboardInsert;
 public class MotherboardInsertDialog {
     private final Controller controller;
 
-    public MotherboardInsertDialog(Controller controller) {
+    public MotherboardInsertDialog(final Controller controller) {
         this.controller = controller;
     }
 
     public void showDialog() {
-        JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
+        final JPanel panel = new JPanel(new GridLayout(0, 2, 5, 5));
 
-        JComboBox<String> formFactorComboBox = new JComboBox<>(new String[]{"ATX", "MicroATX", "MiniITX"});
-        JTextField chipsetNameField = new JTextField();
-        JTextField ramSlotsField = new JTextField();
-        JTextField gpuSlotsField = new JTextField();
-        JCheckBox wifiCheckBox = new JCheckBox("Include WiFi");
-        JComboBox<String> socketNameComboBox = new JComboBox<>(new String[]{"AM4", "AM5", "LGA 1200", "LGA 1700"});
-        JComboBox<String> ramGenComboBox = new JComboBox<>(new String[]{"DDR4", "DDR5"});
+        final JComboBox<String> formFactorComboBox = new JComboBox<>(new String[]{"ATX", "MicroATX", "MiniITX"});
+        final JTextField chipsetNameField = new JTextField();
+        final JTextField ramSlotsField = new JTextField();
+        final JTextField gpuSlotsField = new JTextField();
+        final JCheckBox wifiCheckBox = new JCheckBox("Include WiFi");
+        final JComboBox<String> socketNameComboBox = new JComboBox<>(new String[]{"AM4", "AM5", "LGA 1200", "LGA 1700"});
+        final JComboBox<String> ramGenComboBox = new JComboBox<>(new String[]{"DDR4", "DDR5"});
 
-        JTextField nameField = new JTextField();
-        JTextField launchYearField = new JTextField();
-        JTextField msrpField = new JTextField();
-        JComboBox<Manufacturer> manufacturerComboBox = new JComboBox<>();
+        final JTextField nameField = new JTextField();
+        final JTextField launchYearField = new JTextField();
+        final JTextField msrpField = new JTextField();
+        final JComboBox<Manufacturer> manufacturerComboBox = new JComboBox<>();
 
-        List<Manufacturer> manufacturers = controller.getManufacturers();
-        for (Manufacturer manufacturer : manufacturers) {
+        final List<Manufacturer> manufacturers = controller.getManufacturers();
+        for (final Manufacturer manufacturer : manufacturers) {
             manufacturerComboBox.addItem(manufacturer);
         }
 
@@ -61,7 +61,7 @@ public class MotherboardInsertDialog {
         panel.add(new JLabel("Manufacturer:"));
         panel.add(manufacturerComboBox);
 
-        int result = JOptionPane.showConfirmDialog(null, panel, "Add New Motherboard", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        final int result = JOptionPane.showConfirmDialog(null, panel, "Add New Motherboard", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             try {
                 if (chipsetNameField.getText().trim().isEmpty() || ramSlotsField.getText().trim().isEmpty() ||
@@ -72,15 +72,15 @@ public class MotherboardInsertDialog {
                     throw new IllegalArgumentException("All fields must be filled.");
                 }
 
-                String formFactor = (String) formFactorComboBox.getSelectedItem();
-                String chipsetName = chipsetNameField.getText().trim();
+                final String formFactor = (String) formFactorComboBox.getSelectedItem();
+                final String chipsetName = chipsetNameField.getText().trim();
                 int ramSlots;
                 try {
                     ramSlots = Integer.parseInt(ramSlotsField.getText().trim());
                     if (ramSlots <= 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("RAM Slots must be a positive integer.");
                 }
 
@@ -90,23 +90,23 @@ public class MotherboardInsertDialog {
                     if (gpuSlots < 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("GPU Slots must be a non-negative integer.");
                 }
 
-                String socketName = (String) socketNameComboBox.getSelectedItem();
-                String ramGen = (String) ramGenComboBox.getSelectedItem();
+                final String socketName = (String) socketNameComboBox.getSelectedItem();
+                final String ramGen = (String) ramGenComboBox.getSelectedItem();
 
-                boolean wifi = wifiCheckBox.isSelected();
+                final boolean wifi = wifiCheckBox.isSelected();
 
                 int launchYear;
                 try {
                     launchYear = Integer.parseInt(launchYearField.getText().trim());
-                    int currentYear = java.time.Year.now().getValue();
+                    final int currentYear = java.time.Year.now().getValue();
                     if (launchYear < 1970 || launchYear > currentYear) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("Launch Year must be a valid year between 1970 and " + java.time.Year.now().getValue() + ".");
                 }
 
@@ -116,27 +116,27 @@ public class MotherboardInsertDialog {
                     if (msrp < 0) {
                         throw new NumberFormatException();
                     }
-                } catch (NumberFormatException ex) {
+                } catch (final NumberFormatException ex) {
                     throw new IllegalArgumentException("MSRP must be a positive number.");
                 }
 
-                String name = nameField.getText().trim();
-                Manufacturer selectedManufacturer = (Manufacturer) manufacturerComboBox.getSelectedItem();
-                int manufacturerId = selectedManufacturer.getId();
+                final String name = nameField.getText().trim();
+                final Manufacturer selectedManufacturer = (Manufacturer) manufacturerComboBox.getSelectedItem();
+                final int manufacturerId = selectedManufacturer.getId();
 
-                int newComponentId = controller.getLatestComponendId() + 1;
+                final int newComponentId = controller.getLatestComponendId() + 1;
 
-                ComponentInsert newComponent = new ComponentInsert(newComponentId, name, "motherboard", launchYear, msrp, manufacturerId);
+                final ComponentInsert newComponent = new ComponentInsert(newComponentId, name, "motherboard", launchYear, msrp, manufacturerId);
                 controller.insertComponent(newComponent);
 
-                MotherboardInsert newMotherboard = new MotherboardInsert(newComponentId, formFactor, chipsetName, ramSlots, gpuSlots, wifi, socketName, ramGen);
+                final MotherboardInsert newMotherboard = new MotherboardInsert(newComponentId, formFactor, chipsetName, ramSlots, gpuSlots, wifi, socketName, ramGen);
                 controller.insertMotherboard(newMotherboard);
 
                 JOptionPane.showMessageDialog(null, "Motherboard and Component inserted successfully!");
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 JOptionPane.showMessageDialog(null, e.getMessage(), "Validation Error", JOptionPane.WARNING_MESSAGE);
                 showDialog();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }

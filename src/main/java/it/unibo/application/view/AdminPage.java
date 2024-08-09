@@ -19,29 +19,29 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AdminPage extends JPanel {
-    private JComboBox<Part> partComboBox;
-    private JButton addButton;
-    private JButton backButton;
+    private final JComboBox<Part> partComboBox;
+    private final JButton addButton;
+    private final JButton backButton;
 
-    public AdminPage(Controller controller) {
+    public AdminPage(final Controller controller) {
 
         setLayout(new BorderLayout());
 
-        JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        final JPanel backButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         backButtonPanel.setOpaque(false);
 
         backButton = new JButton("Back");
         backButton.setPreferredSize(new Dimension(80, 30));
         backButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(final ActionEvent e) {
                 controller.setAppState(State.WELCOME);
             }
         });
 
         backButtonPanel.add(backButton);
 
-        JPanel mainPanel = new JPanel();
+        final JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new FlowLayout());
 
         partComboBox = new JComboBox<>(Part.values());
@@ -51,8 +51,8 @@ public class AdminPage extends JPanel {
 
         addButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                Part selectedPart = (Part) partComboBox.getSelectedItem();
+            public void actionPerformed(final ActionEvent e) {
+                final Part selectedPart = (Part) partComboBox.getSelectedItem();
                 switch (selectedPart) {
                     case CASE:
                         new CaseInsertDialog(controller).showDialog();;
@@ -83,7 +83,6 @@ public class AdminPage extends JPanel {
                 }
             }
         });
-
         mainPanel.add(new JLabel("Select type of component to add:"));
         mainPanel.add(partComboBox);
         mainPanel.add(addButton);
@@ -91,5 +90,4 @@ public class AdminPage extends JPanel {
         add(backButtonPanel, BorderLayout.PAGE_START);
         add(mainPanel, BorderLayout.CENTER);
     }
-
 }
