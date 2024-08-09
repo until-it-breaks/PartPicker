@@ -5,12 +5,12 @@ import it.unibo.application.data.entities.enums.State;
 
 public class AppStateController {
     private State currentState;
-    private Part desiredPart;
+    private Part requestedPart;
     private int targetBuild;
 
     public AppStateController() {
         this.currentState = State.WELCOME;
-        this.desiredPart = null;
+        this.requestedPart = null;
         this.targetBuild = 0;
     }
 
@@ -22,12 +22,12 @@ public class AppStateController {
         this.currentState = newState;
     }
 
-    public void setDesiredPart(final Part part) {
-        this.desiredPart = part;
+    public void setRequestedPart(final Part part) {
+        this.requestedPart = part;
     }
 
-    public Part getDesiredPart() {
-        return this.desiredPart;
+    public Part getRequestedPart() {
+        return this.requestedPart;
     }
 
     public State getCurrentState() {

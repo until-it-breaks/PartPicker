@@ -6,6 +6,7 @@ import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.builds.Review;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.login.UserDetails;
+import it.unibo.application.data.entities.price.ComponentPrice;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -86,25 +87,43 @@ public class BuildPage extends JPanel {
     private JPanel createComponentsPanel(final Build build) {
         final JPanel componentsPanel = new JPanel(new GridLayout(0, 1));
         componentsPanel.add(new JLabel("Components:"));
-        componentsPanel.add(new JLabel("Cooler: " + build.getCooler().getBaseInfo().getName()));
-        componentsPanel.add(new JLabel("Case: " + build.get_case().getBaseInfo().getName()));
-        componentsPanel.add(new JLabel("PSU: " + build.getPsu().getBaseInfo().getName()));
-        componentsPanel.add(new JLabel("CPU: " + build.getCpu().getBaseInfo().getName()));
-        componentsPanel.add(new JLabel("Motherboard: " + build.getMotherboard().getBaseInfo().getName()));
+        
+        double totalPrice = 0.0;
+        
+        totalPrice += addComponentWithPrice(componentsPanel, "Cooler: ", build.getCooler());
+        totalPrice += addComponentWithPrice(componentsPanel, "Case: ", build.get_case());
+        totalPrice += addComponentWithPrice(componentsPanel, "PSU: ", build.getPsu());
+        totalPrice += addComponentWithPrice(componentsPanel, "CPU: ", build.getCpu());
+        totalPrice += addComponentWithPrice(componentsPanel, "Motherboard: ", build.getMotherboard());
 
         for (final Component gpu : build.getGpus()) {
-            componentsPanel.add(new JLabel("GPU: " + gpu.getBaseInfo().getName()));
+            totalPrice += addComponentWithPrice(componentsPanel, "GPU: ", gpu);
         }
 
         for (final Component ram : build.getRams()) {
-            componentsPanel.add(new JLabel("RAM: " + ram.getBaseInfo().getName()));
+            totalPrice += addComponentWithPrice(componentsPanel, "RAM: ", ram);
         }
 
         for (final Component storage : build.getStorage()) {
-            componentsPanel.add(new JLabel("Storage: " + storage.getBaseInfo().getName()));
+            totalPrice += addComponentWithPrice(componentsPanel, "Storage: ", storage);
         }
 
+        final JLabel totalPriceLabel = new JLabel("Total Price: " + truncateToTwoDecimals(totalPrice) + " €");
+        totalPriceLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        componentsPanel.add(totalPriceLabel);
+
         return componentsPanel;
+    }
+
+    private double addComponentWithPrice(final JPanel panel, final String label, final Component component) {
+        final ComponentPrice price = controller.getScrapedPrice(component.getBaseInfo().getId());
+        final double priceValue = price.getComponentPrice();
+        final String priceText = priceValue > 0 ? truncateToTwoDecimals(priceValue) + " €" : "Price not available";
+
+        final JLabel componentLabel = new JLabel(label + component.getBaseInfo().getName() + " - " + priceText);
+        panel.add(componentLabel);
+
+        return priceValue;
     }
 
     private JPanel createCommentsPanel(final Build build) {
@@ -249,5 +268,9 @@ public class BuildPage extends JPanel {
             }
             initializeUI();
         }
+    }
+
+    private String truncateToTwoDecimals(final double value) {
+        return String.format("%.2f", Math.floor(value * 100) / 100);
     }
 }

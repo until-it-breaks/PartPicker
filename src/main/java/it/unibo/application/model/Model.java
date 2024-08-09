@@ -46,10 +46,6 @@ public final class Model {
         return User.DAO.findByUsername(connection, loginService.getCurrentUser());
     }
 
-    public Cpu getCpuById(final int id) {
-        return Cpu.DAO.findById(connection, id);
-    }
-
     public List<Build> getBuilds() {
         return Build.DAO.getBuilds(connection);
     }

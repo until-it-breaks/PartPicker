@@ -37,12 +37,12 @@ public class Controller {
     }
 
     public Part getDesiredPart() {
-        return appStateController.getDesiredPart();
+        return appStateController.getRequestedPart();
     }
 
 
     public void setDesiredPart(final Part part) {
-        appStateController.setDesiredPart(part);
+        appStateController.setRequestedPart(part);
     }
 
     public int getTargetBuild() {
