@@ -11,6 +11,7 @@ import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Cooler;
 import it.unibo.application.data.entities.components.Cpu;
 import it.unibo.application.data.entities.components.Gpu;
+import it.unibo.application.data.entities.components.Manufacturer;
 import it.unibo.application.data.entities.components.Motherboard;
 import it.unibo.application.data.entities.components.Psu;
 import it.unibo.application.data.entities.components.Ram;
@@ -115,5 +116,9 @@ public final class Model {
 
     public ComponentCompatibilityChecker getComponentCompatibilityChecker() {
         return componentCompatibilityChecker;
+    }
+
+    public Manufacturer getManufacturerByName(final String name) {
+        return Manufacturer.DAO.getManufacturer(connection, name);
     }
 }

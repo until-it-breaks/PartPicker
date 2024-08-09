@@ -296,4 +296,71 @@ public final class Queries {
         FROM compatibilitaRamCpu
         WHERE NomeGenerazioneRam = ? AND CodiceCpu = ?
     """;
+
+    public static final String GET_MANUFACTURER_BY_NAME =
+    """
+        SELECT *
+        FROM produttori
+        WHERE NomeProduttore = ?
+    """;
+
+    public static final String INSERT_CASE =
+    """
+        INSERT INTO 'Case' (CodiceCase, FattoreFormaCase)
+        VALUES (?, ?)
+    """;
+
+    public static final String INSERT_CPU =
+    """
+        INSERT INTO Cpu (CodiceCpu, FamigliaCpu, NumeroCore, FrequenzaGpu, Tdp, Smt, NomeSocket)
+        VALUES (?, ?)
+    """;
+
+    public static final String INSERT_COOLER =
+    """
+        INSERT INTO Cooler (CodiceCooler, RpmCooler, LivelloRumore, TipoCooler)
+        VALUES (?, ?, ?, ?)
+    """;
+
+    public static final String INSERT_GPU =
+    """
+        INSERT INTO Gpu (CodiceGpu, FamigliaGpu, TipoMemoriaGpu, QuantitaMemoriaGpu, FrequenzaGpu, Tgp)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """;
+
+    public static final String INSERT_RAM =
+    """
+        INSERT INTO Ram (CodiceRam, FrequenzaRam, CapienzaRam, Latenza, Ecc, NomeGenerazioneRam)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """;
+
+    public static final String INSERT_MOTHERBOARD =
+    """
+        INSERT INTO Motherboard (CodiceMotherboard, FattoreFormaMotherboard, NomeChipset, SlotRam, SlotGpu, WiFi, NomeSocket, NomeGenerazioneRam)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """;
+
+    public static final String INSERT_STORAGE =
+    """
+        INSERT INTO Storage (CodiceStorage, CapienzaStorage, RpmStorage, QuantitaCache, TipoStorage)
+        VALUES (?, ?, ?, ?, ?)
+    """;
+
+    public static final String INSERT_PSU =
+    """
+        INSERT INTO Psu (CodicePsu, FattoreFormaPsu, Efficienza, Wattaggio, Modularita)
+        VALUES (?, ?, ?, ?, ?)
+    """;
+
+    public static final String INSERT_COMPONENT =
+    """
+        INSERT INTO Componente (CodiceComponente, NomeComponente, TipoComponente, AnnoLancio, PrezzoListino, CodiceProduttore)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """;
+
+    public static final String INSERT_CPU_RAM_COMPATIBILITY = 
+    """
+        INSERT INTO CompatibilitaRamCpu (NomeGenerazioneRam, CodiceCpu)
+        VALUES (?, ?)
+    """;
 }

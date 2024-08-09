@@ -7,6 +7,7 @@ import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.builds.Review;
 import it.unibo.application.data.entities.compatibility.ComponentCompatibilityChecker;
 import it.unibo.application.data.entities.components.Component;
+import it.unibo.application.data.entities.components.Manufacturer;
 import it.unibo.application.data.entities.enums.Part;
 import it.unibo.application.data.entities.enums.State;
 import it.unibo.application.data.entities.login.User;
@@ -120,5 +121,9 @@ public class Controller {
 
     public ComponentCompatibilityChecker getCCC() {
         return model.getComponentCompatibilityChecker();
+    }
+
+    public Manufacturer getManufacturerByName(final String name) {
+        return model.getManufacturerByName(name);
     }
 }
