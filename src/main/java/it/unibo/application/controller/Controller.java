@@ -5,15 +5,8 @@ import java.util.List;
 import it.unibo.application.data.entities.ban.Ban;
 import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.builds.Review;
-import it.unibo.application.data.entities.components.Case;
+import it.unibo.application.data.entities.compatibility.ComponentCompatibilityChecker;
 import it.unibo.application.data.entities.components.Component;
-import it.unibo.application.data.entities.components.Cooler;
-import it.unibo.application.data.entities.components.Cpu;
-import it.unibo.application.data.entities.components.Gpu;
-import it.unibo.application.data.entities.components.Motherboard;
-import it.unibo.application.data.entities.components.Psu;
-import it.unibo.application.data.entities.components.Ram;
-import it.unibo.application.data.entities.components.Storage;
 import it.unibo.application.data.entities.enums.Part;
 import it.unibo.application.data.entities.enums.State;
 import it.unibo.application.data.entities.login.User;
@@ -77,38 +70,6 @@ public class Controller {
         return model.getLoggedUser();
     }
 
-    public Cpu getCpuById(final int id) {
-        return model.getCpuById(id);
-    }
-
-    public Gpu getGpuById(final int id) {
-        return model.getGpuById(id);
-    }
-
-    public Storage getStorageById(final int id) {
-        return model.getStorageById(id);
-    }
-
-    public Ram getRamById(final int id) {
-        return model.getRamById(id);
-    }
-
-    public Psu getPsuById(final int id) {
-        return model.getPsuById(id);
-    }
-
-    public Case getCaseById(final int id) {
-        return model.getCaseById(id);
-    }
-
-    public Motherboard getMotherboardById(final int id) {
-        return model.getMotherboardById(id);
-    }
-
-    public Cooler getCoolerById(final int id) {
-        return model.getCoolerById(id);
-    }
-
     public List<Component> getComponents(final Part part) {
         return model.getComponents(part);
     }
@@ -155,5 +116,9 @@ public class Controller {
 
     public List<ComponentPrice> getRecentComponentPricesByReseller(final String reseller, final int componentId) {
         return model.getRecentComponentPricesByReseller(componentId, reseller);
+    }
+
+    public ComponentCompatibilityChecker getCCC() {
+        return model.getComponentCompatibilityChecker();
     }
 }

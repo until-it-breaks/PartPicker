@@ -5,6 +5,7 @@ import java.sql.Connection;
 import it.unibo.application.data.entities.ban.Ban;
 import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.builds.Review;
+import it.unibo.application.data.entities.compatibility.ComponentCompatibilityChecker;
 import it.unibo.application.data.entities.components.Case;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Cooler;
@@ -25,10 +26,12 @@ public final class Model {
 
     private final Connection connection;
     private final LoginService loginService;
+    private final ComponentCompatibilityChecker componentCompatibilityChecker;
 
     public Model(final Connection connection) {
         this.connection = connection;
         this.loginService = new LoginService(connection);
+        this.componentCompatibilityChecker = new ComponentCompatibilityChecker(connection);
     }
 
     public boolean login(final String username, final String password) {
@@ -140,5 +143,9 @@ public final class Model {
 
     public List<ComponentPrice> getRecentComponentPricesByReseller(final int componentId, final String reseller) {
         return ComponentPrice.DAO.getLastFourteenScrapedPricesByReseller(connection, componentId, reseller);
+    }
+
+    public ComponentCompatibilityChecker getComponentCompatibilityChecker() {
+        return componentCompatibilityChecker;
     }
 }

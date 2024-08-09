@@ -298,4 +298,11 @@ public final class Queries {
             ORDER BY DataRilevamentoPrezzo DESC
             LIMIT 14;
         """;
+
+    public static final String RAM_CPU_MATCH =
+    """
+        SELECT COUNT(*) AS Match
+        FROM compatibilitaRamCpu
+        WHERE NomeGenerazioneRam = ? AND CodiceCpu = ?
+    """;
 }
