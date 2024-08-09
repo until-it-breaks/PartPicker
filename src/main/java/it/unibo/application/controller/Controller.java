@@ -10,6 +10,16 @@ import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.components.Manufacturer;
 import it.unibo.application.data.entities.enums.Part;
 import it.unibo.application.data.entities.enums.State;
+import it.unibo.application.data.entities.insertion.CaseInsert;
+import it.unibo.application.data.entities.insertion.ComponentInsert;
+import it.unibo.application.data.entities.insertion.CoolerInsert;
+import it.unibo.application.data.entities.insertion.CpuInsert;
+import it.unibo.application.data.entities.insertion.CpuRamInsert;
+import it.unibo.application.data.entities.insertion.GpuInsert;
+import it.unibo.application.data.entities.insertion.MotherboardInsert;
+import it.unibo.application.data.entities.insertion.PsuInsert;
+import it.unibo.application.data.entities.insertion.RamInsert;
+import it.unibo.application.data.entities.insertion.StorageInsert;
 import it.unibo.application.data.entities.login.User;
 import it.unibo.application.data.entities.login.UserDetails;
 import it.unibo.application.data.entities.price.ComponentPrice;
@@ -125,5 +135,45 @@ public class Controller {
 
     public Manufacturer getManufacturerByName(final String name) {
         return model.getManufacturerByName(name);
+    }
+
+    public void insertCpu(CpuInsert cpu) {
+        model.insertCpu(cpu);
+    }
+
+    public void insertCooler(CoolerInsert cooler) {
+        model.insertCooler(cooler);
+    }
+
+    public void insertRam(RamInsert ram) {
+        model.insertRam(ram);
+    }
+
+    public void insertCase(CaseInsert _case) {
+        model.insertCase(_case);
+    }
+
+    public void insertMotherboard(MotherboardInsert motherboard) {
+        model.insertMotherboard(motherboard);
+    }
+
+    public void insertGpu(GpuInsert gpu) {
+        model.insertGpu(gpu);
+    }
+
+    public void insertStorage(StorageInsert storage) {
+        model.insertStorage(storage);
+    }
+
+    public void insertPsu(PsuInsert psu) {
+        model.insertPsu(psu);
+    }
+
+    public void insertComponent(ComponentInsert componentInsert) {
+        model.insertComponent(componentInsert);
+    }
+
+    public void insertCpuRamCompatibility(CpuRamInsert cpuRamInsert) {
+        model.insertCpuRamCompatibility(cpuRamInsert);
     }
 }

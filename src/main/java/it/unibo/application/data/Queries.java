@@ -363,4 +363,10 @@ public final class Queries {
         INSERT INTO CompatibilitaRamCpu (NomeGenerazioneRam, CodiceCpu)
         VALUES (?, ?)
     """;
+
+    public static final String GET_LATEST_COMPONENT_ID = 
+    """
+        SELECT MAX(CodiceComponente) AS Max
+        FROM Componenti
+    """;
 }

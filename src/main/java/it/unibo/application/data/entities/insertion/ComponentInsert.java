@@ -61,5 +61,19 @@ public class ComponentInsert {
                 throw new DAOException(e);
             }
         }
+
+        public static int getLatestId(final Connection connection) {
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_LATEST_COMPONENT_ID);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("Max");
+                }
+                return 0;
+            } catch (final SQLException e) {
+                throw new DAOException(e);
+            }
+        }
     }
 }

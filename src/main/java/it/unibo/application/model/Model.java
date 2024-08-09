@@ -17,6 +17,16 @@ import it.unibo.application.data.entities.components.Psu;
 import it.unibo.application.data.entities.components.Ram;
 import it.unibo.application.data.entities.components.Storage;
 import it.unibo.application.data.entities.enums.Part;
+import it.unibo.application.data.entities.insertion.CaseInsert;
+import it.unibo.application.data.entities.insertion.ComponentInsert;
+import it.unibo.application.data.entities.insertion.CoolerInsert;
+import it.unibo.application.data.entities.insertion.CpuInsert;
+import it.unibo.application.data.entities.insertion.CpuRamInsert;
+import it.unibo.application.data.entities.insertion.GpuInsert;
+import it.unibo.application.data.entities.insertion.MotherboardInsert;
+import it.unibo.application.data.entities.insertion.PsuInsert;
+import it.unibo.application.data.entities.insertion.RamInsert;
+import it.unibo.application.data.entities.insertion.StorageInsert;
 import it.unibo.application.data.entities.login.User;
 import it.unibo.application.data.entities.login.UserDetails;
 import it.unibo.application.data.entities.price.ComponentPrice;
@@ -120,5 +130,45 @@ public final class Model {
 
     public Manufacturer getManufacturerByName(final String name) {
         return Manufacturer.DAO.getManufacturer(connection, name);
+    }
+
+    public void insertCpu(CpuInsert cpu) {
+        CpuInsert.DAO.insert(connection, cpu);
+    }
+
+    public void insertCooler(CoolerInsert cooler) {
+        CoolerInsert.DAO.insert(connection, cooler);
+    }
+
+    public void insertRam(RamInsert ram) {
+        RamInsert.DAO.insert(connection, ram);
+    }
+
+    public void insertCase(CaseInsert _case) {
+        CaseInsert.DAO.insert(connection, _case);
+    }
+
+    public void insertMotherboard(MotherboardInsert motherboard) {
+        MotherboardInsert.DAO.insert(connection, motherboard);
+    }
+
+    public void insertGpu(GpuInsert gpu) {
+        GpuInsert.DAO.insert(connection, gpu);
+    }
+
+    public void insertStorage(StorageInsert storage) {
+        StorageInsert.DAO.insert(connection, storage);
+    }
+
+    public void insertPsu(PsuInsert psu) {
+        PsuInsert.DAO.insert(connection, psu);
+    }
+
+    public void insertComponent(ComponentInsert componentInsert) {
+        ComponentInsert.DAO.insert(connection, componentInsert);
+    }
+
+    public void insertCpuRamCompatibility(CpuRamInsert cpuRamInsert) {
+        CpuRamInsert.DAO.insert(connection, cpuRamInsert);
     }
 }
