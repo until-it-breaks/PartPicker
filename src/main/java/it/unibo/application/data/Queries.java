@@ -301,7 +301,7 @@ public final class Queries {
 
     public static final String RAM_CPU_MATCH =
     """
-        SELECT COUNT(*) AS Match
+        SELECT COUNT(*) AS "Match"
         FROM compatibilitaRamCpu
         WHERE NomeGenerazioneRam = ? AND CodiceCpu = ?
     """;

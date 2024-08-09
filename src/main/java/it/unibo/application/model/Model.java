@@ -50,34 +50,6 @@ public final class Model {
         return Cpu.DAO.findById(connection, id);
     }
 
-    public Gpu getGpuById(final int id) {
-        return Gpu.DAO.findById(connection, id);
-    }
-
-    public Storage getStorageById(final int id) {
-        return Storage.DAO.findById(connection, id);
-    }
-
-    public Ram getRamById(final int id) {
-        return Ram.DAO.findById(connection, id);
-    }
-
-    public Psu getPsuById(final int id) {
-        return Psu.DAO.findById(connection, id);
-    }
-
-    public Case getCaseById(final int id) {
-        return Case.DAO.findById(connection, id);
-    }
-
-    public Motherboard getMotherboardById(final int id) {
-        return Motherboard.DAO.findById(connection, id);
-    }
-
-    public Cooler getCoolerById(final int id) {
-        return Cooler.DAO.findById(connection, id);
-    }
-
     public List<Build> getBuilds() {
         return Build.DAO.getBuilds(connection);
     }

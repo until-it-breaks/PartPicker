@@ -2,6 +2,7 @@ package it.unibo.application.view;
 
 import it.unibo.application.controller.Controller;
 import it.unibo.application.data.entities.builds.Build;
+import it.unibo.application.data.entities.compatibility.ComponentCompatibilityChecker;
 import it.unibo.application.data.entities.components.Component;
 import it.unibo.application.data.entities.enums.Part;
 
@@ -16,6 +17,7 @@ import java.awt.event.*;
 
 public class BuilderPage extends JPanel {
     private final Controller controller;
+    private final ComponentCompatibilityChecker ccc;
     private final JPanel mainPanel;
     private final JPanel cpuPanel;
     private final JPanel coolerPanel;
@@ -44,6 +46,7 @@ public class BuilderPage extends JPanel {
 
     public BuilderPage(final Controller controller) {
         this.controller = controller;
+        this.ccc = controller.getCCC();
         this.setLayout(new BorderLayout());
 
         this.add(new TopBar(controller), BorderLayout.NORTH);
@@ -104,12 +107,23 @@ public class BuilderPage extends JPanel {
                 selectedGpu = getSelectedComponents(gpuPanel);
                 selectedRam = getSelectedComponents(ramPanel);
                 selectedStorage = getSelectedComponents(storagePanel);
-
-                int id = controller.getLatestBuildId() + 1;
-                Build build = new Build(id, selectedCooler, selectedCase,
-                    selectedPsu, selectedCpu, selectedMotherboard, selectedGpu,
-                    selectedRam, selectedStorage, controller.getLoggedUser().getUsername());
-                controller.insertBuild(build, controller.getLoggedUser());
+        
+                if (ccc.areCpuMoboCompatible(selectedCpu, selectedMotherboard) &&
+                    selectedRam.stream().allMatch(ram -> ccc.areRamMoboCompatible(ram, selectedMotherboard)) &&
+                    selectedRam.stream().allMatch(ram -> ccc.checkCompatibility(ram, selectedCpu))) {
+        
+                    int id = controller.getLatestBuildId() + 1;
+                    Build build = new Build(id, selectedCooler, selectedCase,
+                        selectedPsu, selectedCpu, selectedMotherboard, selectedGpu,
+                        selectedRam, selectedStorage, controller.getLoggedUser().getUsername());
+                    controller.insertBuild(build, controller.getLoggedUser());
+        
+                } else {
+                    JOptionPane.showMessageDialog(null,
+                        "Selected CPU, RAM, and Motherboard are not compatible.",
+                        "Compatibility Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
 
