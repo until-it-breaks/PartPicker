@@ -112,7 +112,7 @@ public class Controller {
         return model.getLatestBuildId();
     }
 
-    public void insertBuild(Build build, User user) {
+    public void insertBuild(final Build build, final User user) {
         model.insertBuild(build, user);
     }
 
@@ -132,43 +132,43 @@ public class Controller {
         return model.getManufacturers();
     }
 
-    public void insertCpu(CpuInsert cpu) {
+    public void insertCpu(final CpuInsert cpu) {
         model.insertCpu(cpu);
     }
 
-    public void insertCooler(CoolerInsert cooler) {
+    public void insertCooler(final CoolerInsert cooler) {
         model.insertCooler(cooler);
     }
 
-    public void insertRam(RamInsert ram) {
+    public void insertRam(final RamInsert ram) {
         model.insertRam(ram);
     }
 
-    public void insertCase(CaseInsert _case) {
+    public void insertCase(final CaseInsert _case) {
         model.insertCase(_case);
     }
 
-    public void insertMotherboard(MotherboardInsert motherboard) {
+    public void insertMotherboard(final MotherboardInsert motherboard) {
         model.insertMotherboard(motherboard);
     }
 
-    public void insertGpu(GpuInsert gpu) {
+    public void insertGpu(final GpuInsert gpu) {
         model.insertGpu(gpu);
     }
 
-    public void insertStorage(StorageInsert storage) {
+    public void insertStorage(final StorageInsert storage) {
         model.insertStorage(storage);
     }
 
-    public void insertPsu(PsuInsert psu) {
+    public void insertPsu(final PsuInsert psu) {
         model.insertPsu(psu);
     }
 
-    public void insertComponent(ComponentInsert componentInsert) {
+    public void insertComponent(final ComponentInsert componentInsert) {
         model.insertComponent(componentInsert);
     }
 
-    public void insertCpuRamCompatibility(CpuRamInsert cpuRamInsert) {
+    public void insertCpuRamCompatibility(final CpuRamInsert cpuRamInsert) {
         model.insertCpuRamCompatibility(cpuRamInsert);
     }
 
@@ -182,5 +182,11 @@ public class Controller {
 
     public double getUserRating(final String username) {
         return model.getUserRating(username);
+    }
+
+    public void closeConnection() {
+        if (model != null) {
+            model.closeConnection();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package it.unibo.application.model;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 import it.unibo.application.data.entities.ban.Ban;
 import it.unibo.application.data.entities.builds.Build;
@@ -177,5 +178,15 @@ public final class Model {
 
     public double getUserRating(final String username) {
         return User.DAO.getRating(connection, username);
+    }
+
+    public void closeConnection() {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (final SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

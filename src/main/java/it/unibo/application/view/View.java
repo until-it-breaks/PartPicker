@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.io.IOException;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class View {
     private static final String APP_NAME = "Part Picker";
@@ -16,11 +18,19 @@ public class View {
 
     public View() {
         try {
-            Image icon = ImageIO.read(getClass().getResourceAsStream("/icon.png"));
+            final Image icon = ImageIO.read(getClass().getResourceAsStream("/icon.png"));
             frame.setIconImage(icon);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         }
+
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(final WindowEvent e) {
+                if (controller != null) {
+                    controller.closeConnection();
+                }
+            }
+        });
     }
 
     public void setController(final Controller controller) {
