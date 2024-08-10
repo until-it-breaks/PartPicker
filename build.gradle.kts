@@ -27,3 +27,14 @@ application {
     // Define the main class for the application.
     mainClass.set("it.unibo.application.LaunchApp")
 }
+
+// Set UTF-8 encoding for Java compilation, testing, and Javadoc tasks
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
+tasks.register("printEncoding") {
+    doLast {
+        println("File encoding: ${System.getProperty("file.encoding")}")
+    }
+}
