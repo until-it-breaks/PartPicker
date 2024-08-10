@@ -28,7 +28,6 @@ import it.unibo.application.data.entities.insertion.PsuInsert;
 import it.unibo.application.data.entities.insertion.RamInsert;
 import it.unibo.application.data.entities.insertion.StorageInsert;
 import it.unibo.application.data.entities.login.User;
-import it.unibo.application.data.entities.login.UserDetails;
 import it.unibo.application.data.entities.price.ComponentPrice;
 import it.unibo.application.model.login.LoginService;
 import java.util.List;
@@ -88,10 +87,6 @@ public final class Model {
         }
     }
 
-    public UserDetails getUserDetails(final String username) {
-        return UserDetails.getUserDetails(connection, username);
-    }
-
     public void banUser(final Ban ban) {
         Ban.DAO.insertBan(connection, ban);
     }
@@ -112,7 +107,7 @@ public final class Model {
         return Build.DAO.getLatestBuildId(connection);
     }
 
-    public void insertBuild(Build build, User user) {
+    public void insertBuild(final Build build, final User user) {
         Build.DAO.insertBuild(connection, build, user);
     }
 
@@ -132,47 +127,55 @@ public final class Model {
         return Manufacturer.DAO.getManufacturers(connection);
     }
 
-    public void insertCpu(CpuInsert cpu) {
+    public void insertCpu(final CpuInsert cpu) {
         CpuInsert.DAO.insert(connection, cpu);
     }
 
-    public void insertCooler(CoolerInsert cooler) {
+    public void insertCooler(final CoolerInsert cooler) {
         CoolerInsert.DAO.insert(connection, cooler);
     }
 
-    public void insertRam(RamInsert ram) {
+    public void insertRam(final RamInsert ram) {
         RamInsert.DAO.insert(connection, ram);
     }
 
-    public void insertCase(CaseInsert _case) {
+    public void insertCase(final CaseInsert _case) {
         CaseInsert.DAO.insert(connection, _case);
     }
 
-    public void insertMotherboard(MotherboardInsert motherboard) {
+    public void insertMotherboard(final MotherboardInsert motherboard) {
         MotherboardInsert.DAO.insert(connection, motherboard);
     }
 
-    public void insertGpu(GpuInsert gpu) {
+    public void insertGpu(final GpuInsert gpu) {
         GpuInsert.DAO.insert(connection, gpu);
     }
 
-    public void insertStorage(StorageInsert storage) {
+    public void insertStorage(final StorageInsert storage) {
         StorageInsert.DAO.insert(connection, storage);
     }
 
-    public void insertPsu(PsuInsert psu) {
+    public void insertPsu(final PsuInsert psu) {
         PsuInsert.DAO.insert(connection, psu);
     }
 
-    public void insertComponent(ComponentInsert componentInsert) {
+    public void insertComponent(final ComponentInsert componentInsert) {
         ComponentInsert.DAO.insert(connection, componentInsert);
     }
 
-    public void insertCpuRamCompatibility(CpuRamInsert cpuRamInsert) {
+    public void insertCpuRamCompatibility(final CpuRamInsert cpuRamInsert) {
         CpuRamInsert.DAO.insert(connection, cpuRamInsert);
     }
 
     public int getLatestComponendId() {
         return ComponentInsert.DAO.getLatestId(connection);
+    }
+
+    public User getUser(final String username) {
+        return User.DAO.findByUsername(connection, username);
+    } 
+
+    public double getUserRating(final String username) {
+        return User.DAO.getRating(connection, username);
     }
 }

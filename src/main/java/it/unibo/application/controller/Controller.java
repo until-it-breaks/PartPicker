@@ -21,7 +21,6 @@ import it.unibo.application.data.entities.insertion.PsuInsert;
 import it.unibo.application.data.entities.insertion.RamInsert;
 import it.unibo.application.data.entities.insertion.StorageInsert;
 import it.unibo.application.data.entities.login.User;
-import it.unibo.application.data.entities.login.UserDetails;
 import it.unibo.application.data.entities.price.ComponentPrice;
 import it.unibo.application.model.Model;
 import it.unibo.application.model.states.AppStateController;
@@ -91,10 +90,6 @@ public class Controller {
 
     public Build findBuildById(final int id) {
         return model.getBuildById(id);
-    }
-
-    public UserDetails getUserDetails(final String username) {
-        return model.getUserDetails(username);
     }
 
     public void banUser(final Ban ban) {
@@ -179,5 +174,13 @@ public class Controller {
 
     public int getLatestComponendId() {
         return model.getLatestComponendId();
+    }
+
+    public User getUser(final String username) {
+        return model.getUser(username);
+    } 
+
+    public double getUserRating(final String username) {
+        return model.getUserRating(username);
     }
 }

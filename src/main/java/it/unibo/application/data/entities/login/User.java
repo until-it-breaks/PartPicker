@@ -91,5 +91,20 @@ public class User {
                 throw new DAOException(e);
             }
         }
+
+        public static double getRating(final Connection connection, final String username) {
+
+            try (
+                var statement = DAOUtils.prepare(connection, Queries.GET_USER_RATING, username);
+                var resultSet = statement.executeQuery();
+            ) {
+                if (resultSet.next()) {
+                    return resultSet.getFloat("AverageRating");
+                }
+                return 0.0;
+            } catch (final SQLException e) {
+                throw new DAOException(e);
+            }
+        }
     }
 }

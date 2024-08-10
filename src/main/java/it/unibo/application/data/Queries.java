@@ -146,7 +146,7 @@ public final class Queries {
         SELECT utenti.Username, pubblicazioni.DataModificaBuild, build.*, usiRam.CodiceRam, usiRam.Quantita, usiGpu.CodiceGpu, usiGpu.Quantita, usiStorage.CodiceStorage, usiStorage.Quantita
         FROM build, utenti, pubblicazioni, usiRam, usiGpu, usiStorage
         WHERE build.CodiceBuild = pubblicazioni.CodiceBuild AND pubblicazioni.Username = utenti.Username
-            AND usiRam.CodiceBuild = build.CodiceBuild AND usiGpu.CodiceBuild = build.CodiceBuild AND usiStorage.CodiceBuild = build.CodiceBuild
+        AND usiRam.CodiceBuild = build.CodiceBuild AND usiGpu.CodiceBuild = build.CodiceBuild AND usiStorage.CodiceBuild = build.CodiceBuild
         """;
 
     public static final String FIND_BUILD =
@@ -176,25 +176,15 @@ public final class Queries {
         FROM usiStorage
         WHERE usiStorage.CodiceBuild = ?
         """;
-    public static final String FIND_USER_DETAILS = 
+    
+    public static final String GET_USER_RATING =
         """
-        SELECT 
-            u.Username, 
-            u.DataRegistrazione, 
-            u.Email, 
-            u.Moderatore, 
-            AVG(r.RatingRecensione) AS RatingMedio, 
-            COUNT(DISTINCT p.CodiceBuild) AS NumeroBuild
-        FROM 
-            Utenti u,
-            Pubblicazioni p,
-            Recensioni r
-        WHERE
-            p.Username = ?    
-            AND u.Username = p.Username 
-            AND p.CodiceBuild = r.CodiceBuild
-        GROUP BY 
-            u.Username
+        SELECT AVG(r.RatingRecensione) AS AverageRating
+        FROM Utenti u, Pubblicazioni p, Recensioni r
+        WHERE p.Username = ?    
+        AND u.Username = p.Username 
+        AND p.CodiceBuild = r.CodiceBuild
+        GROUP BY u.Username
         """;
 
     public static final String INSERT_BAN =
@@ -248,124 +238,121 @@ public final class Queries {
         """;
     public static final String GET_LATEST_BUILD_ID =
         """
-            SELECT MAX(CodiceBuild) as Max
-            FROM build;
+        SELECT MAX(CodiceBuild) as Max
+        FROM build;
         """;
 
     public static final String INSERT_BUILD = 
         """
-            INSERT INTO build (CodiceBuild, CodiceCooler, CodiceCase, CodicePsu, CodiceCpu, CodiceMotherboard)
-            VALUES (?, ?, ?, ?, ?, ?);
+        INSERT INTO build (CodiceBuild, CodiceCooler, CodiceCase, CodicePsu, CodiceCpu, CodiceMotherboard)
+        VALUES (?, ?, ?, ?, ?, ?);
         """;
 
     public static final String FIND_RECENT_LOWEST_PRICE =
         """
-            SELECT *
-            FROM PrezziComponenti p
-            WHERE p.CodiceComponente = ?
-            AND p.DataRilevamentoPrezzo = (
-                SELECT MAX(DataRilevamentoPrezzo)
-                FROM PrezziComponenti
-                WHERE CodiceComponente = p.CodiceComponente
-            )
+        SELECT *
+        FROM PrezziComponenti p
+        WHERE p.CodiceComponente = ?
+        AND p.DataRilevamentoPrezzo = (
+            SELECT MAX(DataRilevamentoPrezzo)
+            FROM PrezziComponenti
+            WHERE CodiceComponente = p.CodiceComponente)
             AND p.PrezzoComponente = (
                 SELECT MIN(PrezzoComponente)
                 FROM PrezziComponenti
                 WHERE CodiceComponente = p.CodiceComponente
-                    AND DataRilevamentoPrezzo = (
+                AND DataRilevamentoPrezzo = (
                         SELECT MAX(DataRilevamentoPrezzo)
                         FROM PrezziComponenti
-                        WHERE CodiceComponente = p.CodiceComponente
-                    )
-            );
+                        WHERE CodiceComponente = p.CodiceComponente));
         """;
     
     public static final String GET_LAST_14_SCRAPED_PRICES =
         """
-            SELECT *
-            FROM PrezziComponenti
-            WHERE CodiceComponente = ?
-            AND NomeRivenditore = ?
-            ORDER BY DataRilevamentoPrezzo DESC
-            LIMIT 14;
+        SELECT *
+        FROM PrezziComponenti
+        WHERE CodiceComponente = ?
+        AND NomeRivenditore = ?
+        ORDER BY DataRilevamentoPrezzo DESC
+        LIMIT 14;
         """;
 
     public static final String RAM_CPU_MATCH =
-    """
+        """
         SELECT COUNT(*) AS "Match"
         FROM compatibilitaRamCpu
         WHERE NomeGenerazioneRam = ? AND CodiceCpu = ?
-    """;
+        """;
 
     public static final String GET_MANUFACTURERS =
-    """
+        """
         SELECT *
         FROM produttori
-    """;
+        """;
 
     public static final String INSERT_CASE =
-    """
+        """
         INSERT INTO `Case` (CodiceCase, FattoreFormaCase)
         VALUES (?, ?)
-    """;
+        """;
 
     public static final String INSERT_CPU =
-    """
+        """
         INSERT INTO Cpu (CodiceCpu, FamigliaCpu, NumeroCore, FrequenzaCpu, Tdp, Smt, NomeSocket)
         VALUES (?, ?, ?, ?, ?, ?, ?)
-    """;
+        """;
 
     public static final String INSERT_COOLER =
-    """
+        """
         INSERT INTO Cooler (CodiceCooler, RpmCooler, LivelloRumore, TipoCooler)
         VALUES (?, ?, ?, ?)
-    """;
+        """;
 
     public static final String INSERT_GPU =
-    """
+        """
         INSERT INTO Gpu (CodiceGpu, FamigliaGpu, TipoMemoriaGpu, QuantitaMemoriaGpu, FrequenzaGpu, Tgp)
         VALUES (?, ?, ?, ?, ?, ?)
-    """;
+        """;
 
     public static final String INSERT_RAM =
-    """
+        """
         INSERT INTO Ram (CodiceRam, FrequenzaRam, CapienzaRam, Latenza, Ecc, NomeGenerazioneRam)
         VALUES (?, ?, ?, ?, ?, ?)
-    """;
+        """;
 
     public static final String INSERT_MOTHERBOARD =
-    """
+        """
         INSERT INTO Motherboard (CodiceMotherboard, FattoreFormaMotherboard, NomeChipset, SlotRam, SlotGpu, WiFi, NomeSocket, NomeGenerazioneRam)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """;
+        """;
 
     public static final String INSERT_STORAGE =
-    """
+        """
         INSERT INTO Storage (CodiceStorage, CapienzaStorage, RpmStorage, QuantitaCache, TipoStorage)
         VALUES (?, ?, ?, ?, ?)
-    """;
+        """;
 
     public static final String INSERT_PSU =
-    """
+        """
         INSERT INTO Psu (CodicePsu, FattoreFormaPsu, Efficienza, Wattaggio, Modularita)
         VALUES (?, ?, ?, ?, ?)
-    """;
+        """;
 
     public static final String INSERT_COMPONENT =
-    """
+        """
         INSERT INTO Componenti (CodiceComponente, NomeComponente, TipoComponente, AnnoLancio, PrezzoListino, CodiceProduttore)
         VALUES (?, ?, ?, ?, ?, ?)
-    """;
+        """;
 
     public static final String INSERT_CPU_RAM_COMPATIBILITY = 
-    """
+        """
         INSERT INTO CompatibilitaRamCpu (NomeGenerazioneRam, CodiceCpu)
         VALUES (?, ?)
-    """;
+        """;
 
     public static final String GET_LATEST_COMPONENT_ID = 
-    """
+        """
         SELECT MAX(CodiceComponente) AS Max
         FROM Componenti
-    """;
+        """;
 }

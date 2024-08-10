@@ -5,7 +5,7 @@ import it.unibo.application.data.entities.ban.Ban;
 import it.unibo.application.data.entities.builds.Build;
 import it.unibo.application.data.entities.builds.Review;
 import it.unibo.application.data.entities.components.Component;
-import it.unibo.application.data.entities.login.UserDetails;
+import it.unibo.application.data.entities.login.User;
 import it.unibo.application.data.entities.price.ComponentPrice;
 
 import java.awt.*;
@@ -43,7 +43,9 @@ public class BuildPage extends JPanel {
         if (build != null) {
             mainPanel.add(createInfoPanel(build), BorderLayout.NORTH);
             mainPanel.add(createComponentsAndCommentsPanel(build), BorderLayout.CENTER);
-            mainPanel.add(createReviewButtonPanel(build), BorderLayout.SOUTH);
+            if (!build.getAuthor().equals(controller.getLoggedUser().getUsername())) {
+                mainPanel.add(createReviewButtonPanel(build), BorderLayout.SOUTH);
+            }
         } else {
             mainPanel.add(new JLabel("Build not found"), BorderLayout.CENTER);
         }
@@ -51,7 +53,7 @@ public class BuildPage extends JPanel {
     }
 
     private JPanel createInfoPanel(final Build build) {
-        final UserDetails userDetails = controller.getUserDetails(build.getAuthor());
+        final User user = controller.getUser(build.getAuthor());
         final JPanel infoPanel = new JPanel(new GridLayout(2, 1));
         infoPanel.add(new JLabel("Build ID: " + build.getBuildId()));
 
@@ -61,7 +63,7 @@ public class BuildPage extends JPanel {
         authorLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(final MouseEvent e) {
-                showUserDetails(userDetails);
+                showUserDetails(user);
             }
         });
         infoPanel.add(authorLabel);
@@ -191,17 +193,16 @@ public class BuildPage extends JPanel {
         return buttonPanel;
     }
 
-    private void showUserDetails(final UserDetails userDetails) {
+    private void showUserDetails(final User user) {
         final JPanel panel = new JPanel(new BorderLayout());
         final JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         textArea.setText(
-                "Username: " + userDetails.getUsername() + "\n" +
-                        "Registration Date: " + userDetails.getRegistrationDate() + "\n" +
-                        "Email: " + userDetails.getEmail() + "\n" +
-                        "Moderator: " + (userDetails.getIsModerator() ? "Yes" : "No") + "\n" +
-                        "Average Rating: " + userDetails.getAverageRating() + "\n" +
-                        "Build Count: " + userDetails.getBuildCount()
+                "Username: " + user.getUsername() + "\n" +
+                        "Registration Date: " + user.getSignUpDate() + "\n" +
+                        "Email: " + user.getEmail() + "\n" +
+                        "Moderator: " + (user.isModerator() ? "Yes" : "No") + "\n" +
+                        String.format("Average Rating: %.2f", controller.getUserRating(user.getUsername()))
         );
         panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
 
@@ -210,7 +211,7 @@ public class BuildPage extends JPanel {
             banButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(final ActionEvent e) {
-                    showBanDialog(userDetails);
+                    showBanDialog(user);
                 }
             });
             panel.add(banButton, BorderLayout.SOUTH);
@@ -218,7 +219,7 @@ public class BuildPage extends JPanel {
         JOptionPane.showMessageDialog(this, panel, "User Details", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void showBanDialog(final UserDetails userDetails) {
+    private void showBanDialog(final User user) {
         final JPanel panel = new JPanel(new GridLayout(3, 2));
         final JComboBox<String> banLengthComboBox = new JComboBox<>(new String[]{"1 week", "Permanent"});
         final JTextField motiveField = new JTextField();
@@ -235,7 +236,7 @@ public class BuildPage extends JPanel {
             final String motive = motiveField.getText();
             final LocalDate endDate = "1 week".equals(banLength) ? LocalDate.now().plus(1, ChronoUnit.WEEKS) : null;
 
-            final Ban ban = new Ban(userDetails.getUsername(), LocalDate.now(), endDate, motive, controller.getLoggedUser().getUsername());
+            final Ban ban = new Ban(user.getUsername(), LocalDate.now(), endDate, motive, controller.getLoggedUser().getUsername());
             controller.banUser(ban);
         }
     }
