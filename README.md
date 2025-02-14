@@ -1,19 +1,19 @@
 # PartPicker
 
-## Descrizione
-Un'app per la creazione e condivisione di configurazioni di PC per utenti appassionati di hardware.
+## Description
+An app for creating and sharing PC builds for hardware enthusiasts.
 
-### Prerequisiti
+### Prerequisites
 - XAMPP
-- Java 21 o superiore
+- Java 21 or higher
 - MySQL Workbench
 
-### Passaggi da seguire
+### Steps to Follow
 
-1. Apri il Pannello di Controllo di XAMPP e avvia i moduli **Apache** e **MySQL**.
+1. Open the XAMPP Control Panel and start the **Apache** and **MySQL** modules.
 
-2. In MySQLWorkbench, crea un nuovo database per l'applicazione usando le istruzioni in **partpicker.sql**.
+2. In MySQL Workbench, create a new database for the application using the instructions in **partpicker.sql**.
 
-3. Riempi le tabelle usando le istruzioni in **fill.sql**.
+3. Populate the tables using the instructions in **fill.sql**.
 
-4. Avvia l'app usando il comando **java -jar .\PartPicker-all.jar** oppure **./gradlew run**.
+4. Start the app using the command **java -jar .\PartPicker-all.jar** or **./gradlew run**.
